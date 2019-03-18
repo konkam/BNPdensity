@@ -1,0 +1,23 @@
+\name{phalfnorm}
+\alias{phalfnorm}
+\title{
+Distribution function half Normal
+}
+\description{
+Computes the cdf.
+}
+\usage{
+phalfnorm(q, mean = 0, sd = 1)
+}
+\details{
+For internal use
+}
+\examples{
+## The function is currently defined as
+function (q, mean = 0, sd = 1) 
+{
+    ifelse(q < 0, 0, 1) * (pnorm(q, mean, sd) - pnorm(0, mean, 
+        sd))/(1 - pnorm(0, mean, sd))
+  }
+}
+\keyword{internal}
