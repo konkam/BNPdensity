@@ -1,20 +1,20 @@
 MixNRMI2cens <-
-function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, 
-    Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, 
-    mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, 
-    Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, 
-    printtime = TRUE, extras = FALSE) 
+function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
+    Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
+    mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
+    Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
+    printtime = TRUE, extras = FALSE)
 {
-    if (is.null(distr.k)) 
+    if (is.null(distr.k))
         stop("Argument distr.k is NULL. Should be provided. See help for details.")
-    if (is.null(distr.py0)) 
+    if (is.null(distr.py0))
         stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
     tInit <- proc.time()
     cens_data_check(xleft, xright)
     xpoint <- as.numeric(na.omit(0.5 * (xleft + xright)))
     npoint <- length(xpoint)
     censor_code <- censor_code_rl(xleft, xright)
-    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code == 
+    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code ==
         x)
     names(censor_code_filters) <- 0:3
     n <- length(xleft)
@@ -24,7 +24,7 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
     y[-seq(n/2)] <- mean(xsort[-seq(npoint/2)])
     z <- rep(1, n)
     u <- 1
-    if (is.null(epsilon)) 
+    if (is.null(epsilon))
         epsilon <- sd(xpoint)/4
     xx <- seq(min(xpoint) - epsilon, max(xpoint) + epsilon, length = Nx)
     Fxx <- matrix(NA, nrow = Nx, ncol = Nit)
@@ -42,7 +42,7 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
     mu.py0 = mean(xpoint)
     sigma.py0 = sd(xpoint)
     for (j in seq(Nit)) {
-        if (floor(j/500) == ceiling(j/500)) 
+        if (floor(j/500) == ceiling(j/500))
             cat("MCMC iteration", j, "of", Nit, "\n")
         tt <- comp2(y, z)
         ystar <- tt$ystar
@@ -51,20 +51,20 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
         rstar <- tt$rstar
         idx <- tt$idx
         Allocs[[max(1, j - 1)]] <- idx
-        if (Gama != 0) 
-            u <- gs3(u, n = n, r = rstar, alpha = Alpha, beta = Beta, 
+        if (Gama != 0)
+            u <- gs3(u, n = n, r = rstar, alpha = Alpha, beta = Beta,
                 gama = Gama, delta = Delta)
-        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Beta, 
+        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Beta,
             gama = Gama, N = 50001)
         Nm <- length(JiC)
         TauyC <- rk(Nm, distr = distr.py0, mu = mu.py0, sigma = sigma.py0)
         TauzC <- rk(Nm, distr = distr.pz0, mu = mu.pz0, sigma = sigma.pz0)
         if (distr.pz0 == 2) {
-            tt <- gsYZstarcens2(ystar = ystar, zstar = zstar, 
-                nstar = nstar, rstar = rstar, idx = idx, xleft = xleft, 
-                xright = xright, censor_code = censor_code, delta = delta, 
-                kappa = kappa, distr.k = distr.k, distr.py0 = distr.py0, 
-                mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0, 
+            tt <- gsYZstarcens2(ystar = ystar, zstar = zstar,
+                nstar = nstar, rstar = rstar, idx = idx, xleft = xleft,
+                xright = xright, censor_code = censor_code, delta = delta,
+                kappa = kappa, distr.k = distr.k, distr.py0 = distr.py0,
+                mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0,
                 mu.pz0 = mu.pz0, sigma.pz0 = sigma.pz0)
             ystar <- tt$ystar
             zstar <- tt$zstar
@@ -76,15 +76,15 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
         Tauy <- c(TauyC, ystar)
         Tauz <- c(TauzC, zstar)
         J <- c(JiC, Jstar)
-        tt <- fcondYZXAcens2(xleft = xleft, xright = xright, 
-            censor_code_filters = censor_code_filters, distr = distr.k, 
+        tt <- fcondYZXAcens2(xleft = xleft, xright = xright,
+            censor_code_filters = censor_code_filters, distr = distr.k,
             Tauy = Tauy, Tauz = Tauz, J = J)
         y <- tt[, 1]
         z <- tt[, 2]
-        Fxx[, j] <- fcondXA2(xx, distr = distr.k, Tauy, Tauz, 
+        Fxx[, j] <- fcondXA2(xx, distr = distr.k, Tauy, Tauz,
             J)
-        fx[, j] <- fcondXA2cens2(xleft = xleft, xright = xright, 
-            censor_code_filters = censor_code_filters, distr = distr.k, 
+        fx[, j] <- fcondXA2cens2(xleft = xleft, xright = xright,
+            censor_code_filters = censor_code_filters, distr = distr.k,
             Tauy, Tauz, J)
         R[j] <- rstar
         U[j] <- u
@@ -118,14 +118,14 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
         print(procTime <- proc.time() - tInit)
     }
     if (extras) {
-        return(list(xx = xx, qx = qx, cpo = cpo, R = R, U = U, 
-            Allocs = Allocs, means = means, sigmas = sigmas, 
-            weights = weights, Js = Js, Nm = Nmt, Nx = Nx, Nit = Nit, 
-            Pbi = Pbi, procTime = procTime))
+        return(list(xx = xx, qx = qx, cpo = cpo, R = R, U = U,
+            Allocs = Allocs, means = means, sigmas = sigmas,
+            weights = weights, Js = Js, Nm = Nmt, Nx = Nx, Nit = Nit,
+            Pbi = Pbi, procTime = procTime, distr.k = distr.k))
     }
     else {
-        return(list(xx = xx, qx = qx, cpo = cpo, R = R, U = U, 
-            Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi, 
-            procTime = procTime))
+        return(list(xx = xx, qx = qx, cpo = cpo, R = R, U = U,
+            Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi,
+            procTime = procTime, distr.k = distr.k))
     }
 }
