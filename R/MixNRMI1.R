@@ -95,15 +95,13 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         cat(" >>> Total processing time (sec.):\n")
         print(procTime <- proc.time() - tInit)
     }
+    res = list(xx = xx, qx = qx, cpo = cpo, R = R, S = S,
+               U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit,
+               Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = x)
     if (extras) {
-        return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S,
-            U = U, Js = Js, means = means, weights = weights,
-            Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi,
-            procTime = procTime, distr.k = distr.k, data = x))
+      res$means = means
+      res$weights = weights
+      res$Js = Js
     }
-    else {
-        return(list(xx = xx, qx = qx, cpo = cpo, R = R, S = S,
-            U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit,
-            Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = x))
-    }
+    return(res)
 }

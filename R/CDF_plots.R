@@ -1,13 +1,11 @@
-fill_sigmas = function(fit){
-  mapply(FUN = function(means, sigma){
-    rep(sigma, length(means))
-  }, fit$means, fit$sigmas)
-}
-
-
 pmixnorm_vec_loop = function(xs, means_list, sigmas_list, weights_list){
+  res = 0.0*xs
   nit = length(means_list)
-  mapply(function(means, sigmas, weights){weights*pnorm(q = xs, mean = means, sd = sigmas)}, means_list, sigmas_list, weights_list)
+  for (it in 1:nit){
+    for (cmp in seq_along(means_list[[it]]))
+    res = res + weights_list[[it]][cmp] * pnorm(q = xs, mean = means_list[[it]][cmp], sd = sigmas_list[[it]][cmp])
+  }
+  return(res/nit)
 }
 
 get_CDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
@@ -32,15 +30,23 @@ get_CDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 #' @examples
 #' set.seed(150520)
 #' data(acidity)
-#' x <- enzyme
-#' out <- MixNRMI1(enzyme, extras = TRUE)
+#' out <- MixNRMI1(acidity, extras = TRUE)
 #' plotCDF_noncensored(out)
-plotCDF_noncensored = function(data, fit){
+plotCDF_noncensored = function(fit){
+
+  data = fit$data
 
   data_range = max(data) - min(data)
   grid = seq(min(data)-0.1*data_range, max(data)+0.1*data_range, length.out = 100)
 
-
-
-
+  if(is_semiparametric(fit)){
+    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = grid)
+  }
+  else{
+    cdf = get_CDF_full_BNPdensity(fit = fit, xs = grid)
+  }
+  p = ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
+    geom_line(colour= 'red') +
+    theme_classic() +
+    stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step")
 }
