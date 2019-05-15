@@ -111,6 +111,6 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     else {
         return(list(xx = xx, qx = qx, cpo = cpo, R = R, U = U,
             Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi,
-            procTime = procTime, distr.k = distr.k))
+            procTime = procTime, distr.k = distr.k, data = x))
     }
 }
