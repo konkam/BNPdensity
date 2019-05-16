@@ -21,3 +21,13 @@ fill_sigmas = function(semiparametric_fit){
     rep(sigma, length(means))
   }, semiparametric_fit$means, semiparametric_fit$S)
 }
+
+#' Create a plotting grid from non-censored data.
+#'
+#' @param data Input data from which to compute the grid.
+#' @param npoints Number of points on the grid.
+#' @return a vector containing the plotting grid
+grid_from_data = function(data, npoints = 100){
+  data_range = max(data) - min(data)
+  return(seq(min(data) - 0.1*data_range, max(data) + 0.1*data_range, length.out = 100))
+}
