@@ -1,16 +1,19 @@
-pmixnorm_vec_loop = function(xs, means_list, sigmas_list, weights_list){
+#' @import stats
+#' @import ggplot2
+
+pmix_vec_loop = function(xs, locations_list, scales_list, weights_list, distr.k){
   res = 0.0*xs
-  nit = length(means_list)
+  nit = length(locations_list)
   for (it in 1:nit){
-    for (cmp in seq_along(means_list[[it]]))
-    res = res + weights_list[[it]][cmp] * pnorm(q = xs, mean = means_list[[it]][cmp], sd = sigmas_list[[it]][cmp])
+    for (cmp in seq_along(locations_list[[it]]))
+      res = res + weights_list[[it]][cmp] * pk(q = xs, distr = distr.k, mu = locations_list[[it]][cmp], sigma = scales_list[[it]][cmp])
   }
   return(res/nit)
 }
 
 get_CDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 
-  pmixnorm_vec_loop(xs = xs, means_list = fit$means, sigmas_list = fit$sigmas, weights_list = fit$weights)
+  pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 
 }
 
@@ -18,7 +21,7 @@ get_CDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 
   fit$sigmas_filled = fill_sigmas(fit)
 
-  pmixnorm_vec_loop(xs = xs, means_list = fit$means, sigmas_list = fit$sigmas_filled, weights_list = fit$weights)
+  pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
 
 }
 
@@ -45,7 +48,7 @@ plotCDF_noncensored = function(fit){
   else{
     cdf = get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
-  p = ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
+  p = ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), ggplot2::aes(x = data, y = CDF)) +
     geom_line(colour= 'red') +
     theme_classic() +
     stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step")

@@ -1,12 +1,32 @@
-context("Test the plotting functions")
-
-#' data(acidity)
-#' out <- MixNRMI1(acidity, extras = TRUE)
-#' plotCDF_noncensored(out)
-#'
-
-test_that("The CDF plot does not produce ane error", {
+test_that("The CDF plot does not produce an error", {
   data(acidity)
-  out <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
-  expect_output(str(plotCDF_noncensored(out)), "List of 9")
+  outttest <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
+  expect_output(str(plotCDF_noncensored(outttest)), "List of 9")
+  outttest2 <- MixNRMI2(acidity, Nit = 50, extras = TRUE)
+  expect_output(str(plotCDF_noncensored(outttest2)), "List of 9")
+  data(enzyme)
+  outttest3 <- MixNRMI2(enzyme, Alpha = 1, Beta = 0.007, Gama = 0.5,
+                                                  distr.k = 2, distr.py0 = 2,
+                                                  distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
+                                                  Nit = 50, Pbi = 0.2)
+  expect_output(str(plotCDF_noncensored(outttest3)), "List of 9")
+})
+
+test_that("The vectorised mixture pdf calculation coincides with pmixnorm", {
+  pmixnorm_vec_loop = function(xs, means_list, sigmas_list, weights_list){
+    res = 0.0*xs
+    nit = length(means_list)
+    for (it in 1:nit){
+      for (cmp in seq_along(means_list[[it]]))
+        res = res + weights_list[[it]][cmp] * pnorm(q = xs, mean = means_list[[it]][cmp], sd = sigmas_list[[it]][cmp])
+    }
+    return(res/nit)
+  }
+  data(acidity)
+  xs = seq(-5,5,length.out = 100)
+  outttest <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
+  outttest$sigmas_filled = fill_sigmas(outttest)
+  ref = pmixnorm_vec_loop(xs = xs, means_list = fit$means, sigmas_list = fit$sigmas_filled, weights_list = fit$weights)
+  res = pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = 1)
+  expect_equal(res, ref)
 })
