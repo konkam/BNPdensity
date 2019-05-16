@@ -19,5 +19,5 @@ Plot the percentile-percentile graph for censored data, using the Turnbull estim
 set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
-pp_plot_censored(out)
+BNPdensity:::pp_plot_censored(out)
 }

@@ -1,3 +1,4 @@
+#' @export
 MixNRMI2 <-
 function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
     Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,

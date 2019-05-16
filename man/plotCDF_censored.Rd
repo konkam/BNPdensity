@@ -19,5 +19,5 @@ Plot the Turnbull CDF and fitted CDF for censored data.
 set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-plotCDF_censored(out)
+BNPdensity:::plotCDF_censored(out)
 }

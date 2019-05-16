@@ -6,7 +6,7 @@
 #' set.seed(150520)
 #' data(acidity)
 #' x <- enzyme
-#' out <- MixNRMI1(enzyme, extras = TRUE)
+#' out <- MixNRMI1(enzyme, extras = TRUE, Nit = 10)
 #' BNPdensity:::is_semiparametric(out)
 is_semiparametric <- function(fit) {
   return(!is.null(fit$S))

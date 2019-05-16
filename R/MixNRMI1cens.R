@@ -1,3 +1,4 @@
+#' @export
 MixNRMI1cens <-
 function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
     Beta = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,

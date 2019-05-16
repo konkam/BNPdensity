@@ -19,5 +19,5 @@ Plot Goodness of fits graphical checks for censored data
 set.seed(150520)
 data(salinty)
 out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-plotGOF_censored(out)
+BNPdensity:::plotGOF_censored(out)
 }

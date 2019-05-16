@@ -19,5 +19,5 @@ Plot the percentile-percentile graph for non censored data.
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-pp_plot_noncensored(out)
+BNPdensity:::pp_plot_noncensored(out)
 }

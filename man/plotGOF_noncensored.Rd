@@ -19,5 +19,5 @@ Plot Goodness of fits graphical checks for non censored data
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-plotGOF_noncensored(out)
+BNPdensity:::plotGOF_noncensored(out)
 }

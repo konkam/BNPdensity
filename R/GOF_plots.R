@@ -44,7 +44,7 @@ get_PDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE)
-#' plotCDF_noncensored(out)
+#' BNPdensity:::plotCDF_noncensored(out)
 plotCDF_noncensored = function(fit){
 
   data = fit$data
@@ -72,7 +72,7 @@ plotCDF_noncensored = function(fit){
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' plotCDF_censored(out)
+#' BNPdensity:::plotCDF_censored(out)
 plotCDF_censored = function(fit){
 
   data = fit$data
@@ -102,7 +102,7 @@ plotCDF_censored = function(fit){
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' plotPDF_noncensored(out)
+#' BNPdensity:::plotPDF_noncensored(out)
 plotPDF_noncensored = function(fit){
   p = plotPDF_censored(fit)
   p$layers <- c(geom_histogram(data = data.frame(data = fit$data), aes(y = ..density..)), p$layers)
@@ -117,7 +117,7 @@ plotPDF_noncensored = function(fit){
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
-#' plotPDF_censored(out)
+#' BNPdensity:::plotPDF_censored(out)
 plotPDF_censored = function(fit){
 
   grid = grid_from_data(fit$data)
@@ -143,7 +143,7 @@ plotPDF_censored = function(fit){
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' pp_plot_noncensored(out)
+#' BNPdensity:::pp_plot_noncensored(out)
 pp_plot_noncensored = function(fit){
 
   data = fit$data
@@ -170,7 +170,7 @@ pp_plot_noncensored = function(fit){
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
-#' pp_plot_censored(out)
+#' BNPdensity:::pp_plot_censored(out)
 pp_plot_censored = function(fit){
 
   Survival_object = survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type='interval2') ~ 1)
@@ -199,7 +199,7 @@ pp_plot_censored = function(fit){
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' plotGOF_noncensored(out)
+#' BNPdensity:::plotGOF_noncensored(out)
 plotGOF_noncensored = function(fit){
 
   CDFplot = plotCDF_noncensored(fit)
@@ -217,7 +217,7 @@ plotGOF_noncensored = function(fit){
 #' set.seed(150520)
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' plotGOF_censored(out)
+#' BNPdensity:::plotGOF_censored(out)
 plotGOF_censored = function(fit){
 
   CDFplot = plotCDF_censored(fit)

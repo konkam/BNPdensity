@@ -19,5 +19,5 @@ Plot the density and a histogram for non censored data.
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-plotPDF_noncensored(out)
+BNPdensity:::plotPDF_noncensored(out)
 }
