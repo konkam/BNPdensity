@@ -1,15 +1,28 @@
 Package: BNPdensity
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random Measures
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+  person("Ernesto", "Barrios", role = c("aut", "cre"), email = "ebarrios@itam.mx"),
+  person("Antonio", "Lijoi", role = "aut"),
+  person("Luis E.", "Nieto-Barajas", role = "aut"),
+  person("Igor", "Prünster", role = "aut"),
+  person("Guillaume", "Kon Kam King", role = "ctb")
+  )
+Description: Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
+License: GPL (>= 2)
 Encoding: UTF-8
-LazyData: true
+LazyData: yes
 ByteCompile: yes
 RoxygenNote: 6.1.1
+Depends: R(>= 3.3.0)
+Author: Ernesto Barrios [aut, cre],
+  Antonio Lijoi [aut],
+  Luis E. Nieto-Barajas [aut],
+  Igor Prünster [aut],
+  Guillaume Kon Kam King [ctb]
+Maintainer: Ernesto Barrios <ebarrios@itam.mx>
 Imports:
-  ggplot2
+  ggplot2,
+    gridExtra,
+    survival
