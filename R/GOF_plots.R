@@ -1,5 +1,6 @@
 #' @import stats
 #' @import ggplot2
+#' @import compiler
 
 pmix_vec_loop = function(xs, locations_list, scales_list, weights_list, distr.k){
   additive_mix_vec_loop(xs, locations_list, scales_list, weights_list, distr.k, pk)
