@@ -20,5 +20,5 @@ set.seed(150520)
 data(acidity)
 x <- enzyme
 out <- MixNRMI1(enzyme, extras = TRUE)
-is_semiparametric(out)
+BNPdensity:::is_semiparametric(out)
 }

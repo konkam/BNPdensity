@@ -7,11 +7,17 @@
 plotGOF_noncensored(fit)
 }
 \arguments{
-\item{fit}{}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
 }
 \value{
 A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.
 }
 \description{
 Plot Goodness of fits graphical checks for non censored data
+}
+\examples{
+set.seed(150520)
+data(acidity)
+out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
+plotGOF_noncensored(out)
 }

@@ -7,8 +7,8 @@
 #' data(acidity)
 #' x <- enzyme
 #' out <- MixNRMI1(enzyme, extras = TRUE)
-#' is_semiparametric(out)
-is_semiparametric = function(fit){
+#' BNPdensity:::is_semiparametric(out)
+is_semiparametric <- function(fit) {
   return(!is.null(fit$S))
 }
 
@@ -16,18 +16,62 @@ is_semiparametric = function(fit){
 #'
 #' @param semiparametric_fit The result of the fit, obtained through the function MixNRMI1.
 #' @return an adequate list of vectors of sigmas
-fill_sigmas = function(semiparametric_fit){
-  mapply(FUN = function(means, sigma){
+fill_sigmas <- function(semiparametric_fit) {
+  mapply(FUN = function(means, sigma) {
     rep(sigma, length(means))
   }, semiparametric_fit$means, semiparametric_fit$S)
 }
 
 #' Create a plotting grid from non-censored data.
 #'
+#' @param data Non-censored input data from which to compute the grid.
+#' @param npoints Number of points on the grid.
+#' @return a vector containing the plotting grid
+grid_from_data_noncensored <- function(data, npoints = 100) {
+  data_range <- max(data) - min(data)
+  return(seq(min(data) - 0.1 * data_range, max(data) + 0.1 * data_range, length.out = 100))
+}
+
+#' Create a plotting grid from censored data.
+#'
+#' @param data Censored input data from which to compute the grid.
+#' @param npoints Number of points on the grid.
+#' @return a vector containing the plotting grid
+grid_from_data_censored <- function(data, npoints = 100) {
+  max_ <- max(max(data$left, na.rm = T), max(data$right, na.rm = T))
+  min_ <- min(min(data$left, na.rm = T), min(data$right, na.rm = T))
+  data_range_adapted <- (max_ - min_) / sqrt(nrow(data))
+  return(seq(min_ - 0.1 * data_range_adapted, max_ + 0.1 * data_range_adapted, length.out = 100))
+}
+
+#' Create a plotting grid from censored or non-censored data.
+#'
 #' @param data Input data from which to compute the grid.
 #' @param npoints Number of points on the grid.
 #' @return a vector containing the plotting grid
-grid_from_data = function(data, npoints = 100){
-  data_range = max(data) - min(data)
-  return(seq(min(data) - 0.1*data_range, max(data) + 0.1*data_range, length.out = 100))
+grid_from_data <- function(data, npoints = 100) {
+  if (is_censored(data)) {
+    grid_from_data_censored(data, npoints = npoints)
+  }
+  else {
+    grid_from_data_noncensored(data, npoints = npoints)
+  }
+}
+
+
+#' Test if the data is censored
+#'
+#' @param dat The dataset to be tested
+#'
+#' @return TRUE if the data is censored
+#'
+#' @examples
+#' data(salinity)
+#' BNPdensity:::is_censored(salinity)
+is_censored <- function(dat) {
+  if (is.null(ncol(dat))) {
+    FALSE
+  } else {
+    TRUE
+  }
 }

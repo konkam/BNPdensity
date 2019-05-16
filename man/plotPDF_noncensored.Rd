@@ -8,8 +8,6 @@ plotPDF_noncensored(fit)
 }
 \arguments{
 \item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
-
-\item{data}{The non censored dataset.}
 }
 \value{
 Plot of the ensity and a histogram for non censored data.

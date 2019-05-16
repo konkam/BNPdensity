@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper_functions.R
 \name{grid_from_data}
 \alias{grid_from_data}
-\title{Create a plotting grid from non-censored data.}
+\title{Create a plotting grid from censored or non-censored data.}
 \usage{
 grid_from_data(data, npoints = 100)
 }
@@ -15,5 +15,5 @@ grid_from_data(data, npoints = 100)
 a vector containing the plotting grid
 }
 \description{
-Create a plotting grid from non-censored data.
+Create a plotting grid from censored or non-censored data.
 }

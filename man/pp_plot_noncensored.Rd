@@ -2,24 +2,22 @@
 % Please edit documentation in R/GOF_plots.R
 \name{pp_plot_noncensored}
 \alias{pp_plot_noncensored}
-\title{Plot the density and a histogram for non censored data.}
+\title{Plot the percentile-percentile graph for non censored data.}
 \usage{
 pp_plot_noncensored(fit)
 }
 \arguments{
 \item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
-
-\item{data}{The non censored dataset.}
 }
 \value{
-Plot of the ensity and a histogram for non censored data.
+Percentile-percentile plot for non censored data.
 }
 \description{
-Plot the density and a histogram for non censored data.
+Plot the percentile-percentile graph for non censored data.
 }
 \examples{
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-plotPDF_noncensored(out)
+pp_plot_noncensored(out)
 }

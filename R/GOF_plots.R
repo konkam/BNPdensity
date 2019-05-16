@@ -38,7 +38,6 @@ get_PDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 
 #' Plot the empirical and fitted CDF for non censored data.
 #'
-#' @param data The non censored dataset.
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.
 #' @return Plot of the empirical and fitted CDF for non censored data.
 #' @examples
@@ -65,10 +64,39 @@ plotCDF_noncensored = function(fit){
     xlab("Data")
 }
 
+#' Plot the Turnbull CDF and fitted CDF for censored data.
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1cens or MixNRMI2cens.
+#' @return Plot of the empirical and fitted CDF for non censored data.
+#' @examples
+#' set.seed(150520)
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
+#' plotCDF_censored(out)
+plotCDF_censored = function(fit){
+
+  data = fit$data
+
+  grid = grid_from_data(data)
+
+  Survival_object = survival::survfit(formula = survival::Surv(data$left, data$right, type='interval2') ~ 1)
+
+  if(is_semiparametric(fit)){
+    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = grid)
+  }
+  else{
+    cdf = get_CDF_full_BNPdensity(fit = fit, xs = grid)
+  }
+  ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
+    geom_line(colour= 'red') +
+    theme_classic() +
+    geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1-Survival_object$surv, 1)), aes(x = x, y = y)) +
+    xlab("Data")
+}
+
 #' Plot the density and a histogram for non censored data.
 #'
-#' @param data The non censored dataset.
-#' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.
+#' @inheritParams plotCDF_noncensored
 #' @return Plot of the ensity and a histogram for non censored data.
 #' @examples
 #' set.seed(150520)
@@ -76,10 +104,23 @@ plotCDF_noncensored = function(fit){
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' plotPDF_noncensored(out)
 plotPDF_noncensored = function(fit){
+  p = plotPDF_censored(fit)
+  p$layers <- c(geom_histogram(data = data.frame(data = fit$data), aes(y = ..density..)), p$layers)
+  return(p)
+}
 
-  data = fit$data
+#' Plot the density for censored data.
+#'
+#' @inheritParams plotCDF_censored
+#' @return Plot of the ensity and a histogram for non censored data.
+#' @examples
+#' set.seed(150520)
+#' data(salinity)
+#' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
+#' plotPDF_censored(out)
+plotPDF_censored = function(fit){
 
-  grid = grid_from_data(data)
+  grid = grid_from_data(fit$data)
 
   if(is_semiparametric(fit)){
     pdf = get_PDF_semi_BNPdensity(fit = fit, xs = grid)
@@ -88,28 +129,24 @@ plotPDF_noncensored = function(fit){
     pdf = get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes(x = data, y = PDF)) +
-    geom_histogram(data = data.frame(data), aes(y = ..density..)) +
-    geom_line(colour= 'red') +
+    geom_line(colour = 'red') +
     theme_classic() +
     xlab("Data")
-
 }
 
-#' Plot the density and a histogram for non censored data.
+
+#' Plot the percentile-percentile graph for non censored data.
 #'
-#' @param data The non censored dataset.
-#' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.
-#' @return Plot of the ensity and a histogram for non censored data.
+#' @inheritParams plotCDF_noncensored
+#' @return Percentile-percentile plot for non censored data.
 #' @examples
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' plotPDF_noncensored(out)
+#' pp_plot_noncensored(out)
 pp_plot_noncensored = function(fit){
 
   data = fit$data
-
-  # grid = grid_from_data(data)
 
   if(is_semiparametric(fit)){
     cdf = get_CDF_semi_BNPdensity(fit = fit, xs = data)
@@ -122,16 +159,41 @@ pp_plot_noncensored = function(fit){
     geom_abline(slope = 1, intercept = 0, colour= 'red') +
     theme_classic() +
     xlab("Theoretical cumulative distribution") +
-    ylab("Empirical cumulative distribution")
+    ylab("Empirical cumulative distribution (Turnbull estimate)")
+}
 
+#' Plot the percentile-percentile graph for censored data, using the Turnbull estimator for the empirical cumulative distribution function.
+#'
+#' @inheritParams plotCDF_censored
+#' @return Percentile-percentile graph using the Turnbull estimator
+#' @examples
+#' set.seed(150520)
+#' data(salinity)
+#' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
+#' pp_plot_censored(out)
+pp_plot_censored = function(fit){
+
+  Survival_object = survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type='interval2') ~ 1)
+  estimated_data = Survival_object$time
+
+  if(is_semiparametric(fit)){
+    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = estimated_data)
+  }
+  else{
+    cdf = get_CDF_full_BNPdensity(fit = fit, xs = estimated_data)
+  }
+  ggplot2::ggplot(data = data.frame(x = cdf, y = 1-Survival_object$surv), aes(x = x, y = y)) +
+    geom_point() +
+    geom_abline(slope = 1, intercept = 0, colour= 'red') +
+    theme_classic() +
+    xlab("Theoretical cumulative distribution") +
+    ylab("Empirical cumulative distribution")
 }
 
 #' Plot Goodness of fits graphical checks for non censored data
 #'
-#' @param fit
-#'
+#' @inheritParams plotCDF_noncensored
 #' @return A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.
-#' @export
 #'
 #' @examples
 #' set.seed(150520)
@@ -144,4 +206,43 @@ plotGOF_noncensored = function(fit){
   PDFplot = plotPDF_noncensored(fit)
   pplot = pp_plot_noncensored(fit)
   gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+}
+
+#' Plot Goodness of fits graphical checks for censored data
+#'
+#' @inheritParams plotCDF_censored
+#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
+#'
+#' @examples
+#' set.seed(150520)
+#' data(salinty)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
+#' plotGOF_censored(out)
+plotGOF_censored = function(fit){
+
+  CDFplot = plotCDF_censored(fit)
+  PDFplot = plotPDF_censored(fit)
+  pplot = pp_plot_censored(fit)
+  gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+}
+
+#' Plot Goodness of fits graphical checks for censored data
+#'
+#' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens
+#'
+#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
+#' @export
+#'
+#' @examples
+#' set.seed(150520)
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
+#' plotGOF(out)
+plotGOF = function(fit){
+  if(is_censored(fit$data)){
+    plotGOF_censored(fit)
+  }
+  else{
+    plotGOF_noncensored(fit)
+  }
 }

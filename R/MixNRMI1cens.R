@@ -110,7 +110,7 @@ function (xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
     }
     res = list(xx = xx, qx = qx, cpo = cpo, R = R, S = S,
                U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit,
-               Pbi = Pbi, procTime = procTime, distr.k = distr.k, data_left = xleft, data_right = xright)
+               Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = data.frame(left = xleft, right = xright))
     if (extras) {
       res$means = means
       res$weights = weights
