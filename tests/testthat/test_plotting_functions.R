@@ -1,23 +1,32 @@
 test_that("Plotting function do not produce errors", {
   data(acidity)
   outttest <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
-  expect_output(str(plotCDF_noncensored(outttest)), "List of 9")
-  expect_output(str(plotPDF_noncensored(outttest)), "List of 9")
-  expect_output(str(plotGOF(outttest)), "gtable")
+  p = plotCDF_noncensored(outttest)
+  expect_output(str(p), "List of 9")
+  p = plotPDF_noncensored(outttest)
+  expect_output(str(p), "List of 9")
+  p = plotGOF(outttest)
+  expect_output(str(p), "gtable")
 
   outttest2 <- MixNRMI2(acidity, Nit = 50, extras = TRUE)
-  expect_output(str(plotCDF_noncensored(outttest2)), "List of 9")
-  expect_output(str(plotPDF_noncensored(outttest2)), "List of 9")
-  expect_output(str(plotGOF(outttest2)), "gtable")
+  p = plotCDF_noncensored(outttest2)
+  expect_output(str(p), "List of 9")
+  p = plotPDF_noncensored(outttest2)
+  expect_output(str(p), "List of 9")
+  p = plotGOF(outttest2)
+  expect_output(str(p), "gtable")
 
   data(enzyme)
   outttest3 <- MixNRMI2(enzyme, Alpha = 1, Beta = 0.007, Gama = 0.5,
                                                   distr.k = 2, distr.py0 = 2,
                                                   distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
                                                   Nit = 50, Pbi = 0.2, extras = TRUE)
-  expect_output(str(plotCDF_noncensored(outttest3)), "List of 9")
-  expect_output(str(plotPDF_noncensored(outttest3)), "List of 9")
-  expect_output(str(plotGOF(outttest3)), "gtable")
+  p = plotCDF_noncensored(outttest3)
+  expect_output(str(p), "List of 9")
+  p = plotPDF_noncensored(outttest3)
+  expect_output(str(p), "List of 9")
+  p = plotGOF(outttest3)
+  expect_output(str(p), "gtable")
 })
 
 test_that("The vectorised mixture pdf calculation coincides with pmixnorm", {
