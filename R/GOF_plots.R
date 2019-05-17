@@ -2,25 +2,6 @@
 #' @import ggplot2
 #' @import compiler
 
-pmix_vec_loop = function(xs, locations_list, scales_list, weights_list, distr.k){
-  additive_mix_vec_loop(xs, locations_list, scales_list, weights_list, distr.k, pk)
-}
-
-dmix_vec_loop = function(xs, locations_list, scales_list, weights_list, distr.k){
-  additive_mix_vec_loop(xs, locations_list, scales_list, weights_list, distr.k, dk)
-}
-
-additive_mix_vec_loop = function(xs, locations_list, scales_list, weights_list, distr.k, distfun){
-  res = 0.0*xs
-  nit = length(locations_list)
-  for (it in 1:nit){
-    for (cmp in seq_along(locations_list[[it]]))
-      res = res + weights_list[[it]][cmp] * distfun(xs, distr = distr.k, mu = locations_list[[it]][cmp], sigma = scales_list[[it]][cmp])
-  }
-  return(res/nit)
-}
-
-
 get_CDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
   pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
