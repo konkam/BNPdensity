@@ -4,7 +4,7 @@ pmix_vec_loop <-
              scales_list,
              weights_list,
              distr.k) {
-    additive_mix_vec_loop(qs, locations_list, scales_list, weights_list, distr.k, pk)
+    mean_over_list(qs, locations_list, scales_list, weights_list, distr.k, pk)
   }
 
 dmix_vec_loop <-
@@ -13,10 +13,10 @@ dmix_vec_loop <-
              scales_list,
              weights_list,
              distr.k) {
-    additive_mix_vec_loop(xs, locations_list, scales_list, weights_list, distr.k, dk)
+    mean_over_list(xs, locations_list, scales_list, weights_list, distr.k, dk)
   }
 
-additive_mix_vec_loop <-
+mean_over_list <-
   function(xs,
              locations_list,
              scales_list,
@@ -97,6 +97,35 @@ dmixcens <- function(xlefts,
   mixdistfun_cens(xlefts, xrights, c_code_filters, locations, scales, weights, distr.k, dkcens2)
 }
 
-qmix = function(xs, locations, scales, weights, distr.k){
 
+
+qmix_one_val_with_scales = function(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc){
+  f_help_vec = function(qs){p - pmix(qs, locations, scales, weights, distr.k)}
+  if(distr.k==2|distr.k==5) {
+    lowerbound = 0
+    upperbound = max_loc + 100*max_scale
+    }
+  else if(distr.k==3){
+    lowerbound = 0
+    upperbound = 1
+  }
+  else{
+    lowerbound = min_loc-100*max_scale
+    upperbound = max_loc + 100*max_scale
+  }
+  uniroot(f = f_help_vec, lower = lowerbound, upper = upperbound)$root
+}
+
+qmix_one_val = function(p, locations, scales, weights, distr.k){
+  max_scale = max(scales)
+  max_loc = max(locations)
+  min_loc = min(locations)
+  qmix_one_val_with_scales(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc)
+}
+
+qmix = function(ps, locations, scales, weights, distr.k){
+  max_scale = max(scales)
+  max_loc = max(locations)
+  min_loc = min(locations)
+  unlist(parallel::mclapply(ps, FUN = function(p) qmix_one_val_with_scales(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc)) )
 }
