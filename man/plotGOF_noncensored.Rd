@@ -4,10 +4,14 @@
 \alias{plotGOF_noncensored}
 \title{Plot Goodness of fits graphical checks for non censored data}
 \usage{
-plotGOF_noncensored(fit, qq_plot = FALSE)
+plotGOF_noncensored(fit, qq_plot = FALSE, thinning_to = 500)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
+
+\item{qq_plot}{Whether to compute the QQ-plot}
+
+\item{thinning_to}{How many iterations to compute the mean posterior quantiles}
 }
 \value{
 A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.

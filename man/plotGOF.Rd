@@ -4,13 +4,17 @@
 \alias{plotGOF}
 \title{Plot Goodness of fits graphical checks for censored data}
 \usage{
-plotGOF(fit)
+plotGOF(fit, qq_plot = FALSE, thinning_to = 500)
 }
 \arguments{
 \item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
+
+\item{qq_plot}{Whether to compute the QQ-plot}
+
+\item{thinning_to}{How many iterations to compute the mean posterior quantiles}
 }
 \value{
-A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
+A density plot, a cumulative density plot with the Turnbull cumulative distribution, a percentile-percentile plot, and potentially a quantile-quantile plot.
 }
 \description{
 Plot Goodness of fits graphical checks for censored data

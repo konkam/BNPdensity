@@ -4,15 +4,20 @@
 \alias{qq_plot_noncensored}
 \title{Plot the quantile-quantile graph for non censored data.}
 \usage{
-qq_plot_noncensored(fit)
+qq_plot_noncensored(fit, thinning_to = 500)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
+
+\item{thinning_to}{How many iterations to compute the mean posterior quantiles}
 }
 \value{
 quantile-quantile plot for non censored data.
 }
 \description{
+Plot the quantile-quantile graph for non censored data.
+}
+\details{
 This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 }
 \examples{

@@ -27,10 +27,16 @@ get_PDF_semi_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
   fit$sigmas_filled <- fill_sigmas(fit)
   dmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
 }
-get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)) {
+get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100), thinning_to = 500) {
   fit$sigmas_filled <- fill_sigmas(fit)
-  qmix_vec_loop(ps = ps, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
-}
+  it_retained <- compute_thinning_grid(length(fit$means), thinning_to = thinning_to)
+  qmix_vec_loop(
+    ps = ps,
+    locations_list = fit$means[it_retained],
+    scales_list = fit$sigmas[it_retained],
+    weights_list = fit$weights[it_retained],
+    distr.k = fit$distr.k
+  )}
 
 #' Plot the empirical and fitted CDF for non censored data.
 #'
@@ -156,7 +162,7 @@ pp_plot_noncensored <- function(fit) {
 
 #' Plot the quantile-quantile graph for non censored data.
 #'
-#' @inheritParams plotCDF_noncensored
+#' @inheritParams plotGOF
 #' @return quantile-quantile plot for non censored data.
 #' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' @examples
@@ -183,7 +189,7 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
     ylab("Empirical quantiles")
 }
 
-#' Plot the quantile-quantile graph for non censored data, using the Turnbull estimator the position of the quantiles.
+#' Plot the percentile-percentile graph for non censored data, using the Turnbull estimator the position of the percentiles.
 #'
 #' @inheritParams plotCDF_censored
 #' @return Percentile-percentile graph using the Turnbull estimator
@@ -212,7 +218,7 @@ pp_plot_censored <- function(fit) {
 
 #' Plot the quantile-quantile graph for censored data.
 #'
-#' @inheritParams plotCDF_noncensored
+#' @inheritParams plotGOF
 #' @return quantile-quantile plot for non censored data.
 #' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' set.seed(150520)
@@ -242,7 +248,7 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for non censored data
 #'
-#' @inheritParams plotCDF_noncensored
+#' @inheritParams plotGOF
 #' @return A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.
 #'
 #' @examples
@@ -265,7 +271,7 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for censored data
 #'
-#' @inheritParams plotCDF_censored
+#' @inheritParams plotGOF
 #' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
 #'
 #' @examples
@@ -273,7 +279,7 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotGOF_censored(out)
-plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to =500){
+plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_censored(fit)
   PDFplot <- plotPDF_censored(fit)
   pplot <- pp_plot_censored(fit)
@@ -289,8 +295,9 @@ plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to =500){
 #' Plot Goodness of fits graphical checks for censored data
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens
-#'
-#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
+#' @param qq_plot Whether to compute the QQ-plot
+#' @param thinning_to How many iterations to compute the mean posterior quantiles
+#' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, a percentile-percentile plot, and potentially a quantile-quantile plot.
 #' @export
 #'
 #' @examples
@@ -298,11 +305,11 @@ plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to =500){
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' plotGOF(out)
-plotGOF <- function(fit) {
+plotGOF <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (is_censored(fit$data)) {
-    plotGOF_censored(fit)
+    plotGOF_censored(fit, qq_plot = FALSE, thinning_to = 500)
   }
   else {
-    plotGOF_noncensored(fit)
+    plotGOF_noncensored(fit, qq_plot = FALSE, thinning_to = 500)
   }
 }

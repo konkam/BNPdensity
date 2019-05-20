@@ -2,7 +2,7 @@
 % Please edit documentation in R/GOF_plots.R
 \name{pp_plot_censored}
 \alias{pp_plot_censored}
-\title{Plot the quantile-quantile graph for non censored data, using the Turnbull estimator the position of the quantiles.}
+\title{Plot the percentile-percentile graph for non censored data, using the Turnbull estimator the position of the percentiles.}
 \usage{
 pp_plot_censored(fit)
 }
@@ -13,7 +13,7 @@ pp_plot_censored(fit)
 Percentile-percentile graph using the Turnbull estimator
 }
 \description{
-Plot the quantile-quantile graph for non censored data, using the Turnbull estimator the position of the quantiles.
+Plot the percentile-percentile graph for non censored data, using the Turnbull estimator the position of the percentiles.
 }
 \examples{
 set.seed(150520)

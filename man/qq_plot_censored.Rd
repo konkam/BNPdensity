@@ -2,20 +2,23 @@
 % Please edit documentation in R/GOF_plots.R
 \name{qq_plot_censored}
 \alias{qq_plot_censored}
-\title{Plot the percentile-percentile graph for censored data, using the Turnbull estimator for the empirical cumulative distribution function.}
+\title{Plot the quantile-quantile graph for censored data.}
 \usage{
-qq_plot_censored(fit)
+qq_plot_censored(fit, thinning_to = 500)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1cens or MixNRMI2cens.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
+
+\item{thinning_to}{How many iterations to compute the mean posterior quantiles}
 }
 \value{
-Percentile-percentile graph using the Turnbull estimator
+quantile-quantile plot for non censored data.
 }
 \description{
-Plot the percentile-percentile graph for censored data, using the Turnbull estimator for the empirical cumulative distribution function.
+Plot the quantile-quantile graph for censored data.
 }
-\examples{
+\details{
+This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
