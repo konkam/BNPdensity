@@ -164,16 +164,16 @@ pp_plot_noncensored <- function(fit) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' BNPdensity:::qq_plot_noncensored(out)
-qq_plot_noncensored <- function(fit) {
+qq_plot_noncensored <- function(fit, thinning_to = 500) {
   data <- sort(fit$data)
   ndat <- length(data)
   percentiles_to_compute <- 1:ndat / (ndat + 1)
 
   if (is_semiparametric(fit)) {
-    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute)
+    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   else {
-    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute)
+    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes(x = x, y = y)) +
     geom_point() +
@@ -219,7 +219,7 @@ pp_plot_censored <- function(fit) {
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::qq_plot_censored(out)
-qq_plot_censored <- function(fit) {
+qq_plot_censored <- function(fit, thinning_to = 500) {
   Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
   estimated_data <- sort(Survival_object$time)
 
@@ -227,10 +227,10 @@ qq_plot_censored <- function(fit) {
   percentiles_to_compute <- 1:ndat / (ndat + 1)
 
   if (is_semiparametric(fit)) {
-    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute)
+    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   else {
-    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute)
+    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = estimated_data), aes(x = x, y = y)) +
     geom_point() +
@@ -250,12 +250,12 @@ qq_plot_censored <- function(fit) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotGOF_noncensored(out)
-plotGOF_noncensored <- function(fit, qq_plot = FALSE) {
+plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_noncensored(fit)
   PDFplot <- plotPDF_noncensored(fit)
   pplot <- pp_plot_noncensored(fit)
   if (qq_plot) {
-    qqplot <- qq_plot_noncensored(fit)
+    qqplot <- qq_plot_noncensored(fit, thinning_to = thinning_to)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
   }
   else {
@@ -273,12 +273,12 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE) {
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotGOF_censored(out)
-plotGOF_censored <- function(fit, qq_plot = FALSE) {
+plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to =500){
   CDFplot <- plotCDF_censored(fit)
   PDFplot <- plotPDF_censored(fit)
   pplot <- pp_plot_censored(fit)
   if (qq_plot) {
-    qqplot <- qq_plot_censored(fit)
+    qqplot <- qq_plot_censored(fit, thinning_to = thinning_to)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
   }
   else {
