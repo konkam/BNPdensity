@@ -6,18 +6,27 @@
 #' @export
 #'
 #' @examples
-traceplot = function(fitlist){
-  mcmc_object = convert_to_mcmc(fitlist)
-  to_plot = lapply(seq_along(mcmc_object), function(chain_id){dplyr::mutate(data.frame(mcmc_object[[chain_id]]), chain_id = chain_id) %>%
-      rowid_to_column("iteration")}) %>%
-    dplyr::bind_rows() %>%
-    tidyr::gather(param, value, -chain_id, -iteration)
+traceplot <- function(fitlist) {
+  mcmc_object <- convert_to_mcmc(fitlist)
+  to_plot <- tidyr::gather(
+    dplyr::bind_rows(
+      lapply(
+        X = seq_along(mcmc_object),
+        FUN = function(chain_id) {
+          dplyr::mutate(dplyr::mutate(data.frame(mcmc_object[[chain_id]]), chain_id = chain_id),
+            iteration = seq_along(chain_id)
+          )
+        }
+      )
+    ),
+    param, value, -chain_id, -iteration
+  )
 
   ggplot(to_plot, aes(x = iteration, y = value, colour = factor(chain_id), group = chain_id)) +
     geom_line() +
-    facet_wrap(~param, scales = 'free') +
+    facet_wrap(~param, scales = "free") +
     theme_classic() +
     ylab("") +
-    theme(legend.position = 'none') +
+    theme(legend.position = "none") +
     xlab("Iteration")
 }
