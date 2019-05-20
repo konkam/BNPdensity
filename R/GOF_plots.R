@@ -307,9 +307,9 @@ plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 #' plotGOF(out)
 plotGOF <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (is_censored(fit$data)) {
-    plotGOF_censored(fit, qq_plot = FALSE, thinning_to = 500)
+    plotGOF_censored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
   else {
-    plotGOF_noncensored(fit, qq_plot = FALSE, thinning_to = 500)
+    plotGOF_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
 }
