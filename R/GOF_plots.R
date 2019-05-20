@@ -8,8 +8,15 @@ get_CDF_full_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
 get_PDF_full_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
   dmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
-get_quantiles_full_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)) {
-  qmix_vec_loop(ps = ps, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
+get_quantiles_full_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100), thinning_to = 500) {
+  it_retained <- compute_thinning_grid(length(fit$means), thinning_to = thinning_to)
+  qmix_vec_loop(
+    ps = ps,
+    locations_list = fit$means[it_retained],
+    scales_list = fit$sigmas[it_retained],
+    weights_list = fit$weights[it_retained],
+    distr.k = fit$distr.k
+  )
 }
 
 get_CDF_semi_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
@@ -213,7 +220,6 @@ pp_plot_censored <- function(fit) {
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::qq_plot_censored(out)
 qq_plot_censored <- function(fit) {
-
   Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
   estimated_data <- sort(Survival_object$time)
 
@@ -248,11 +254,11 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE) {
   CDFplot <- plotCDF_noncensored(fit)
   PDFplot <- plotPDF_noncensored(fit)
   pplot <- pp_plot_noncensored(fit)
-  if(qq_plot){
-    qqplot = qq_plot_noncensored(fit)
+  if (qq_plot) {
+    qqplot <- qq_plot_noncensored(fit)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
   }
-  else{
+  else {
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
   }
 }
@@ -271,11 +277,11 @@ plotGOF_censored <- function(fit, qq_plot = FALSE) {
   CDFplot <- plotCDF_censored(fit)
   PDFplot <- plotPDF_censored(fit)
   pplot <- pp_plot_censored(fit)
-  if(qq_plot){
-    qqplot = qq_plot_censored(fit)
+  if (qq_plot) {
+    qqplot <- qq_plot_censored(fit)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
   }
-  else{
+  else {
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
   }
 }

@@ -8,13 +8,8 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000) {
     })
   }
 
-  Nit = length(fitlist[[1]]$means)
-  if(Nit <= 2*thinning_to){#Factor 2 to reduce the probability of having the same iterations selected twice
-    it_retained = 1:Nit
-  }
-  else{
-    it_retained = round(seq(1, Nit, length.out = thinning_to))
-  }
+  Nit <- length(fitlist[[1]]$means)
+  it_retained <- compute_thinning_grid(Nit, thinning_to = thinning_to)
 
   Compute_log_likelihood_given_params <- function(fit_) {
     if (is_censored(fit_$data)) {

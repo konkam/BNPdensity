@@ -75,3 +75,24 @@ is_censored <- function(dat) {
     TRUE
   }
 }
+
+
+#' Compute the grid for thinning the MCMC chain
+#'
+#' @param Nit Length of the MCMC chain
+#' @param thinning_to Desired number of iterations after thinning.
+#'
+#' @return an integer vector of the MCMC iterations retained.
+#' @details This function creates an real grid then rounds it. If the grid is fine enough, there is a risk that rounding ties, i.e. iteration which are kept twice. To avoid this, if the total number of iterations is smaller than twice the number of iterations desired after thinning, the chain is not thinned.
+#' @export
+#'
+#' @examples
+compute_thinning_grid <- function(Nit, thinning_to = 10) {
+  if (Nit <= 2 * thinning_to) { # Factor 2 to reduce the probability of having the same iterations selected twice
+    it_retained <- 1:Nit
+  }
+  else {
+    it_retained <- round(seq(1, Nit, length.out = thinning_to))
+  }
+  return(it_retained)
+}
