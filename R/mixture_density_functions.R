@@ -1,10 +1,10 @@
 pmix_vec_loop <-
-  function(xs,
+  function(qs,
              locations_list,
              scales_list,
              weights_list,
              distr.k) {
-    additive_mix_vec_loop(xs, locations_list, scales_list, weights_list, distr.k, pk)
+    additive_mix_vec_loop(qs, locations_list, scales_list, weights_list, distr.k, pk)
   }
 
 dmix_vec_loop <-
@@ -61,8 +61,8 @@ mixdistfun <-
 dmix <- function(xs, locations, scales, weights, distr.k) {
   mixdistfun(xs, locations, scales, weights, distr.k, dk)
 }
-pmix <- function(xs, locations, scales, weights, distr.k) {
-  mixdistfun(xs, locations, scales, weights, distr.k, pk)
+pmix <- function(qs, locations, scales, weights, distr.k) {
+  mixdistfun(qs, locations, scales, weights, distr.k, pk)
 }
 
 mixdistfun_cens <-
@@ -95,4 +95,8 @@ dmixcens <- function(xlefts,
                      weights,
                      distr.k) {
   mixdistfun_cens(xlefts, xrights, c_code_filters, locations, scales, weights, distr.k, dkcens2)
+}
+
+qmix = function(xs, locations, scales, weights, distr.k){
+
 }

@@ -3,7 +3,7 @@
 #' @import compiler
 
 get_CDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
-  pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
+  pmix_vec_loop(qs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
 get_PDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
   dmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
@@ -11,7 +11,7 @@ get_PDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 
 get_CDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
   fit$sigmas_filled = fill_sigmas(fit)
-  pmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
+  pmix_vec_loop(qs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
 }
 get_PDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
   fit$sigmas_filled = fill_sigmas(fit)

@@ -44,6 +44,6 @@ test_that("The vectorised mixture pdf calculation coincides with pmixnorm", {
   outttest <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
   outttest$sigmas_filled = fill_sigmas(outttest)
   ref = pmixnorm_vec_loop(xs = xs, means_list = outttest$means, sigmas_list = outttest$sigmas_filled, weights_list = outttest$weights)
-  res = pmix_vec_loop(xs = xs, locations_list = outttest$means, scales_list = outttest$sigmas_filled, weights_list = outttest$weights, distr.k = 1)
+  res = pmix_vec_loop(qs = xs, locations_list = outttest$means, scales_list = outttest$sigmas_filled, weights_list = outttest$weights, distr.k = 1)
   expect_equal(res, ref)
 })

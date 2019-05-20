@@ -1,7 +1,7 @@
 test_that("mixture density functions work", {
   expect_equal(
     pmix_vec_loop(
-      xs = c(0.1, 0.2),
+      qs = c(0.1, 0.2),
       locations_list = list(c(0, 0)),
       scales_list = list(c(1, 1)),
       weights_list = list(c(0.5, 0.5)),
