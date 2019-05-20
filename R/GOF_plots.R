@@ -36,7 +36,8 @@ get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)
     scales_list = fit$sigmas[it_retained],
     weights_list = fit$weights[it_retained],
     distr.k = fit$distr.k
-  )}
+  )
+}
 
 #' Plot the empirical and fitted CDF for non censored data.
 #'
@@ -216,6 +217,17 @@ pp_plot_censored <- function(fit) {
     ylab("Empirical percentiles (Turnbull)")
 }
 
+# min_greater_than_0 = function(x) min(x[x>0])
+which_min_greater_than_0 <- function(x) which.min(ifelse(test = x < 0, yes = Inf, no = x))
+
+compute_quantiles_from_Turnbull_estimate <- function(Survival_object) {
+  cdf <- 1 - Survival_object$surv
+  grid <- Survival_object$time
+  ndat = length(grid)
+  percentiles_to_compute <- 1:ndat / (ndat + 1)
+  return(sapply(percentiles_to_compute, function(p) grid[which_min_greater_than_0(cdf - p)]))
+}
+
 #' Plot the quantile-quantile graph for censored data.
 #'
 #' @inheritParams plotGOF
@@ -226,10 +238,11 @@ pp_plot_censored <- function(fit) {
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::qq_plot_censored(out)
 qq_plot_censored <- function(fit, thinning_to = 500) {
-  Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
-  estimated_data <- sort(Survival_object$time)
+  # Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
+  # estimated_data <- sort(Survival_object$time)
+  Turnbull_quantiles <- compute_quantiles_from_Turnbull_estimate(survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1))
 
-  ndat <- length(estimated_data)
+  ndat <- length(Turnbull_quantiles)
   percentiles_to_compute <- 1:ndat / (ndat + 1)
 
   if (is_semiparametric(fit)) {
@@ -238,7 +251,7 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
   else {
     theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
-  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = estimated_data), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes(x = x, y = y)) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
