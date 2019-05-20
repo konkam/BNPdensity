@@ -4,7 +4,7 @@
 \alias{convert_to_mcmc}
 \title{Convert the output of multMixNRMI into a coda mcmc object}
 \usage{
-convert_to_mcmc(fitlist)
+convert_to_mcmc(fitlist, thinning_to = 1000)
 }
 \arguments{
 \item{fitlist}{Output of multMixNRMI.}
