@@ -2,20 +2,27 @@
 #' @import ggplot2
 #' @import compiler
 
-get_CDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
+get_CDF_full_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
   pmix_vec_loop(qs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
-get_PDF_full_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
+get_PDF_full_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
   dmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
+get_quantiles_full_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)) {
+  qmix_vec_loop(ps = ps, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
+}
 
-get_CDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
-  fit$sigmas_filled = fill_sigmas(fit)
+get_CDF_semi_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
+  fit$sigmas_filled <- fill_sigmas(fit)
   pmix_vec_loop(qs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
 }
-get_PDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
-  fit$sigmas_filled = fill_sigmas(fit)
+get_PDF_semi_BNPdensity <- function(fit, xs = seq(-5, 5, length.out = 100)) {
+  fit$sigmas_filled <- fill_sigmas(fit)
   dmix_vec_loop(xs = xs, locations_list = fit$means, scales_list = fit$sigmas_filled, weights_list = fit$weights, distr.k = fit$distr.k)
+}
+get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)) {
+  fit$sigmas_filled <- fill_sigmas(fit)
+  qmix_vec_loop(ps = ps, locations_list = fit$means, scales_list = fit$sigmas, weights_list = fit$weights, distr.k = fit$distr.k)
 }
 
 #' Plot the empirical and fitted CDF for non censored data.
@@ -27,20 +34,19 @@ get_PDF_semi_BNPdensity = function(fit, xs = seq(-5,5, length.out = 100)){
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE)
 #' BNPdensity:::plotCDF_noncensored(out)
-plotCDF_noncensored = function(fit){
+plotCDF_noncensored <- function(fit) {
+  data <- fit$data
 
-  data = fit$data
+  grid <- grid_from_data(data)
 
-  grid = grid_from_data(data)
-
-  if(is_semiparametric(fit)){
-    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = grid)
+  if (is_semiparametric(fit)) {
+    cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = grid)
   }
-  else{
-    cdf = get_CDF_full_BNPdensity(fit = fit, xs = grid)
+  else {
+    cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
-    geom_line(colour= 'red') +
+    geom_line(colour = "red") +
     theme_classic() +
     stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step") +
     xlab("Data")
@@ -55,24 +61,23 @@ plotCDF_noncensored = function(fit){
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotCDF_censored(out)
-plotCDF_censored = function(fit){
+plotCDF_censored <- function(fit) {
+  data <- fit$data
 
-  data = fit$data
+  grid <- grid_from_data(data)
 
-  grid = grid_from_data(data)
+  Survival_object <- survival::survfit(formula = survival::Surv(data$left, data$right, type = "interval2") ~ 1)
 
-  Survival_object = survival::survfit(formula = survival::Surv(data$left, data$right, type='interval2') ~ 1)
-
-  if(is_semiparametric(fit)){
-    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = grid)
+  if (is_semiparametric(fit)) {
+    cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = grid)
   }
-  else{
-    cdf = get_CDF_full_BNPdensity(fit = fit, xs = grid)
+  else {
+    cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
-    geom_line(colour= 'red') +
+    geom_line(colour = "red") +
     theme_classic() +
-    geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1-Survival_object$surv, 1)), aes(x = x, y = y)) +
+    geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes(x = x, y = y)) +
     xlab("Data")
 }
 
@@ -85,8 +90,8 @@ plotCDF_censored = function(fit){
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotPDF_noncensored(out)
-plotPDF_noncensored = function(fit){
-  p = plotPDF_censored(fit)
+plotPDF_noncensored <- function(fit) {
+  p <- plotPDF_censored(fit)
   p$layers <- c(geom_histogram(data = data.frame(data = fit$data), aes(y = ..density..)), p$layers)
   return(p)
 }
@@ -100,18 +105,17 @@ plotPDF_noncensored = function(fit){
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotPDF_censored(out)
-plotPDF_censored = function(fit){
+plotPDF_censored <- function(fit) {
+  grid <- grid_from_data(fit$data)
 
-  grid = grid_from_data(fit$data)
-
-  if(is_semiparametric(fit)){
-    pdf = get_PDF_semi_BNPdensity(fit = fit, xs = grid)
+  if (is_semiparametric(fit)) {
+    pdf <- get_PDF_semi_BNPdensity(fit = fit, xs = grid)
   }
-  else{
-    pdf = get_PDF_full_BNPdensity(fit = fit, xs = grid)
+  else {
+    pdf <- get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes(x = data, y = PDF)) +
-    geom_line(colour = 'red') +
+    geom_line(colour = "red") +
     theme_classic() +
     xlab("Data")
 }
@@ -126,25 +130,53 @@ plotPDF_censored = function(fit){
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' BNPdensity:::pp_plot_noncensored(out)
-pp_plot_noncensored = function(fit){
+pp_plot_noncensored <- function(fit) {
+  data <- fit$data
 
-  data = fit$data
-
-  if(is_semiparametric(fit)){
-    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = data)
+  if (is_semiparametric(fit)) {
+    cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = data)
   }
-  else{
-    cdf = get_CDF_full_BNPdensity(fit = fit, xs = data)
+  else {
+    cdf <- get_CDF_full_BNPdensity(fit = fit, xs = data)
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes(x = x, y = y)) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour= 'red') +
+    geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
-    xlab("Theoretical cumulative distribution") +
-    ylab("Empirical cumulative distribution (Turnbull estimate)")
+    xlab("Theoretical percentiles") +
+    ylab("Empirical percentiles")
 }
 
-#' Plot the percentile-percentile graph for censored data, using the Turnbull estimator for the empirical cumulative distribution function.
+#' Plot the quantile-quantile graph for non censored data.
+#'
+#' @inheritParams plotCDF_noncensored
+#' @return quantile-quantile plot for non censored data.
+#' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
+#' @examples
+#' set.seed(150520)
+#' data(acidity)
+#' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
+#' BNPdensity:::qq_plot_noncensored(out)
+qq_plot_noncensored <- function(fit) {
+  data <- sort(fit$data)
+  ndat <- length(data)
+  percentiles_to_compute <- 1:ndat / (ndat + 1)
+
+  if (is_semiparametric(fit)) {
+    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute)
+  }
+  else {
+    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute)
+  }
+  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes(x = x, y = y)) +
+    geom_point() +
+    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    theme_classic() +
+    xlab("Theoretical quantiles") +
+    ylab("Empirical quantiles")
+}
+
+#' Plot the quantile-quantile graph for non censored data, using the Turnbull estimator the position of the quantiles.
 #'
 #' @inheritParams plotCDF_censored
 #' @return Percentile-percentile graph using the Turnbull estimator
@@ -153,23 +185,53 @@ pp_plot_noncensored = function(fit){
 #' data(salinity)
 #' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::pp_plot_censored(out)
-pp_plot_censored = function(fit){
+pp_plot_censored <- function(fit) {
+  Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
+  estimated_data <- Survival_object$time
 
-  Survival_object = survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type='interval2') ~ 1)
-  estimated_data = Survival_object$time
-
-  if(is_semiparametric(fit)){
-    cdf = get_CDF_semi_BNPdensity(fit = fit, xs = estimated_data)
+  if (is_semiparametric(fit)) {
+    cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = estimated_data)
   }
-  else{
-    cdf = get_CDF_full_BNPdensity(fit = fit, xs = estimated_data)
+  else {
+    cdf <- get_CDF_full_BNPdensity(fit = fit, xs = estimated_data)
   }
-  ggplot2::ggplot(data = data.frame(x = cdf, y = 1-Survival_object$surv), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes(x = x, y = y)) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour= 'red') +
+    geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
-    xlab("Theoretical cumulative distribution") +
-    ylab("Empirical cumulative distribution")
+    xlab("Theoretical percentiles") +
+    ylab("Empirical percentiles (Turnbull)")
+}
+
+#' Plot the quantile-quantile graph for censored data.
+#'
+#' @inheritParams plotCDF_noncensored
+#' @return quantile-quantile plot for non censored data.
+#' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
+#' set.seed(150520)
+#' data(salinity)
+#' out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
+#' BNPdensity:::qq_plot_censored(out)
+qq_plot_censored <- function(fit) {
+
+  Survival_object <- survival::survfit(formula = survival::Surv(fit$data$left, fit$data$right, type = "interval2") ~ 1)
+  estimated_data <- sort(Survival_object$time)
+
+  ndat <- length(estimated_data)
+  percentiles_to_compute <- 1:ndat / (ndat + 1)
+
+  if (is_semiparametric(fit)) {
+    theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute)
+  }
+  else {
+    theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute)
+  }
+  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = estimated_data), aes(x = x, y = y)) +
+    geom_point() +
+    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    theme_classic() +
+    xlab("Theoretical quantiles") +
+    ylab("Empirical quantiles (Turnbull)")
 }
 
 #' Plot Goodness of fits graphical checks for non censored data
@@ -182,12 +244,17 @@ pp_plot_censored = function(fit){
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotGOF_noncensored(out)
-plotGOF_noncensored = function(fit){
-
-  CDFplot = plotCDF_noncensored(fit)
-  PDFplot = plotPDF_noncensored(fit)
-  pplot = pp_plot_noncensored(fit)
-  gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+plotGOF_noncensored <- function(fit, qq_plot = FALSE) {
+  CDFplot <- plotCDF_noncensored(fit)
+  PDFplot <- plotPDF_noncensored(fit)
+  pplot <- pp_plot_noncensored(fit)
+  if(qq_plot){
+    qqplot = qq_plot_noncensored(fit)
+    gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
+  }
+  else{
+    gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+  }
 }
 
 #' Plot Goodness of fits graphical checks for censored data
@@ -200,12 +267,17 @@ plotGOF_noncensored = function(fit){
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' BNPdensity:::plotGOF_censored(out)
-plotGOF_censored = function(fit){
-
-  CDFplot = plotCDF_censored(fit)
-  PDFplot = plotPDF_censored(fit)
-  pplot = pp_plot_censored(fit)
-  gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+plotGOF_censored <- function(fit, qq_plot = FALSE) {
+  CDFplot <- plotCDF_censored(fit)
+  PDFplot <- plotPDF_censored(fit)
+  pplot <- pp_plot_censored(fit)
+  if(qq_plot){
+    qqplot = qq_plot_censored(fit)
+    gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
+  }
+  else{
+    gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
+  }
 }
 
 #' Plot Goodness of fits graphical checks for censored data
@@ -220,11 +292,11 @@ plotGOF_censored = function(fit){
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 #' plotGOF(out)
-plotGOF = function(fit){
-  if(is_censored(fit$data)){
+plotGOF <- function(fit) {
+  if (is_censored(fit$data)) {
     plotGOF_censored(fit)
   }
-  else{
+  else {
     plotGOF_noncensored(fit)
   }
 }
