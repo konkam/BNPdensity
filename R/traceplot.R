@@ -2,10 +2,9 @@
 #'
 #' @inherit convert_to_mcmc
 #'
-#' @returna A traceplot for multiple chains.
+#' @return A traceplot for multiple chains.
 #' @export
 #'
-#' @examples
 traceplot <- function(fitlist) {
   mcmc_object <- convert_to_mcmc(fitlist)
   to_plot <- tidyr::gather(
