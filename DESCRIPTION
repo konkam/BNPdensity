@@ -26,3 +26,6 @@ Imports:
   ggplot2,
     gridExtra,
     survival
+Suggests: 
+  mcclust.ext,
+    mcclust
