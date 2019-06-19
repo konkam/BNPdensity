@@ -8,7 +8,7 @@ multMixNRMI1cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
   Alpha = 1, Beta = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1,
   asigma = 0.5, bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01,
   Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
-  printtime = TRUE, extras = FALSE, nchains = 4, parallel = TRUE,
+  printtime = TRUE, extras = TRUE, nchains = 4, parallel = TRUE,
   seed = 1)
 }
 \arguments{

@@ -33,7 +33,7 @@
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE,
+                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, seed = 1) {
   parallel::mclapply(
     X = 1:nchains,
@@ -85,7 +85,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
-                         Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE,
+                         Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = FALSE, seed = 1) {
   parallel::mclapply(
     X = 1:nchains,
@@ -118,7 +118,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE,
+                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, seed = 1) {
   parallel::mclapply(
     X = 1:nchains,
@@ -151,7 +151,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
-                             printtime = TRUE, extras = FALSE,
+                             printtime = TRUE, extras = TRUE,
                              nchains = 4, parallel = TRUE, seed = 1) {
   parallel::mclapply(
     X = 1:nchains,
