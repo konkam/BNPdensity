@@ -26,6 +26,7 @@ Imports:
   ggplot2,
     gridExtra,
     survival
-Suggests: 
+Suggests:
   mcclust.ext,
-    mcclust
+    mcclust,
+    viridis

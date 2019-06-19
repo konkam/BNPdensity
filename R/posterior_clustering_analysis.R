@@ -1,4 +1,15 @@
-compute_optimal_clustering <- function(fit, silent = FALSE, loss_function = "VI") {
+#' Compute the optimal clustering from an MCMC sample
+#'
+#' Summarises the posterior on all possible clusterings by an optimal clustering where optimality is defined as minimising the posterior expectation of a specific loss function, the Variation of Information or Binder's loss function.
+#' Computation can be lengthy for large datasets, because of the large size of the space of all clusterings.
+#'
+#' @param fit The fitted object, obtained from one of the MixNRMIx functions
+#' @param loss_function Choice of the loss function. Can be "VI" or "Binder"
+#' @param silent Whether to silence the warning message about the length of the calculation.
+#'
+#' @return A vector of integers with the same size as the data, indicating the allocation of each data point.
+#' @export
+compute_optimal_clustering <- function(fit, loss_function = "VI", silent = FALSE) {
   if (!requireNamespace("mcclust.ext", quietly = TRUE)) {
     stop("Package mcclust.ext is needed for this function to work. Please install it.",
       call. = FALSE
@@ -93,5 +104,25 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
   }
   else {
     return(p)
+  }
+}
+
+#' Plot the clustering and the Cumulative Distribution Function
+#'
+#' This is a function to visualise the clustering induced by the BNP model. The data points are plotted with a color reflecting their cluster.
+#'
+#' @param fit The fitted object, obtained from one of the MixNRMIx functions
+#' @param clustering A vector of integers with the same length as the data, representing the allocation variable for data each point.
+#' @param label_vector A vector of data labels to be plotted, to provide some identification to each point.
+#'
+#' @return A plot of the Cumulative Distribution Function (or Turnbull estimate for censored data) with data points whose colour denotes the cluster allocation. For censored data, right or left censored data points are not represented, while interval censored data points are represented at the middle of the censoring interval.
+#' @export
+#'
+plot_clustering_and_CDF <- function(fit, clustering, label_vector = NULL){
+  if (is_censored(fit$data)) {
+    plot_clustering_and_CDF_censored(fit, clustering, label_vector = label_vector)
+  }
+  else {
+    plot_clustering_and_CDF_noncensored(fit, clustering, label_vector = label_vector)
   }
 }

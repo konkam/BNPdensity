@@ -10,7 +10,7 @@ traceplot(fitlist)
 \item{fitlist}{Output of multMixNRMI.}
 }
 \value{
-a coda::mcmc object
+A traceplot for multiple chains.
 }
 \description{
 Draw a traceplot for multiple chains
