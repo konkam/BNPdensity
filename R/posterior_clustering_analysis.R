@@ -25,8 +25,13 @@ compute_optimal_clustering <- function(fit, loss_function = "VI", silent = FALSE
 
   fit.draw <- Reduce(rbind, fit$Allocs)
   psm <- mcclust::comp.psm(fit.draw)
-  fit_VI <- mcclust.ext::minVI(psm, fit.draw, method = ("greedy"))
-  return(fit_VI$cl)
+  if (loss_function == "VI") {
+    fit_VI <- mcclust.ext::minVI(psm, fit.draw, method = ("greedy"))
+    return(fit_VI$cl)
+  }
+  else {
+    return(mcclust::minbinder(psm$cl))
+  }
 }
 
 # clustering = compute_optimal_clustering(out)
@@ -118,7 +123,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
 #' @return A plot of the Cumulative Distribution Function (or Turnbull estimate for censored data) with data points whose colour denotes the cluster allocation. For censored data, right or left censored data points are not represented, while interval censored data points are represented at the middle of the censoring interval.
 #' @export
 #'
-plot_clustering_and_CDF <- function(fit, clustering, label_vector = NULL){
+plot_clustering_and_CDF <- function(fit, clustering, label_vector = NULL) {
   if (is_censored(fit$data)) {
     plot_clustering_and_CDF_censored(fit, clustering, label_vector = label_vector)
   }
