@@ -95,7 +95,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid[!is.na(grid)])
   }
-  ggplot2::ggplot(data = data.frame(data = grid[!is.na(grid)], CDF = cdf, cluster_id = clustering[!is.na(grid)]), aes(x = data, y = CDF)) +
+  p = ggplot2::ggplot(data = data.frame(data = grid[!is.na(grid)], CDF = cdf, cluster_id = clustering[!is.na(grid)]), aes(x = data, y = CDF)) +
     geom_point(aes(colour = factor(cluster_id))) +
     theme_classic() +
     geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes(x = x, y = y)) +
