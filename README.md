@@ -2,6 +2,14 @@
 
 A fork of the BNPdensity package from CRAN (https://cran.r-project.org/web/packages/BNPdensity/index.html)
 
+## How to use this fork instead of the CRAN version:
+
+You will need to have the CRAN package `devtools` installed and run the following command:
+
+```
+devtools::install_github("konkam/BNPdensity")
+```
+
 ## How to use the convergence diagnostics
 
 We rely on the convergence diagnostics included in the package `coda` by Martyn Plummer. We only convert the output of multiple chains into an mcmc.object.
