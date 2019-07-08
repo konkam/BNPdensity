@@ -167,10 +167,12 @@ pp_plot_noncensored <- function(fit) {
 #' @return quantile-quantile plot for non censored data.
 #' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' @examples
-#' set.seed(150520)
-#' data(acidity)
-#' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' BNPdensity:::qq_plot_noncensored(out)
+#'
+#' ### Not run
+#' # set.seed(150520)
+#' # data(acidity)
+#' # out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
+#' # BNPdensity:::qq_plot_noncensored(out)
 qq_plot_noncensored <- function(fit, thinning_to = 500) {
   data <- sort(fit$data)
   ndat <- length(data)
