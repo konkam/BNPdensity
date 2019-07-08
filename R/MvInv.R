@@ -8,11 +8,12 @@ MvInv <-
     h <- (f[-1] + f[-N]) / 2
     Mv <- c(rev(cumsum(rev(dx[-N] * h[-N]))), 0)
 
-    M <- round(thresholdGG(
+    M <- ceiling(thresholdGG(
       alpha = alpha,
       kappa = beta + u,
       gama = gama
     )) # upper bound defined via the grid
+    M = max(10, M) # We wish to make sure we at least use a few jumps
     W <- rexp(n = M)
     W <- cumsum(W)
     # x_which_min = function(w){ # I guess that this function could be defined outside of MvInV
