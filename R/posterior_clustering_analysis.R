@@ -4,34 +4,20 @@
 #' Computation can be lengthy for large datasets, because of the large size of the space of all clusterings.
 #'
 #' @param fit The fitted object, obtained from one of the MixNRMIx functions
-#' @param loss_function Choice of the loss function. Can be "VI" or "Binder"
-#' @param silent Whether to silence the warning message about the length of the calculation.
+#' @param loss_type Defines the loss function to be used in the expected posterior loss minimisation. Can be one of "VI" (Variation of Information), "B" (Binder's loss), "NVI" (Normalised Variation of Information) or "NID" (Normalised Information Distance). Defaults to "VI".
 #'
 #' @return A vector of integers with the same size as the data, indicating the allocation of each data point.
 #' @export
-compute_optimal_clustering <- function(fit, loss_function = "VI", silent = FALSE) {
-  if (!requireNamespace("mcclust.ext", quietly = TRUE)) {
-    stop("Package mcclust.ext is needed for this function to work. Please install it.",
+compute_optimal_clustering <- function(fit, loss_type = "VI") {
+  if (!requireNamespace("GreedyEPL", quietly = TRUE)) {
+    stop("Package GreedyEPL is needed for this function to work. Please install it.",
       call. = FALSE
     )
   }
-  if (!requireNamespace("mcclust", quietly = TRUE)) {
-    stop("Package mcclust is needed for this function to work. Please install it.",
-      call. = FALSE
-    )
-  }
-
-  if (!silent) print("Estimating the optimal clustering minimising the expected VI loss is time consuming, please have a little patience. For a faster result, you may use Binder's loss function instead.")
 
   fit.draw <- Reduce(rbind, fit$Allocs)
-  psm <- mcclust::comp.psm(fit.draw)
-  if (loss_function == "VI") {
-    fit_VI <- mcclust.ext::minVI(psm, fit.draw, method = ("greedy"))
-    return(fit_VI$cl)
-  }
-  else {
-    return(mcclust::minbinder(psm$cl))
-  }
+  fit_VI <- GreedyEPL::MinimiseEPL(sample_of_partitions = fit.draw, pars = list("loss_type" = loss_type))
+  return(fit_VI$decision)
 }
 
 # clustering = compute_optimal_clustering(out)
@@ -95,7 +81,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid[!is.na(grid)])
   }
-  p = ggplot2::ggplot(data = data.frame(data = grid[!is.na(grid)], CDF = cdf, cluster_id = clustering[!is.na(grid)]), aes(x = data, y = CDF)) +
+  p <- ggplot2::ggplot(data = data.frame(data = grid[!is.na(grid)], CDF = cdf, cluster_id = clustering[!is.na(grid)]), aes(x = data, y = CDF)) +
     geom_point(aes(colour = factor(cluster_id))) +
     theme_classic() +
     geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes(x = x, y = y)) +
