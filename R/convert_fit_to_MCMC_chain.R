@@ -71,6 +71,7 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000) {
 #' Convert the output of multMixNRMI into a coda mcmc object
 #'
 #' @param fitlist Output of multMixNRMI.
+#' @param thinning_to Final length of the chain after thinning.
 #'
 #' @return a coda::mcmc object
 #' @export
