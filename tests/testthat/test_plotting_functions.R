@@ -1,4 +1,5 @@
 test_that("Plotting function for non censored data do not produce errors", {
+  pdf(file = tempfile(pattern = "file", tmpdir = tempdir(), fileext = ""))
   data(acidity)
   outttest <- MixNRMI1(acidity, Nit = 5, extras = TRUE)
   p = plotCDF_noncensored(outttest)
@@ -31,9 +32,11 @@ test_that("Plotting function for non censored data do not produce errors", {
   expect_output(str(p), "List of 9")
   p = plotGOF(outttest3)
   expect_output(str(p), "gtable")
+  dev.off()
 })
 
 test_that("Plotting function for censored data do not produce errors", {
+  pdf(file = tempfile(pattern = "file", tmpdir = tempdir(), fileext = ""))
   data(salinity)
   outttest <- MixNRMI1cens(salinity$left, salinity$right, Nit = 5, extras = TRUE)
   p = plotCDF_censored(outttest)
@@ -44,6 +47,7 @@ test_that("Plotting function for censored data do not produce errors", {
   expect_output(str(p), "List of 9")
   p = plotGOF(outttest)
   expect_output(str(p), "gtable")
+  dev.off()
 })
 
 test_that("The vectorised mixture pdf calculation coincides with pmixnorm", {
