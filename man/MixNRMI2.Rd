@@ -10,10 +10,10 @@
 }
 
 \usage{
-MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
-    Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3, 
-    sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01, 
-    Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE) 
+MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+    Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
+    sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
+    Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
 }
 
 \arguments{
@@ -85,7 +85,7 @@ By default \code{epsilon=sd(x)/4}.
     \item{sigmas}{Numeric vector of \code{length(Nit*(1-Pbi))} with the cluster standard deviations. Only if extras = TRUE.}
     \item{weights}{List of \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
     \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only if extras = TRUE.}
-    \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
+    \item{Nm}{Integer constant. Number of jumps of the continuous component of the
             unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
         density estimate.}
@@ -134,7 +134,7 @@ detach()
 # set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-#  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5, 
+#  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5,
 #                          distr.k = 2, distr.py0 = 2,
 #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
@@ -174,7 +174,7 @@ detach()
 # set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-#  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5, 
+#  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5,
 #                          distr.k = 1, distr.py0 = 2,
 #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
