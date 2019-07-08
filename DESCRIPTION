@@ -1,11 +1,11 @@
 Package: BNPdensity
 Type: Package
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random Measures
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
   person("Julyan", "Arbel", role = c("ctb")),
   person("Ernesto", "Barrios", role = c("aut", "cre"), email = "ebarrios@itam.mx"),
-  person("Guillaume", "Kon Kam King", role = "ctb", email = "guillaume.konkamking.work@gmail.com")
+  person("Guillaume", "Kon Kam King", role = "ctb", email = "guillaume.konkamking.work@gmail.com"),
   person("Antonio", "Lijoi", role = "aut"),
   person("Luis E.", "Nieto-Barajas", role = "aut"),
   person("Igor", "Prünster", role = "aut")
@@ -30,8 +30,8 @@ Imports:
     survival,
     coda,
     dplyr,
-    tidyr
-Suggests:
-  mcclust.ext,
-    mcclust,
+    tidyr,
     viridis
+Suggests:
+  GreedyEPL,
+  testthat
