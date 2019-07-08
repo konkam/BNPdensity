@@ -4,14 +4,12 @@
 \alias{compute_optimal_clustering}
 \title{Compute the optimal clustering from an MCMC sample}
 \usage{
-compute_optimal_clustering(fit, loss_function = "VI", silent = FALSE)
+compute_optimal_clustering(fit, loss_type = "VI")
 }
 \arguments{
 \item{fit}{The fitted object, obtained from one of the MixNRMIx functions}
 
-\item{loss_function}{Choice of the loss function. Can be "VI" or "Binder"}
-
-\item{silent}{Whether to silence the warning message about the length of the calculation.}
+\item{loss_type}{Defines the loss function to be used in the expected posterior loss minimisation. Can be one of "VI" (Variation of Information), "B" (Binder's loss), "NVI" (Normalised Variation of Information) or "NID" (Normalised Information Distance). Defaults to "VI".}
 }
 \value{
 A vector of integers with the same size as the data, indicating the allocation of each data point.
