@@ -10,10 +10,10 @@
 }
 
 \usage{
-MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0, 
-    Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5, 
-    delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500, 
-    Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = FALSE) 
+MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+    Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
+    delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
+    Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
 }
 
 \arguments{
@@ -90,7 +90,7 @@ By default \code{epsilon=sd(x)/4}.
     \item{means}{List of \code{length(Nit*(1-Pbi))} with the cluster means (locations). Only if extras = TRUE.}
     \item{weights}{List of \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
     \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only if extras = TRUE.}
-    \item{Nm}{Integer constant. Number of jumps of the continuous component of the 
+    \item{Nm}{Integer constant. Number of jumps of the continuous component of the
           unnormalized process.}
     \item{Nx}{Integer constant. Number of grid points for the evaluation of the
         density estimate.}
@@ -139,8 +139,8 @@ detach()
 # set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5,  
-#                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005, 
+# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5,
+#                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
@@ -182,8 +182,8 @@ detach()
 # set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-#  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5, 
-#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005, 
+#  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5,
+#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 
 # The output of this run is already loaded in the package

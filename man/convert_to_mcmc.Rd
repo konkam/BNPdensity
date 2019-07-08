@@ -8,6 +8,8 @@ convert_to_mcmc(fitlist, thinning_to = 1000)
 }
 \arguments{
 \item{fitlist}{Output of multMixNRMI.}
+
+\item{thinning_to}{Final length of the chain after thinning.}
 }
 \value{
 a coda::mcmc object

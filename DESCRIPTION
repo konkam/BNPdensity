@@ -1,13 +1,14 @@
 Package: BNPdensity
 Type: Package
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random Measures
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
+  person("Julyan", "Arbel", role = c("ctb")),
   person("Ernesto", "Barrios", role = c("aut", "cre"), email = "ebarrios@itam.mx"),
+  person("Guillaume", "Kon Kam King", role = "ctb", email = "guillaume.konkamking.work@gmail.com"),
   person("Antonio", "Lijoi", role = "aut"),
   person("Luis E.", "Nieto-Barajas", role = "aut"),
-  person("Igor", "Prünster", role = "aut"),
-  person("Guillaume", "Kon Kam King", role = "ctb")
+  person("Igor", "Prünster", role = "aut")
   )
 Description: Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
 License: GPL (>= 2)
@@ -16,17 +17,21 @@ LazyData: yes
 ByteCompile: yes
 RoxygenNote: 6.1.1
 Depends: R(>= 3.3.0)
-Author: Ernesto Barrios [aut, cre],
+Author: Julyan Arbel [ctb],
+  Ernesto Barrios [aut, cre],
+  Guillaume Kon Kam King [ctb],
   Antonio Lijoi [aut],
   Luis E. Nieto-Barajas [aut],
-  Igor Prünster [aut],
-  Guillaume Kon Kam King [ctb]
-Maintainer: Ernesto Barrios <ebarrios@itam.mx>
+  Igor Prünster [aut]
+Maintainer: Guillaume KON KAM KING <guillaume.konkamking.work@gmail.com>
 Imports:
   ggplot2,
     gridExtra,
-    survival
-Suggests:
-  mcclust.ext,
-    mcclust,
+    survival,
+    coda,
+    dplyr,
+    tidyr,
     viridis
+Suggests:
+  GreedyEPL,
+  testthat

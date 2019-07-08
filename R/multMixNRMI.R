@@ -22,19 +22,19 @@
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param seed Random seed for the run. Each chain has an independent seed based on the value of `seed`
-
+#' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
 #'
 #' @return a list containing the multiple fits.
 #' @export
 #'
 #' @examples
 #' data(acidity)
-#' MultMixNRMI1(acidity, parallel = TRUE, Nit = 100)
+#' multMixNRMI1(acidity, parallel = TRUE, Nit = 100, ncores = 2)
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = TRUE, seed = 1) {
+                         nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -45,9 +45,10 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         delta, Delta, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
+    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
 }
+
 
 
 #' Multiple chains of MixNRMI2
@@ -58,7 +59,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 #' @param Beta Numeric positive constant. See details.
 #' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
 #' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.py0	Integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
 #' @param distr.pz0 Integer number identifying the centering measure for scales: 2 = Gamma. For more options use MixNRMI2cens.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for scales.
 #' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering measure for scales.
@@ -75,18 +76,19 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param seed Random seed for the run. Each chain has an independent seed based on the value of `seed`
+#' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
 #'
 #' @return a list containing the multiple fits.
 #' @export
 #'
 #' @examples
 #' data(acidity)
-#' MultMixNRMI2(acidity, parallel = TRUE, Nit = 100, extras = TRUE)
+#' multMixNRMI2(acidity, parallel = TRUE, Nit = 100, ncores = 2)
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
                          Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = FALSE, seed = 1) {
+                         nchains = 4, parallel = FALSE, seed = 1, ncores = parallel::detectCores()) {
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -97,7 +99,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         sigma.pz0, delta, kappa, Delta, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
+    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
 }
 
@@ -114,12 +116,12 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 #'
 #' @examples
 #' data(salinity)
-#' MultMixNRMI1(salinity$left, salinity$right, parallel = TRUE, Nit = 100)
+#' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 100, ncores = 2)
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = TRUE, seed = 1) {
+                         nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -130,7 +132,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
         delta, Delta, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
+    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
 }
 
@@ -146,13 +148,13 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #'
 #' @examples
 #' data(salinity)
-#' MultMixNRMI1(salinity$left, salinity$right, parallel = TRUE, Nit = 100)
+#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 100, ncores = 2)
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
                              printtime = TRUE, extras = TRUE,
-                             nchains = 4, parallel = TRUE, seed = 1) {
+                             nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -163,6 +165,6 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
         sigma.pz0, delta, kappa, Delta, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
+    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
 }
