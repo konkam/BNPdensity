@@ -46,7 +46,7 @@ get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)
 #' @examples
 #' set.seed(150520)
 #' data(acidity)
-#' out <- MixNRMI1(acidity, extras = TRUE)
+#' out <- MixNRMI1(acidity, extras = TRUE, Nit = 10)
 #' BNPdensity:::plotCDF_noncensored(out)
 plotCDF_noncensored <- function(fit) {
   data <- fit$data
