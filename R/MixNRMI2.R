@@ -1,6 +1,6 @@
 #' @export
 MixNRMI2 <-
-function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
     sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
     Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
@@ -46,9 +46,9 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         idx <- tt$idx
         Allocs[[max(1, j - 1)]] <- idx
         if (Gama != 0)
-            u <- gs3(u, n = n, r = rstar, alpha = Alpha, beta = Beta,
+            u <- gs3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa,
                 gama = Gama, delta = Delta)
-        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Beta,
+        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Kappa,
             gama = Gama, N = 50001)
         Nm <- length(JiC)
         TauyC <- rk(Nm, distr = distr.py0, mu = mu.py0, sigma = sigma.py0)
@@ -62,7 +62,7 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         tt <- gsHP(ystar, rstar, distr.py0)
         mu.py0 <- tt$mu.py0
         sigma.py0 <- tt$sigma.py0
-        Jstar <- rgamma(rstar, nstar - Gama, Beta + u)
+        Jstar <- rgamma(rstar, nstar - Gama, Kappa + u)
         Tauy <- c(TauyC, ystar)
         Tauz <- c(TauzC, zstar)
         J <- c(JiC, Jstar)

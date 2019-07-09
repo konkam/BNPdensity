@@ -10,7 +10,7 @@
 }
 
 \usage{
-MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
     delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
     Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
@@ -20,7 +20,7 @@ MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
   \item{x}{Numeric vector. Data set to which the density is fitted.}
   \item{probs}{Numeric vector. Desired quantiles of the density estimates.}
   \item{Alpha}{Numeric constant. Total mass of the centering measure. See details.}
-  \item{Beta}{Numeric positive constant. See details.}
+  \item{Kappa}{Numeric positive constant. See details.}
   \item{Gama}{Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <= 1}.
         See details.}
   \item{distr.k}{Integer number identifying the mixture kernel:
@@ -58,14 +58,14 @@ parameter sigma, leading to a semiparametric mixture model.
 The details of the model are:
 \deqn{X_i|Y_i,\sigma \sim k(\cdot |Y_i,\sigma)}{X_i|Y_i,sigma ~ k(.|Y_i,sigma)}
 \deqn{Y_i|P \sim P,\quad i=1,\dots,n}{Y_i|P ~ P,  i=1,...,n}
-\deqn{P \sim \textrm{NGG(\texttt{Alpha, Beta, Gama; P\_0})}}{P ~ NGG(Alpha, Beta, Gama; P_0)}
+\deqn{P \sim \textrm{NGG(\texttt{Alpha, Kappa, Gama; P\_0})}}{P ~ NGG(Alpha, Kappa, Gama; P_0)}
 \deqn{\sigma \sim \textrm{Gamma(asigma, bsigma)}}{sigma ~ Gamma(asigma, bsigma)}
 where \eqn{X_i}'s are the observed data, \eqn{Y_i}'s are latent (location)
 variables, \code{sigma} is the smoothing parameter, \code{k} is a parametric
 kernel parameterized in terms of mean and standard deviation,
-\code{(Alpha, Beta, Gama; P_0)} are the parameters of the
+\code{(Alpha, Kappa, Gama; P_0)} are the parameters of the
 NGG prior with \code{P_0} being the centering measure whose parameters are assigned vague hyper prior distributions, and \code{(asigma,bsigma)} are the hyper-parameters of the gamma prior on the smoothing parameter \code{sigma}. In particular: \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet
-process; \code{NGG(1, Beta, 1/2; P_0)} defines a Normalized inverse Gaussian
+process; \code{NGG(1, Kappa, 1/2; P_0)} defines a Normalized inverse Gaussian
 process; and \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process.
 
 The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) + epsilon}.
@@ -139,7 +139,7 @@ detach()
 # set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5,
+# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
 #                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
@@ -182,7 +182,7 @@ detach()
 # set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-#  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Beta = 0.015, Gama = 0.5,
+#  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
 #                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 

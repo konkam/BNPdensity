@@ -5,7 +5,7 @@
 \title{Multiple chains of MixNRMI2cens}
 \usage{
 multMixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
-  Alpha = 1, Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1,
+  Alpha = 1, Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1,
   distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4,
   kappa = 2, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
   Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
@@ -21,7 +21,7 @@ multMixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
 
 \item{Alpha}{Numeric constant. Total mass of the centering measure. See details.}
 
-\item{Beta}{Numeric positive constant. See details.}
+\item{Kappa}{Numeric positive constant. See details.}
 
 \item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
 
@@ -71,5 +71,5 @@ Multiple chains of MixNRMI2cens
 }
 \examples{
 data(salinity)
-multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
+\dontrun{ multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)}
 }

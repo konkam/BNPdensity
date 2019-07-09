@@ -5,8 +5,8 @@
 Fit of MixNRMI1 function to the enzyme dataset
 }
 \description{
-This object contains the output when setting set.seed(150520) and running the function 
-MixNRMI1(x, Alpha = 1, Beta = 0.007, Gama = 0.5, distr.k = 2, distr.p0 = 2, 
+This object contains the output when setting set.seed(150520) and running the function
+MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = 2, distr.p0 = 2,
   asigma = 1, bsigma = 1, Meps=0.001, Nit = 5000, Pbi = 0.2)
 }
 \usage{data(Enzyme1.out)}

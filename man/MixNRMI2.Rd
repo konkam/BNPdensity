@@ -10,7 +10,7 @@
 }
 
 \usage{
-MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
     sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
     Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
@@ -21,7 +21,7 @@ MixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
   \item{probs}{Numeric vector. Desired quantiles of the density estimates.}
   \item{Alpha}{Numeric constant. Total mass of the centering measure.
         See details.}
-  \item{Beta}{Numeric positive constant. See details.}
+  \item{Kappa}{Numeric positive constant. See details.}
   \item{Gama}{Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.
             See details.}
   \item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal;
@@ -60,11 +60,11 @@ mixture model.
 The details of the model are:
 \deqn{X_i|Y_i,Z_i \sim k(\cdot|Y_i,Z_i)}{X_i|Y_i,Z_i ~ k(.|Y_i,Z_i)}
 \deqn{(Y_i,Z_i)|P \sim P, i=1,\dots,n}{(Y_i,Z_i)|P ~ P,  i=1,...,n}
-\deqn{P \sim \textrm{NGG}(\texttt{Alpha, Beta, Gama; P\_0})}{P ~ NGG(Alpha, Beta, Gama; P_0)}
+\deqn{P \sim \textrm{NGG}(\texttt{Alpha, Kappa, Gama; P\_0})}{P ~ NGG(Alpha, Kappa, Gama; P_0)}
 where, \eqn{X_i}'s are the observed data, \eqn{(Y_i,Z_i)}'s are bivariate
 latent (location and scale) vectors, \code{k} is a parametric kernel parameterized
-in  terms of mean and standard deviation, \code{(Alpha, Beta, Gama; P_0)} are the
-parameters of the NGG prior with a bivariate \code{P_0} being the centering measure with independent components, that is, \eqn{P_0(Y,Z) = P_0(Y)*P_0(Z)}. The parameters of \code{P_0(Y)} are assigned vague hyper prior distributions and \code{(mu.pz0,sigma.pz0)} are the hyper-parameters of \code{P_0(Z)}. In particular, \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process; \code{NGG(1, Beta, 1/2;P_0)} defines a Normalized inverse Gaussian process; and \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process. The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) + epsilon}.
+in  terms of mean and standard deviation, \code{(Alpha, Kappa, Gama; P_0)} are the
+parameters of the NGG prior with a bivariate \code{P_0} being the centering measure with independent components, that is, \eqn{P_0(Y,Z) = P_0(Y)*P_0(Z)}. The parameters of \code{P_0(Y)} are assigned vague hyper prior distributions and \code{(mu.pz0,sigma.pz0)} are the hyper-parameters of \code{P_0(Z)}. In particular, \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process; \code{NGG(1, Kappa, 1/2;P_0)} defines a Normalized inverse Gaussian process; and \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process. The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) + epsilon}.
 By default \code{epsilon=sd(x)/4}.
 }
 
@@ -134,7 +134,7 @@ detach()
 # set.seed(150520)
 # data(enzyme)
 # x <- enzyme
-#  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.007, Gama = 0.5,
+#  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
 #                          distr.k = 2, distr.py0 = 2,
 #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
@@ -174,7 +174,7 @@ detach()
 # set.seed(150520)
 # data(galaxy)
 # x <- galaxy
-#  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Beta = 0.015, Gama = 0.5,
+#  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
 #                          distr.k = 1, distr.py0 = 2,
 #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)

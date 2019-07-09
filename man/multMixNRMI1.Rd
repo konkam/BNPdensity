@@ -4,7 +4,7 @@
 \alias{multMixNRMI1}
 \title{Multiple chains of MixNRMI1}
 \usage{
-multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
   Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
   bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
   Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
@@ -18,7 +18,7 @@ multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 
 \item{Alpha}{Numeric constant. Total mass of the centering measure. See details.}
 
-\item{Beta}{Numeric positive constant. See details.}
+\item{Kappa}{Numeric positive constant. See details.}
 
 \item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
 

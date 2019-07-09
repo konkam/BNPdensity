@@ -22,7 +22,7 @@ test_that("Plotting function for non censored data do not produce errors", {
   expect_output(str(p), "gtable")
 
   data(enzyme)
-  outttest3 <- MixNRMI2(enzyme, Alpha = 1, Beta = 0.007, Gama = 0.5,
+  outttest3 <- MixNRMI2(enzyme, Alpha = 1, Kappa = 0.007, Gama = 0.5,
                                                   distr.k = 2, distr.py0 = 2,
                                                   distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
                                                   Nit = 50, Pbi = 0.2, extras = TRUE)

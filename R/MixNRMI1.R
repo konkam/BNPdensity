@@ -1,6 +1,6 @@
 #' @export
 MixNRMI1 <-
-function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
+function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
     delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
     Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
@@ -44,15 +44,15 @@ function (x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
         idx <- tt$idx
         Allocs[[max(1, j - 1)]] <- idx
         if (Gama != 0)
-            u <- gs3(u, n = n, r = r, alpha = Alpha, beta = Beta,
+            u <- gs3(u, n = n, r = r, alpha = Alpha, beta = Kappa,
                 gama = Gama, delta = Delta)
-        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Beta,
+        JiC <- MvInv(eps = Meps, u = u, alpha = Alpha, beta = Kappa,
             gama = Gama, N = 50001)
         Nm <- length(JiC)
         TauiC <- rk(Nm, distr = distr.p0, mu = mu.p0, sigma = sigma.p0)
         ystar <- gs4(ystar, x, idx, distr.k = distr.k, sigma.k = sigma,
             distr.p0 = distr.p0, mu.p0 = mu.p0, sigma.p0 = sigma.p0)
-        Jstar <- rgamma(r, nstar - Gama, Beta + u)
+        Jstar <- rgamma(r, nstar - Gama, Kappa + u)
         Tau <- c(TauiC, ystar)
         J <- c(JiC, Jstar)
         tt <- gsHP(ystar, r, distr.p0)

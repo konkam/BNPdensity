@@ -18,6 +18,6 @@ Plot the empirical and fitted CDF for non censored data.
 \examples{
 set.seed(150520)
 data(acidity)
-out <- MixNRMI1(acidity, extras = TRUE)
+out <- MixNRMI1(acidity, extras = TRUE, Nit = 10)
 BNPdensity:::plotCDF_noncensored(out)
 }
