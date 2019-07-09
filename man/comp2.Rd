@@ -3,8 +3,8 @@
 \title{
 Ties function: bivariate}
 \description{
-This function computes the distinct observations (couples) and their frequencies 
-in a bivariate numeric vetor. 
+This function computes the distinct observations (couples) and their frequencies
+in a bivariate numeric vector.
 }
 \usage{
 comp2(y, z)
@@ -14,9 +14,9 @@ For internal use.
 }
 \examples{
 ## The function is currently defined as
-function (y, z) 
+function (y, z)
 {
-    if (length(y) != length(z)) 
+    if (length(y) != length(z))
         stop("Vectors y and z should have equal length!")
     n <- length(y)
     matY <- outer(y, y, "==")
@@ -26,13 +26,13 @@ function (y, z)
     for (j in seq(n)) {
         if (!led[j]) {
             jstar[j] <- TRUE
-            if (j == n) 
+            if (j == n)
                 break
             ji <- seq(j + 1, n)
             tt <- mat[ji, j] \%in\% TRUE
             led[ji] <- led[ji] | tt
         }
-        if (all(led[-seq(j)])) 
+        if (all(led[-seq(j)]))
             break
     }
     ystar <- y[jstar]
@@ -40,7 +40,7 @@ function (y, z)
     nstar <- apply(mat[, jstar], 2, sum)
     rstar <- length(nstar)
     idx <- match(y, ystar)
-    return(list(ystar = ystar, zstar = zstar, nstar = nstar, 
+    return(list(ystar = ystar, zstar = zstar, nstar = nstar,
         rstar = rstar, idx = idx))
   }
 }

@@ -10,7 +10,7 @@ plotPDF_noncensored(fit)
 \item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
 }
 \value{
-Plot of the ensity and a histogram for non censored data.
+Plot of the density and a histogram for non censored data.
 }
 \description{
 Plot the density and a histogram for non censored data.

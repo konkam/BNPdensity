@@ -4,18 +4,18 @@
 Ties function: univariate
 }
 \description{
-This function computes the distinct observations and their frequencies 
-in a numeric vetor. 
+This function computes the distinct observations and their frequencies
+in a numeric vector.
 }
 \usage{
 comp1(y)
 }
 \details{
-For internal use. 
+For internal use.
 }
 \examples{
 ## The function is currently defined as
-function (y) 
+function (y)
 {
     n <- length(y)
     mat <- outer(y, y, "==")
@@ -23,13 +23,13 @@ function (y)
     for (j in seq(n)) {
         if (!led[j]) {
             jstar[j] <- TRUE
-            if (j == n) 
+            if (j == n)
                 break
             ji <- seq(j + 1, n)
             tt <- mat[ji, j] \%in\% TRUE
             led[ji] <- led[ji] | tt
         }
-        if (all(led[-seq(j)])) 
+        if (all(led[-seq(j)]))
             break
     }
     ystar <- y[jstar]
