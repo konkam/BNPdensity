@@ -56,7 +56,7 @@ of components:
 plot_prior_number_of_components(50, 0.4)
 ```
 
-![](README-unnamed-chunk-4-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
 
 ## How to use the convergence diagnostics
 
@@ -76,18 +76,13 @@ the semi-parametric model, the value of the common scale parameter.
 ``` r
 library(BNPdensity)
 library(coda)
-#> 
-#> Attaching package: 'coda'
-#> The following object is masked from 'package:BNPdensity':
-#> 
-#>     traceplot
 data(acidity)
 fitlist = multMixNRMI1(acidity, Nit = 5000)
 mcmc_list = convert_to_mcmc(fitlist)
 coda::traceplot(mcmc_list)
 ```
 
-![](README-unnamed-chunk-5-1.png)<!-- -->![](README-unnamed-chunk-5-2.png)<!-- -->![](README-unnamed-chunk-5-3.png)<!-- -->![](README-unnamed-chunk-5-4.png)<!-- -->
+![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->![](man/figures/README-unnamed-chunk-5-2.png)<!-- -->![](man/figures/README-unnamed-chunk-5-3.png)<!-- -->![](man/figures/README-unnamed-chunk-5-4.png)<!-- -->
 
 ``` r
 coda::gelman.diag(mcmc_list)
@@ -117,12 +112,12 @@ fit = MixNRMI1(acidity, extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  64.588   0.090  64.777
+#>  47.404   0.045  47.454
 plotGOF(fit)
 #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](README-unnamed-chunk-6-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-6-1.png)<!-- -->
 
 ### Censored data
 
@@ -135,11 +130,11 @@ fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  52.042   0.000  52.043
+#>  52.482   0.000  52.486
 plotGOF(fit)
 ```
 
-![](README-unnamed-chunk-7-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-7-1.png)<!-- -->
 
 ## Posterior analysis of the clustering structure
 
@@ -191,9 +186,9 @@ out <- MixNRMI2(acidity,  extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  24.572   0.091  24.663
+#>  25.062   0.132  25.197
 clustering = compute_optimal_clustering(out)
 plot_clustering_and_CDF(out, clustering)
 ```
 
-![](README-unnamed-chunk-8-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->

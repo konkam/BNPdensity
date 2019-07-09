@@ -1,11 +1,14 @@
 ## Test environments
 * local ubuntu 16.04 install, R 3.6.1
+* Debian Linux, R-devel, GCC ASAN/UBSAN
 * win-builder (devel and release)
+* check_win_devel()
+* check_rhub()
 
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-There were 3 NOTES:
+There was 1 NOTE:
 
 * New maintainer:
   Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
