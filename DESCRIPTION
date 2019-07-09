@@ -28,4 +28,5 @@ Imports:
     viridis
 Suggests:
   GreedyEPL,
-  testthat
+  Rmpfr, 
+  gmp
