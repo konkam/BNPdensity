@@ -110,7 +110,6 @@ expected_number_of_components_Dirichlet <- function(n, Alpha, ntrunc = NULL) {
 #'
 #' @examples
 #' expected_number_of_components_stable(100, 0.8)
-#' Vectorize(expected_number_of_components_stable, vectorize.args = "ntrunc")(100, 0.8, c(5, 10, 20, 40))
 expected_number_of_components_stable <- function(n, Gama, ntrunc = NULL) {
   if (!requireNamespace("Rmpfr", quietly = TRUE) && !requireNamespace("gmp", quietly = TRUE)) {
     stop("Packages Rmpfr and gmp are needed for this function to work. Please install them.",
