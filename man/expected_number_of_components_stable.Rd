@@ -25,5 +25,4 @@ Computes the expected number of components for a stable process.
 }
 \examples{
 expected_number_of_components_stable(100, 0.8)
-Vectorize(expected_number_of_components_stable, vectorize.args = "ntrunc")(100, 0.8, c(5, 10, 20, 40))
 }
