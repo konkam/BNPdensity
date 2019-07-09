@@ -1,7 +1,7 @@
 Package: BNPdensity
 Type: Package
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random Measures
-Version: 0.2019.7
+Version: 2019.7
 Authors@R: c(
   person("Julyan", "Arbel", role = c("ctb")),
   person("Ernesto", "Barrios", role = c("aut", "cre"), email = "ebarrios@itam.mx"),
@@ -17,6 +17,7 @@ LazyData: yes
 ByteCompile: yes
 RoxygenNote: 6.1.1
 Depends: R(>= 3.3.0)
+Maintainer: Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
 Imports:
   ggplot2,
     gridExtra,
