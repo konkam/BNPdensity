@@ -29,6 +29,34 @@ devtools::install_github("konkam/BNPdensity")
 
 You will need to have the CRAN package `devtools` installed.
 
+## How to select the parameters of the Normalized Generalised Gamma process
+
+We suggest the Normalised stable process, which corresponds to setting `Alpha = 1, Kappa = 0` in the `MixNRMIx` functions.
+The stable process is a convenient model because its parameter γ has a convenient interpretation: it can be used to tune how informative the prior on the number of components is. 
+Small values of `Gama` bring the process closer to a Dirichlet process, where the prior on the number of components is a relatively peaked distribution around $α log n$. 
+Larger values of `Gama` make this distribution flatter. 
+More guidelines on how to choose the parameters may be found in Lijoi et al. (2007b), notably by considering the expected prior number of components.
+
+We provide a function to compute the expected number of components for a normalised stable process:
+
+```{r}
+library(BNPdensity)
+expected_number_of_components_stable(100, 0.8)
+```
+
+This number may be compared to the prior number of components induced by a Dirichlet process with `Alpha = 1`:
+
+```{r}
+expected_number_of_components_Dirichlet(100, 1.)
+```
+
+We also provide a way to visualise the prior distribution on the number of components:
+
+```{r}
+plot_prior_number_of_components(50, 0.4)
+```
+
+
 ## How to use the convergence diagnostics
 
 We rely on the convergence diagnostics included in the package `coda` by Martyn Plummer. We only convert the output of multiple chains into an mcmc object.
@@ -68,7 +96,7 @@ fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
 plotGOF(fit)
 ```
 
-# Posterior analysis of the clustering structure
+## Posterior analysis of the clustering structure
 
 The MCMC algorithm provides a sample of the posterior distribution on the space of all clusterings. 
 This is a very large discrete space, which is not ordered. 
