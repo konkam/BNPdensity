@@ -20,3 +20,5 @@ thresholdGG <-
     }
     return(M)
   }
+
+globalVariables(names = c("M_array"))

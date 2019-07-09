@@ -59,7 +59,7 @@ plotCDF_noncensored <- function(fit) {
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
-  ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
+  ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
     geom_line(colour = "red") +
     theme_classic() +
     stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step") +
@@ -88,10 +88,10 @@ plotCDF_censored <- function(fit) {
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
-  ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes(x = data, y = CDF)) +
+  ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
     geom_line(colour = "red") +
     theme_classic() +
-    geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes(x = x, y = y)) +
+    geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes_string(x = "x", y = "y")) +
     xlab("Data")
 }
 
@@ -106,7 +106,7 @@ plotCDF_censored <- function(fit) {
 #' BNPdensity:::plotPDF_noncensored(out)
 plotPDF_noncensored <- function(fit) {
   p <- plotPDF_censored(fit)
-  p$layers <- c(geom_histogram(data = data.frame(data = fit$data), aes(y = ..density..)), p$layers)
+  p$layers <- c(geom_histogram(data = data.frame(data = fit$data), aes_string(y = "..density..")), p$layers)
   return(p)
 }
 
@@ -128,7 +128,7 @@ plotPDF_censored <- function(fit) {
   else {
     pdf <- get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
-  ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes(x = data, y = PDF)) +
+  ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes_string(x = "data", y = "PDF")) +
     geom_line(colour = "red") +
     theme_classic() +
     xlab("Data")
@@ -153,7 +153,7 @@ pp_plot_noncensored <- function(fit) {
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = data)
   }
-  ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes_string(x = "x", y = "y")) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
@@ -184,7 +184,7 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
   else {
     theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
-  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes_string(x = "x", y = "y")) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
@@ -211,7 +211,7 @@ pp_plot_censored <- function(fit) {
   else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = estimated_data)
   }
-  ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes_string(x = "x", y = "y")) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +
@@ -225,7 +225,7 @@ which_min_greater_than_0 <- function(x) which.min(ifelse(test = x < 0, yes = Inf
 compute_quantiles_from_Turnbull_estimate <- function(Survival_object) {
   cdf <- 1 - Survival_object$surv
   grid <- Survival_object$time
-  ndat = length(grid)
+  ndat <- length(grid)
   percentiles_to_compute <- 1:ndat / (ndat + 1)
   return(sapply(percentiles_to_compute, function(p) grid[which_min_greater_than_0(cdf - p)]))
 }
@@ -253,7 +253,7 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
   else {
     theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
-  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes(x = x, y = y)) +
+  ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes_string(x = "x", y = "y")) +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, colour = "red") +
     theme_classic() +

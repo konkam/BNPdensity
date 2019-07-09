@@ -6,6 +6,7 @@
 #' @export
 #'
 traceplot <- function(fitlist) {
+  param <- value <- chain_id <- iteration <- NULL
   mcmc_object <- convert_to_mcmc(fitlist)
   to_plot <- tidyr::gather(
     dplyr::bind_rows(

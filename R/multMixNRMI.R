@@ -35,6 +35,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+  if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -89,6 +90,8 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
                          Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = FALSE, seed = 1, ncores = parallel::detectCores()) {
+  if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
+
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -118,10 +121,12 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' data(salinity)
 #' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-                         Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
-                         delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+                             Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
+                             delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
+                             Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
+                             nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+  if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
+
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
@@ -148,13 +153,17 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #'
 #' @examples
 #' data(salinity)
-#' \dontrun{ multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)}
+#' \dontrun{
+#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)
+#' }
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
                              printtime = TRUE, extras = TRUE,
                              nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+  if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
+
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
