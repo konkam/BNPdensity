@@ -138,6 +138,7 @@ qmix <- function(ps, locations, scales, weights, distr.k) {
   max_loc <- max(locations)
   min_loc <- min(locations)
   unlist(parallel::mclapply(ps,
-                            FUN = function(p) qmix_one_val_with_scales(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc),
-                            mc.cores = parallel::detectCores()))
+    FUN = function(p) qmix_one_val_with_scales(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc),
+    mc.cores = parallel::detectCores()
+  ))
 }
