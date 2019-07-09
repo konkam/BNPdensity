@@ -1,0 +1,13 @@
+2019-07-09  Guillaume KON KAM KING  <guillaume.konkamking.work@gmail.com>
+
+	* DESCRIPTION (Version, Date): Release 0.2.0
+
+	Many changes in put in place for the submission to the Journal of Statistical Software.
+
+	* Moment-matching criterion for truncation of the infinite series. Implementation of the strategy in J. Arbel and I. Prünster, “A moment-matching Ferguson & Klass algorithm,” Stat. Comput., vol. 27, no. 1, pp. 3–17, 2017.
+
+	* Clustering estimation. It is now possible to estimate the optimal clustering from the MCMC sample, based on a range of loss functions. Implementation of the ideas in S. Wade and Z. Ghahramani, “Bayesian cluster analysis: Point estimation and credible balls (with discussion),” Bayesian Anal., vol. 13, no. 2, pp. 559–626, 2018. and R. Rastelli and N. Friel, “Optimal Bayesian estimators for latent variable cluster models,” Stat. Comput., vol. 28, no. 6, pp. 1169–1186, Nov. 2018 via an interface to GreedyEPL, and functions for clustering visualisation.
+
+	* Implementation of several Goodness of fit plots
+
+	* Renaming of function argument: Beta -> Kappa. The parameter Beta actually corresponded to the parameter Kappa in E. Barrios, A. Lijoi, L. E. Nieto-Barajas, and I. Prünster, “Modeling with Normalized Random Measure Mixture Models,” Stat. Sci., vol. 28, no. 3, pp. 313–334, 2013. It did not correspond to the parameter Beta also defined in this publication, which made things very confusing for anyone trying to understand the package from the paper.
