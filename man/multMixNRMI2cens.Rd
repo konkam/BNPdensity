@@ -71,5 +71,7 @@ Multiple chains of MixNRMI2cens
 }
 \examples{
 data(salinity)
-\dontrun{ multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)}
+\dontrun{
+multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)
+}
 }
