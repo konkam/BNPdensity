@@ -33,7 +33,7 @@ You will need to have the CRAN package `devtools` installed.
 
 We suggest the Normalised stable process, which corresponds to setting `Alpha = 1, Kappa = 0` in the `MixNRMIx` functions.
 The stable process is a convenient model because its parameter γ has a convenient interpretation: it can be used to tune how informative the prior on the number of components is. 
-Small values of `Gama` bring the process closer to a Dirichlet process, where the prior on the number of components is a relatively peaked distribution around $α log n$. 
+Small values of `Gama` bring the process closer to a Dirichlet process, where the prior on the number of components is a relatively peaked distribution around $\alpha \log n$. 
 Larger values of `Gama` make this distribution flatter. 
 More guidelines on how to choose the parameters may be found in Lijoi et al. (2007b), notably by considering the expected prior number of components.
 
