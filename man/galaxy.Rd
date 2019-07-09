@@ -12,12 +12,9 @@ Velocities of 82 galaxies diverging from our own galaxy.
     \item{\code{velocity}}{A numeric vector.}
     }
 }
-\source{
-\url{https://people.maths.bris.ac.uk/~mapjg/}
-}
 \references{
-Roeder, K. (1990) "Density estimation with confidence sets exemplified by 
-superclusters and voids in the galaxies". Journal of the American Statitical 
+Roeder, K. (1990) "Density estimation with confidence sets exemplified by
+superclusters and voids in the galaxies". Journal of the American Statitical
 Association. 85, 617-624.
 }
 \examples{

@@ -3,9 +3,9 @@
 \docType{data}
 \title{Enzyme Dataset}
 \description{
-Concerns the distribution of enzymatic activity in the blood, 
-for an enzyme involved in the metabolism of carcinogenetic substances, 
-among a group of 245 unrelated individuals. 
+Concerns the distribution of enzymatic activity in the blood,
+for an enzyme involved in the metabolism of carcinogenetic substances,
+among a group of 245 unrelated individuals.
 }
 \usage{data(enzyme)}
 \format{
@@ -14,12 +14,9 @@ among a group of 245 unrelated individuals.
     \item{\code{enzyme}}{A numeric vector.}
   }
 }
-\source{
-\url{https://people.maths.bris.ac.uk/~mapjg/}
-}
 \references{
-Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J. and Bechtel, P.R. (1993). 
-A population and family study of N-acetyltransferase using caffeine urinary 
+Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J. and Bechtel, P.R. (1993).
+A population and family study of N-acetyltransferase using caffeine urinary
 metabilites. Clin. Pharm. Therp., 54, 134-141.
 }
 \examples{
