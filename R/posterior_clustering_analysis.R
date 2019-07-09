@@ -36,7 +36,7 @@ plot_clustering_and_CDF_noncensored <- function(fit, clustering, label_vector = 
   p <- ggplot(data.frame(data = data, cluster_id = clustering, cdf = cdf)) +
     theme_bw() +
     geom_step(aes_string(x = "data", y = "ecdf(data)(data)")) +
-    geom_point(aes_string(x = "data", y = "cdf", colour = "factor(cluster_id))")) +
+    geom_point(aes_string(x = "data", y = "cdf", colour = "cluster_id")) +
     viridis::scale_colour_viridis(discrete = TRUE) +
     theme(legend.position = "none") +
     ylab("CDF") +
