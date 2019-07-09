@@ -71,5 +71,5 @@ Multiple chains of MixNRMI2cens
 }
 \examples{
 data(salinity)
-multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 100, ncores = 2)
+multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 }

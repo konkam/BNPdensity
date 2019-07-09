@@ -64,5 +64,5 @@ Multiple chains of MixNRMI1
 }
 \examples{
 data(acidity)
-multMixNRMI1(acidity, parallel = TRUE, Nit = 100, ncores = 2)
+multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 }

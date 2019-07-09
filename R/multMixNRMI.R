@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' data(acidity)
-#' multMixNRMI1(acidity, parallel = TRUE, Nit = 100, ncores = 2)
+#' multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
@@ -83,7 +83,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 #'
 #' @examples
 #' data(acidity)
-#' multMixNRMI2(acidity, parallel = TRUE, Nit = 100, ncores = 2)
+#' multMixNRMI2(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
@@ -116,7 +116,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
 #'
 #' @examples
 #' data(salinity)
-#' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 100, ncores = 2)
+#' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Beta = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
@@ -148,7 +148,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #'
 #' @examples
 #' data(salinity)
-#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 100, ncores = 2)
+#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Beta = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,

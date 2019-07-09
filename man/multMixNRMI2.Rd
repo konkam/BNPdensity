@@ -68,5 +68,5 @@ Multiple chains of MixNRMI2
 }
 \examples{
 data(acidity)
-multMixNRMI2(acidity, parallel = TRUE, Nit = 100, ncores = 2)
+multMixNRMI2(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 }
