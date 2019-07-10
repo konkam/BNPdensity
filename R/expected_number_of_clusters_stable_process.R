@@ -149,5 +149,6 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
     geom_point() +
     geom_line() +
     theme_classic() +
-    viridis::scale_colour_viridis(discrete = T, name = "Process")
+    viridis::scale_colour_viridis(discrete = T, name = "Process") +
+    ylab(expression(P[K]))
 }

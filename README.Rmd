@@ -53,7 +53,7 @@ expected_number_of_components_Dirichlet(100, 1.)
 We also provide a way to visualise the prior distribution on the number of components:
 
 ```{r}
-plot_prior_number_of_components(50, 0.4)
+plot_prior_number_of_components(50, 0.4) 
 ```
 
 
