@@ -7,7 +7,7 @@
 qq_plot_censored(fit, thinning_to = 500)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixNRMI1cens or MixNRMI2cens}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
 
 \item{thinning_to}{How many iterations to compute the mean posterior quantiles}
 }
