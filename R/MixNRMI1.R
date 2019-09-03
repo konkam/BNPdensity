@@ -122,5 +122,23 @@ MixNRMI1 <-
       res$weights <- weights
       res$Js <- Js
     }
-    return(res)
+    return(structure(res, class = "NRMI1"))
   }
+
+
+#' Plot the density estimate and the 95\% credible interval
+#'
+#' The density estimate is the mean posterior density computed on the data points.
+#'
+#' @param fit A fitted object of class NRMI1
+#'
+#' @return A graph with the density estimate, the 95\% credible interval and a histogram of the data
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI1(acidity, Nit = 50)
+#' plot(out)
+plot.NRMI1 <- function(fit) {
+  plotfit_noncensored(fit)
+}

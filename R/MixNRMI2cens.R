@@ -145,5 +145,22 @@ MixNRMI2cens <-
       res$weights <- weights
       res$Js <- Js
     }
-    return(res)
+    return(structure(res, class = "NRMI2cens"))
   }
+
+#' Plot the density estimate and the 95\% credible interval
+#'
+#' The density estimate is the mean posterior density computed on the data points. It is not possible to display a histogram for censored data.
+#'
+#' @param fit A fitted object of class NRMI2cens
+#'
+#' @return A graph with the density estimate, the 95\% credible interval
+#' @export
+#'
+#' @examples
+#' data(salinity)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' plot(out)
+plot.NRMI2cens <- function(fit) {
+  plotfit_censored(fit)
+}

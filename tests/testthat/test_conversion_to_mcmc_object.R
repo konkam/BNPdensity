@@ -4,4 +4,8 @@ test_that("Conversion to mcmc object works", {
   data("salinity")
   out <- convert_to_mcmc(multMixNRMI1cens(salinity$left, salinity$right, Nit = 50, extras = TRUE))
   expect_is(out, "mcmc")
+  library(coda)
+  out <- as.mcmc(multMixNRMI1cens(salinity$left, salinity$right, Nit = 50, extras = TRUE))
+  expect_is(out, "mcmc.list")
 })
+

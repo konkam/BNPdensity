@@ -18,14 +18,15 @@ log_Vnk_PY <- function(n, k, Alpha, Gama) {
 # }
 
 Cnk <- function(n, k, Gama) {
-  factor_k <- gmp::factorialZ(k)
+  # factor_k <- gmp::factorialZ(k)
   # Using more precise sums (package PreciseSums did not afford any improvement)
   # This function still risks underflow/overflow in spite of the arbitrary precision packages
-  sum((-1)^(1:k) * gmp::chooseZ(n = k, k = 1:k) * Rmpfr::pochMpfr(-(1:k) * Gama, n) / factor_k)
+  # sum((-1)^(1:k) * gmp::chooseZ(n = k, k = 1:k) * Rmpfr::pochMpfr(-(1:k) * Gama, n) / factor_k)
+  (-1)^(n-k)*noncentral_generalised_factorial_coefficient(n = n, k = k, s = Gama, r = 0)
 }
-# log_Cnk = function(n, k, Gama){
-#   log(Cnk(n, k, Gama))
-# }
+log_Cnk = function(n, k, Gama){
+  log(Cnk(n, k, Gama))
+}
 
 # log_Cnk(100, 64, 0.4)
 #
@@ -37,10 +38,10 @@ Cnk <- function(n, k, Gama) {
 
 
 Pkn_PY <- function(k, n, Alpha, Gama) {
-  # exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k*log(Gama) + log_Cnk(n = n, k = k, Gama = Gama))
+  exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k*log(Gama) + log_Cnk(n = n, k = k, Gama = Gama))
   # Using this form, the inaccuracies in Cnk (i.e. getting a negative number) do not give NaN.
   # This error might be cancelled when computing the expected number of components.
-  exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama)) * Cnk(n = n, k = k, Gama = Gama)
+  # exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama)) * Cnk(n = n, k = k, Gama = Gama)
 }
 
 # Pkn_PY(3, 5, 0.2, 0.4)

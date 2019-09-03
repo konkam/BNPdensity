@@ -36,7 +36,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
-  parallel::mclapply(
+  res = parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
       set.seed(seed * chainID) # Taking care to have a different seed for all chains
@@ -48,6 +48,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
       )
     }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
+  return(structure(res, class = c("multNRMI", "NRMI1")))
 }
 
 
@@ -92,7 +93,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          nchains = 4, parallel = FALSE, seed = 1, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
-  parallel::mclapply(
+  res = parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
       set.seed(seed * chainID) # Taking care to have a different seed for all chains
@@ -104,6 +105,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
       )
     }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
+  return(structure(res, class = c("multNRMI", "NRMI2")))
 }
 
 
@@ -127,7 +129,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
-  parallel::mclapply(
+  res = parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
       set.seed(seed * chainID) # Taking care to have a different seed for all chains
@@ -139,6 +141,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
       )
     }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
+  return(structure(res, class = c("multNRMI", "NRMI1cens")))
 }
 
 #' Multiple chains of MixNRMI2cens
@@ -154,7 +157,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' @examples
 #' data(salinity)
 #' \dontrun{
-#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)
+#' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 #' }
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
@@ -164,7 +167,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
-  parallel::mclapply(
+  res = parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
       set.seed(seed * chainID) # Taking care to have a different seed for all chains
@@ -176,4 +179,43 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
       )
     }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
   )
+  return(structure(res, class = c("multNRMI", "NRMI2cens")))
+}
+
+#' Convert the output of multMixNRMI into a coda mcmc object
+#'
+#' @param fitlist Output of multMixNRMI.
+#' @param thinning_to Final length of the chain after thinning.
+#'
+#' @return a coda::mcmc object
+#' @export
+as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
+  res = coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to), coda::mcmc))
+  class(res) = c("multNRMI", class(res))
+  return(res)
+}
+
+add = function(x, y) x+y
+
+#' Plot the density estimate and the 95\% credible interval
+#'
+#' The density estimate is the mean posterior density computed on the data points.
+#'
+#' @param fitlist A fitted object of class multNRMI
+#'
+#' @return A graph with the density estimate, the 95\% credible interval. Includes a histogram if the data is non censored.
+#' @export
+#'
+#' @examples
+#' fit = multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+#' plot(fit)
+plot.multNRMI = function(fitlist){
+  # This assumes that chains have the same length and can be given equal weight when combining
+  res = fitlist[[1]]
+  nchains = length(fitlist)
+  m <- ncol(res$qx)
+  res$qx[,1] = 1/nchains*Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[,1]))
+  res$qx[,2] = 1/nchains*Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[,2]))
+  res$qx[,m] = 1/nchains*Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[,3]))
+  plot(res)
 }

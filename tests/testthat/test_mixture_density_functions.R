@@ -114,3 +114,23 @@ test_that("numerical inversion quantile function do not produce errors", {
     distr.k = 1
   )), "num [1:2]", fixed = TRUE)
 })
+
+test_that("The vectorised mixture pdf calculation coincides with pmixnorm", {
+  pmixnorm_vec_loop <- function(xs, means_list, sigmas_list, weights_list) {
+    res <- 0.0 * xs
+    nit <- length(means_list)
+    for (it in 1:nit) {
+      for (cmp in seq_along(means_list[[it]])) {
+        res <- res + weights_list[[it]][cmp] * pnorm(q = xs, mean = means_list[[it]][cmp], sd = sigmas_list[[it]][cmp])
+      }
+    }
+    return(res / nit)
+  }
+  data(acidity)
+  xs <- seq(-5, 5, length.out = 100)
+  outttest <- MixNRMI1(acidity, Nit = 50, extras = TRUE)
+  outttest$sigmas_filled <- fill_sigmas(outttest)
+  ref <- pmixnorm_vec_loop(xs = xs, means_list = outttest$means, sigmas_list = outttest$sigmas_filled, weights_list = outttest$weights)
+  res <- pmix_vec_loop(qs = xs, locations_list = outttest$means, scales_list = outttest$sigmas_filled, weights_list = outttest$weights, distr.k = 1)
+  expect_equal(res, ref)
+})
