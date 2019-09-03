@@ -15,3 +15,7 @@ A graph with the density estimate, the 95\% credible interval. Includes a histog
 \description{
 The density estimate is the mean posterior density computed on the data points.
 }
+\examples{
+fit = multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+plot(fit)
+}

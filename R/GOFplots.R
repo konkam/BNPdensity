@@ -163,7 +163,7 @@ pp_plot_noncensored <- function(fit) {
 
 #' Plot the quantile-quantile graph for non censored data.
 #'
-#' @inheritParams plotGOF
+#' @inheritParams GOFplots
 #' @return quantile-quantile plot for non censored data.
 #' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' @examples
@@ -232,7 +232,7 @@ compute_quantiles_from_Turnbull_estimate <- function(Survival_object) {
 
 #' Plot the quantile-quantile graph for censored data.
 #'
-#' @inheritParams plotGOF
+#' @inheritParams GOFplots
 #' @return quantile-quantile plot for non censored data.
 #' @details This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
 #' set.seed(150520)
@@ -263,15 +263,15 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for non censored data
 #'
-#' @inheritParams plotGOF
+#' @inheritParams GOFplots
 #' @return A density plot with histogram, a cumulative density plot with the empirical cumulative distribution, and a percentile-percentile plot.
 #'
 #' @examples
 #' set.seed(150520)
 #' data(acidity)
 #' out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
-#' BNPdensity:::plotGOF_noncensored(out)
-plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' BNPdensity:::GOFplots_noncensored(out)
+GOFplots_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_noncensored(fit)
   PDFplot <- plotPDF_noncensored(fit)
   pplot <- pp_plot_noncensored(fit)
@@ -286,15 +286,15 @@ plotGOF_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for censored data
 #'
-#' @inheritParams plotGOF
+#' @inheritParams GOFplots
 #' @return A density plot, a cumulative density plot with the Turnbull cumulative distribution, and a percentile-percentile plot.
 #'
 #' @examples
 #' set.seed(150520)
 #' data(salinty)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' BNPdensity:::plotGOF_censored(out)
-plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' BNPdensity:::GOFplots_censored(out)
+GOFplots_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   CDFplot <- plotCDF_censored(fit)
   PDFplot <- plotPDF_censored(fit)
   pplot <- pp_plot_censored(fit)
@@ -319,12 +319,12 @@ plotGOF_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 #' set.seed(150520)
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
-#' plotGOF(out)
-plotGOF <- function(fit, qq_plot = FALSE, thinning_to = 500) {
+#' GOFplots(out)
+GOFplots <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (is_censored(fit$data)) {
-    plotGOF_censored(fit, qq_plot = qq_plot, thinning_to = 500)
+    GOFplots_censored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
   else {
-    plotGOF_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
+    GOFplots_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
 }
