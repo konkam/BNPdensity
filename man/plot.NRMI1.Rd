@@ -10,13 +10,17 @@
 \item{fit}{A fitted object of class NRMI1}
 }
 \value{
-A graph with the density estimate, the 95\% credible interval and a histogram of the data
+A graph with the density estimate, the 95\% credible interval and a
+histogram of the data
 }
 \description{
-The density estimate is the mean posterior density computed on the data points.
+The density estimate is the mean posterior density computed on the data
+points.
 }
 \examples{
+
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
 plot(out)
+
 }

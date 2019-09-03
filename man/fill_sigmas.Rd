@@ -2,16 +2,19 @@
 % Please edit documentation in R/helper_functions.R
 \name{fill_sigmas}
 \alias{fill_sigmas}
-\title{Repeat the common scale parameter of a semiparametric model to match the dimension of the location parameters.}
+\title{Repeat the common scale parameter of a semiparametric model to match the
+dimension of the location parameters.}
 \usage{
 fill_sigmas(semiparametric_fit)
 }
 \arguments{
-\item{semiparametric_fit}{The result of the fit, obtained through the function MixNRMI1.}
+\item{semiparametric_fit}{The result of the fit, obtained through the
+function MixNRMI1.}
 }
 \value{
 an adequate list of vectors of sigmas
 }
 \description{
-Repeat the common scale parameter of a semiparametric model to match the dimension of the location parameters.
+Repeat the common scale parameter of a semiparametric model to match the
+dimension of the location parameters.
 }

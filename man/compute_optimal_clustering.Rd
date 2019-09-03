@@ -9,12 +9,19 @@ compute_optimal_clustering(fit, loss_type = "VI")
 \arguments{
 \item{fit}{The fitted object, obtained from one of the MixNRMIx functions}
 
-\item{loss_type}{Defines the loss function to be used in the expected posterior loss minimisation. Can be one of "VI" (Variation of Information), "B" (Binder's loss), "NVI" (Normalised Variation of Information) or "NID" (Normalised Information Distance). Defaults to "VI".}
+\item{loss_type}{Defines the loss function to be used in the expected
+posterior loss minimisation. Can be one of "VI" (Variation of Information),
+"B" (Binder's loss), "NVI" (Normalised Variation of Information) or "NID"
+(Normalised Information Distance). Defaults to "VI".}
 }
 \value{
-A vector of integers with the same size as the data, indicating the allocation of each data point.
+A vector of integers with the same size as the data, indicating the
+allocation of each data point.
 }
 \description{
-Summarises the posterior on all possible clusterings by an optimal clustering where optimality is defined as minimising the posterior expectation of a specific loss function, the Variation of Information or Binder's loss function.
-Computation can be lengthy for large datasets, because of the large size of the space of all clusterings.
+Summarises the posterior on all possible clusterings by an optimal
+clustering where optimality is defined as minimising the posterior
+expectation of a specific loss function, the Variation of Information or
+Binder's loss function. Computation can be lengthy for large datasets,
+because of the large size of the space of all clusterings.
 }

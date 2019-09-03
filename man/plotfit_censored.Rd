@@ -13,10 +13,13 @@ plotfit_censored(fit)
 A graph with the density estimate, the 95\% credible interval
 }
 \description{
-The density estimate is the mean posterior density computed on the data points. It is not possible to display a histogram for censored data.
+The density estimate is the mean posterior density computed on the data
+points. It is not possible to display a histogram for censored data.
 }
 \examples{
+
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
 plot(out)
+
 }

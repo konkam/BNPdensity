@@ -7,7 +7,8 @@
 plotCDF_noncensored(fit)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or
+MixNRMI2.}
 }
 \value{
 Plot of the empirical and fitted CDF for non censored data.
@@ -16,8 +17,10 @@ Plot of the empirical and fitted CDF for non censored data.
 Plot the empirical and fitted CDF for non censored data.
 }
 \examples{
+
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 10)
 BNPdensity:::plotCDF_noncensored(out)
+
 }

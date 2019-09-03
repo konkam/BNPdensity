@@ -7,7 +7,8 @@
 pp_plot_noncensored(fit)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or
+MixNRMI2.}
 }
 \value{
 Percentile-percentile plot for non censored data.
@@ -16,8 +17,10 @@ Percentile-percentile plot for non censored data.
 Plot the percentile-percentile graph for non censored data.
 }
 \examples{
+
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 BNPdensity:::pp_plot_noncensored(out)
+
 }

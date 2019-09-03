@@ -7,9 +7,11 @@
 qq_plot_censored(fit, thinning_to = 500)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2, MixMRMI1cens or MixMRMI2cens}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or
+MixNRMI2, MixMRMI1cens or MixMRMI2cens}
 
-\item{thinning_to}{How many iterations to compute the mean posterior quantiles}
+\item{thinning_to}{How many iterations to compute the mean posterior
+quantiles}
 }
 \value{
 quantile-quantile plot for non censored data.
@@ -18,9 +20,9 @@ quantile-quantile plot for non censored data.
 Plot the quantile-quantile graph for censored data.
 }
 \details{
-This function may be rather slow for many iterations/many data because it relies on numerical inversion of the mixture Cumulative Distribution Function.
-set.seed(150520)
-data(salinity)
-out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
+This function may be rather slow for many iterations/many data because it
+relies on numerical inversion of the mixture Cumulative Distribution
+Function. set.seed(150520) data(salinity) out <- MixNRMI1cens(xleft =
+salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 BNPdensity:::qq_plot_censored(out)
 }

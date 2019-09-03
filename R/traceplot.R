@@ -1,11 +1,11 @@
 #' Draw a traceplot for multiple chains
 #'
-#' This function works when coda is not yet loaded by the user. If coda is loaded, it get overwritten. See also file multMixNRMI.R
+#' This function works when coda is not yet loaded by the user. If coda is
+#' loaded, it gets overwritten. See also file multMixNRMI.R
 #'
-#' @inherit as.mcmc.multNRMI
 #'
+#' @param fitlist Output of multMixNRMI.
 #' @return A traceplot for multiple chains.
-#'
 traceplot = function(fitlist) {
   param <- value <- chain_id <- iteration <- NULL
   mcmc_object <- convert_to_mcmc(fitlist)

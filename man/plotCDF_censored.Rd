@@ -7,7 +7,8 @@
 plotCDF_censored(fit)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1cens or MixNRMI2cens.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1cens
+or MixNRMI2cens.}
 }
 \value{
 Plot of the empirical and fitted CDF for non censored data.
@@ -16,8 +17,10 @@ Plot of the empirical and fitted CDF for non censored data.
 Plot the Turnbull CDF and fitted CDF for censored data.
 }
 \examples{
+
 set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 BNPdensity:::plotCDF_censored(out)
+
 }

@@ -1,4 +1,152 @@
-#' @export
+#' Normalized Random Measures Mixture of Type II for censored data
+#' 
+#' Bayesian nonparametric estimation based on normalized measures driven
+#' mixtures for locations and scales.
+#' 
+#' This generic function fits a normalized random measure (NRMI) mixture model
+#' for density estimation (James et al. 2009). Specifically, the model assumes
+#' a normalized generalized gamma (NGG) prior for both, locations (means) and
+#' standard deviations, of the mixture kernel, leading to a fully nonparametric
+#' mixture model.
+#' 
+#' The details of the model are: \deqn{X_i|Y_i,Z_i \sim
+#' k(\cdot|Y_i,Z_i)}{X_i|Y_i,Z_i ~ k(.|Y_i,Z_i)} \deqn{(Y_i,Z_i)|P \sim P,
+#' i=1,\dots,n}{(Y_i,Z_i)|P ~ P, i=1,...,n} \deqn{P \sim
+#' \textrm{NGG}(\texttt{Alpha, Kappa, Gama; P\_0})}{P ~ NGG(Alpha, Kappa, Gama;
+#' P_0)} where, \eqn{X_i}'s are the observed data, \eqn{(Y_i,Z_i)}'s are
+#' bivariate latent (location and scale) vectors, \code{k} is a parametric
+#' kernel parameterized in terms of mean and standard deviation, \code{(Alpha,
+#' Kappa, Gama; P_0)} are the parameters of the NGG prior with a bivariate
+#' \code{P_0} being the centering measure with independent components, that is,
+#' \eqn{P_0(Y,Z) = P_0(Y)*P_0(Z)}. The parameters of \code{P_0(Y)} are assigned
+#' vague hyper prior distributions and \code{(mu.pz0,sigma.pz0)} are the
+#' hyper-parameters of \code{P_0(Z)}. In particular, \code{NGG(Alpha, 1, 0;
+#' P_0)} defines a Dirichlet process; \code{NGG(1, Kappa, 1/2;P_0)} defines a
+#' Normalized inverse Gaussian process; and \code{NGG(1, 0, Gama; P_0)} defines
+#' a normalized stable process. The evaluation grid ranges from \code{min(x) -
+#' epsilon} to \code{max(x) + epsilon}. By default \code{epsilon=sd(x)/4}.
+#' 
+#' @param xleft Numeric vector. Lower limit of interval censoring. For exact
+#' data the same as xright
+#' @param xright Numeric vector. Upper limit of interval censoring. For exact
+#' data the same as xleft.
+#' @param probs Numeric vector. Desired quantiles of the density estimates.
+#' @param Alpha Numeric constant. Total mass of the centering measure.  See
+#' details.
+#' @param Kappa Numeric positive constant. See details.
+#' @param Gama Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
+#' details.
+#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
+#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.py0 Integer number identifying the centering measure for
+#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.pz0 Integer number identifying the centering measure for
+#' scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half
+#' Student-t, 9 = Uniform, 10 = Truncated Normal.
+#' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
+#' scales.
+#' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
+#' measure for scales.
+#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' variation coefficient for sampling the scales.
+#' @param kappa Numeric positive constant. Metropolis-Hastings proposal
+#' variation coefficient for sampling the location parameters.
+#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' variation coefficient for sampling the latent U.
+#' @param Meps Numeric constant. Relative error of the jump sizes in the
+#' continuous component of the process. Smaller values imply larger number of
+#' jumps.
+#' @param Nx Integer constant. Number of grid points for the evaluation of the
+#' density estimate.
+#' @param Nit Integer constant. Number of MCMC iterations.
+#' @param Pbi Numeric constant. Burn-in period proportion of \code{Nit}.
+#' @param epsilon Numeric constant. Extension to the evaluation grid range.
+#' See details.
+#' @param printtime Logical. If TRUE, prints out the execution time.
+#' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
+#' weights and Js.
+#' @return The function returns a list with the following components:
+#' \item{xx}{Numeric vector. Evaluation grid.} \item{qx}{Numeric array. Matrix
+#' of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
+#' (length(probs)+1)} with the posterior mean and the desired quantiles input
+#' in \code{probs}.} \item{cpo}{Numeric vector of \code{length(x)} with
+#' conditional predictive ordinates.} \item{R}{Numeric vector of
+#' \code{length(Nit*(1-Pbi))} with the number of mixtures components
+#' (clusters).} \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
+#' values of the latent variable U.} \item{Allocs}{List of
+#' \code{length(Nit*(1-Pbi))} with the clustering allocations.}
+#' \item{means}{List of \code{length(Nit*(1-Pbi))} with the cluster means
+#' (locations). Only if extras = TRUE.} \item{sigmas}{Numeric vector of
+#' \code{length(Nit*(1-Pbi))} with the cluster standard deviations. Only if
+#' extras = TRUE.} \item{weights}{List of \code{length(Nit*(1-Pbi))} with the
+#' mixture weights. Only if extras = TRUE.} \item{Js}{List of
+#' \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
+#' if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
+#' continuous component of the unnormalized process.} \item{Nx}{Integer
+#' constant. Number of grid points for the evaluation of the density estimate.}
+#' \item{Nit}{Integer constant. Number of MCMC iterations.} \item{Pbi}{Numeric
+#' constant. Burn-in period proportion of \code{Nit}.} \item{procTime}{Numeric
+#' vector with execution time provided by \code{proc.time} function.}
+#' @section Warning : The function is computing intensive. Be patient.
+#' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
+#' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1}},
+#' \code{\link{MixNRMI1cens}}
+#' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
+#' I. (2013). Modeling with Normalized Random Measure Mixture Models.
+#' Statistical Science. Vol. 28, No. 3, 313-334.
+#' 
+#' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
+#' normalized random measure with independent increments. Scand. J. Statist 36,
+#' 76-97.
+#' 
+#' 3.- Kon Kam King, G., Arbel, J. and Prüenster, I. (2016). Species
+#' Sensitivity Distribution revisited: a Bayesian nonparametric approach. In
+#' preparation.
+#' @keywords distribution models nonparametrics
+#' @examples
+#' 
+#' \dontrun{
+#' ### Example 1
+#' # Data
+#' data(acidity)
+#' x <- acidity
+#' # Fitting the model under default specifications
+#' out <- MixNRMI2cens(x,x)
+#' # Plotting density estimate + 95% credible interval
+#' attach(out)
+#' m <- ncol(qx)
+#' ymax <- max(qx[,m])
+#' par(mfrow=c(1,1))
+#' hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
+#' lines(xx,qx[,1],lwd=2)
+#' lines(xx,qx[,2],lty=3,col=4)
+#' lines(xx,qx[,m],lty=3,col=4)
+#' detach()
+#' }
+#' 
+#' \dontrun{
+#' ### Example 2
+#' # Data
+#' data(salinity)
+#' # Fitting the model under special specifications
+#' out <- MixNRMI2cens(xleft=salinity$left,xright=salinity$right,Nit=5000,distr.pz0=10,
+#'   mu.pz0=1,sigma.pz0=2)
+#' # Plotting density estimate + 95% credible interval
+#' attach(out)
+#' m <- ncol(qx)
+#' ymax <- max(qx[,m])
+#' par(mfrow=c(1,1))
+#' plot(xx,qx$"q0.5",lwd=2,type="l",ylab="Density",xlab="Data")
+#' lines(xx,qx[,2],lty=3,col=4)
+#' lines(xx,qx[,m],lty=3,col=4)
+#' # Plotting number of clusters
+#' par(mfrow=c(2,1))
+#' plot(R,type="l",main="Trace of R")
+#' hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+#' detach()
+#' }
+#' 
+#' @export MixNRMI2cens
 MixNRMI2cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
              Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
@@ -148,19 +296,22 @@ MixNRMI2cens <-
     return(structure(res, class = "NRMI2cens"))
   }
 
+
+
 #' Plot the density estimate and the 95\% credible interval
-#'
-#' The density estimate is the mean posterior density computed on the data points. It is not possible to display a histogram for censored data.
-#'
+#' 
+#' The density estimate is the mean posterior density computed on the data
+#' points. It is not possible to display a histogram for censored data.
+#' 
+#' 
 #' @param fit A fitted object of class NRMI2cens
-#'
 #' @return A graph with the density estimate, the 95\% credible interval
-#' @export
-#'
 #' @examples
+#' 
 #' data(salinity)
 #' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' plot(out)
+#' 
 plot.NRMI2cens <- function(fit) {
   plotfit_censored(fit)
 }

@@ -7,7 +7,8 @@
 plotPDF_noncensored(fit)
 }
 \arguments{
-\item{fit}{The result of the fit, obtained through the function MixNRMI1 or MixNRMI2.}
+\item{fit}{The result of the fit, obtained through the function MixNRMI1 or
+MixNRMI2.}
 }
 \value{
 Plot of the ensity and a histogram for non censored data.
@@ -16,8 +17,10 @@ Plot of the ensity and a histogram for non censored data.
 Plot the density and a histogram for non censored data.
 }
 \examples{
+
 set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 BNPdensity:::plotPDF_noncensored(out)
+
 }
