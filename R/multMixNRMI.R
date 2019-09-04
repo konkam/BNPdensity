@@ -1,8 +1,8 @@
 #' Multiple chains of MixNRMI1
-#' 
+#'
 #' Multiple chains of MixNRMI1
-#' 
-#' 
+#'
+#'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
 #' @param Alpha Numeric constant. Total mass of the centering measure. See
@@ -43,10 +43,10 @@
 #' your system.
 #' @return a list containing the multiple fits.
 #' @examples
-#' 
+#'
 #' data(acidity)
 #' multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
-#' 
+#'
 #' @export multMixNRMI1
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
@@ -74,10 +74,10 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 
 #' Multiple chains of MixNRMI2
-#' 
+#'
 #' Multiple chains of MixNRMI2
-#' 
-#' 
+#'
+#'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
 #' @param Alpha Numeric constant. Total mass of the centering measure. See
@@ -122,10 +122,10 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' your system.
 #' @return a list containing the multiple fits.
 #' @examples
-#' 
+#'
 #' data(acidity)
 #' multMixNRMI2(acidity, parallel = TRUE, Nit = 10, ncores = 2)
-#' 
+#'
 #' @export multMixNRMI2
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
@@ -153,10 +153,10 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 
 #' Multiple chains of MixNRMI1cens
-#' 
+#'
 #' Multiple chains of MixNRMI1cens
-#' 
-#' 
+#'
+#'
 #' @param xleft Numeric vector. Lower limit of interval censoring. For exact
 #' data the same as xright
 #' @param xright Numeric vector. Upper limit of interval censoring. For exact
@@ -200,10 +200,10 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' your system.
 #' @return a list containing the multiple fits.
 #' @examples
-#' 
+#'
 #' data(salinity)
 #' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' 
+#'
 #' @export multMixNRMI1cens
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                              Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
@@ -230,10 +230,10 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 
 
 #' Multiple chains of MixNRMI2cens
-#' 
+#'
 #' Multiple chains of MixNRMI2cens
-#' 
-#' 
+#'
+#'
 #' @param xleft Numeric vector. Lower limit of interval censoring. For exact
 #' data the same as xright
 #' @param xright Numeric vector. Upper limit of interval censoring. For exact
@@ -281,12 +281,12 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' your system.
 #' @return a list containing the multiple fits.
 #' @examples
-#' 
+#'
 #' data(salinity)
 #' \dontrun{
 #' multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 #' }
-#' 
+#'
 #' @export multMixNRMI2cens
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
@@ -314,10 +314,10 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 
 
 #' Convert the output of multMixNRMI into a coda mcmc object
-#' 
+#'
 #' Convert the output of multMixNRMI into a coda mcmc object
-#' 
-#' 
+#'
+#'
 #' @param fitlist Output of multMixNRMI.
 #' @param thinning_to Final length of the chain after thinning.
 #' @return a coda::mcmc object
@@ -333,19 +333,19 @@ add = function(x, y) x+y
 
 
 #' Plot the density estimate and the 95\% credible interval
-#' 
+#'
 #' The density estimate is the mean posterior density computed on the data
 #' points.
-#' 
-#' 
+#'
+#'
 #' @param fitlist A fitted object of class multNRMI
 #' @return A graph with the density estimate, the 95\% credible interval.
 #' Includes a histogram if the data is non censored.
 #' @examples
-#' 
+#'
 #' fit = multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 #' plot(fit)
-#' 
+#'
 plot.multNRMI = function(fitlist){
   # This assumes that chains have the same length and can be given equal weight when combining
   res = fitlist[[1]]
@@ -355,4 +355,20 @@ plot.multNRMI = function(fitlist){
   res$qx[,2] = 1/nchains*Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[,2]))
   res$qx[,m] = 1/nchains*Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[,m]))
   plot(res)
+}
+
+#' S3 method for class 'multNRMI'
+#'
+#' @param fitlist An object of class multNRMI
+#'
+#' @return A visualisation of the important information about the object
+#' @export
+#'
+#' @examples
+#' data(salinity)
+#' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+#' print(out)
+print.multNRMI = function(fitlist){
+  print(fitlist[[1]])
+  writeLines(paste(length(fitlist), "independent MCMC chains were run in parallel"))
 }
