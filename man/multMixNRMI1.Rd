@@ -8,7 +8,7 @@ multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
   Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
   bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
   Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-  extras = TRUE, nchains = 4, parallel = TRUE, seed = 1,
+  extras = TRUE, nchains = 4, parallel = TRUE,
   ncores = parallel::detectCores())
 }
 \arguments{
@@ -51,8 +51,6 @@ multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 \item{nchains}{The number of chains to run.}
 
 \item{parallel}{Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism}
-
-\item{seed}{Random seed for the run. Each chain has an independent seed based on the value of `seed`}
 
 \item{ncores}{Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.}
 }

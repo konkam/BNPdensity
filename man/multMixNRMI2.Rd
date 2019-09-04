@@ -9,7 +9,7 @@ multMixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
   mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2,
   Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1,
   epsilon = NULL, printtime = TRUE, extras = TRUE, nchains = 4,
-  parallel = FALSE, seed = 1, ncores = parallel::detectCores())
+  parallel = FALSE, ncores = parallel::detectCores())
 }
 \arguments{
 \item{x}{Numeric vector. Data set to which the density is fitted.}
@@ -55,8 +55,6 @@ multMixNRMI2(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 \item{nchains}{The number of chains to run.}
 
 \item{parallel}{Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism}
-
-\item{seed}{Random seed for the run. Each chain has an independent seed based on the value of `seed`}
 
 \item{ncores}{Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.}
 }

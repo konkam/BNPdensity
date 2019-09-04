@@ -21,7 +21,6 @@
 #' @param extras Logical. If TRUE, gives additional objects: means, weights and Js (the jump sizes).
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
-#' @param seed Random seed for the run. Each chain has an independent seed based on the value of `seed`
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
 #'
 #' @return a list containing the multiple fits.
@@ -34,19 +33,20 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+                         nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
-      set.seed(seed * chainID) # Taking care to have a different seed for all chains
       MixNRMI1(
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
         delta, Delta, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
+    },
+    mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
+    mc.set.seed = TRUE
   )
 }
 
@@ -76,7 +76,6 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' @param extras Logical. If TRUE, gives additional objects: means, sigmas, weights and Js.
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
-#' @param seed Random seed for the run. Each chain has an independent seed based on the value of `seed`
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
 #'
 #' @return a list containing the multiple fits.
@@ -89,20 +88,21 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
                          Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                         nchains = 4, parallel = FALSE, seed = 1, ncores = parallel::detectCores()) {
+                         nchains = 4, parallel = FALSE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
-      set.seed(seed * chainID) # Taking care to have a different seed for all chains
       MixNRMI2(
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
         sigma.pz0, delta, kappa, Delta, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
+    },
+    mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
+    mc.set.seed = TRUE
   )
 }
 
@@ -124,20 +124,21 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
                              delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                              Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-                             nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+                             nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
-      set.seed(seed * chainID) # Taking care to have a different seed for all chains
       MixNRMI1cens(
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
         delta, Delta, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
+    },
+    mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
+    mc.set.seed = TRUE
   )
 }
 
@@ -161,19 +162,20 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
                              printtime = TRUE, extras = TRUE,
-                             nchains = 4, parallel = TRUE, seed = 1, ncores = parallel::detectCores()) {
+                             nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
   parallel::mclapply(
     X = 1:nchains,
     FUN = function(chainID) {
-      set.seed(seed * chainID) # Taking care to have a different seed for all chains
       MixNRMI2cens(
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
         sigma.pz0, delta, kappa, Delta, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
-    }, mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
+    },
+    mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
+    mc.set.seed = TRUE
   )
 }
