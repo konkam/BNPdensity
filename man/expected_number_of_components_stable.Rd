@@ -11,18 +11,26 @@ expected_number_of_components_stable(n, Gama, ntrunc = NULL)
 
 \item{Gama}{Numeric constant. 0 <= Gama <=1.}
 
-\item{ntrunc}{Level of truncation when computing the expectation. Defaults to n. If greater than n, it is fixed to n.}
+\item{ntrunc}{Level of truncation when computing the expectation. Defaults
+to n. If greater than n, it is fixed to n.}
 }
 \value{
-A real value of type mpfr1 which approximates the expected number of components
+A real value of type mpfr1 which approximates the expected number of
+components
 
-In spite of the high precision arithmetics packages used for in function, it can be numerically unstable for small values of Gama.
-This is because evaluating a sum with alternated signs, in the generalised factorial coefficients, is tricky.
-Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M. Ruggiero, “Are gibbs-type priors the most natural generalization of the dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no. 2, pp. 212–229, 2015.
+In spite of the high precision arithmetics packages used for in function, it
+can be numerically unstable for small values of Gama. This is because
+evaluating a sum with alternated signs, in the generalised factorial
+coefficients, is tricky. Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H.
+Mena, I. Prünster, and M. Ruggiero, “Are gibbs-type priors the most natural
+generalization of the dirichlet process?,” IEEE Trans. Pattern Anal. Mach.
+Intell., vol. 37, no. 2, pp. 212–229, 2015.
 }
 \description{
 Computes the expected number of components for a stable process.
 }
 \examples{
+
 expected_number_of_components_stable(100, 0.8)
+
 }

@@ -12,53 +12,75 @@ multMixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
   nchains = 4, parallel = TRUE, ncores = parallel::detectCores())
 }
 \arguments{
-\item{xleft}{Numeric vector. Lower limit of interval censoring. For exact data the same as xright}
+\item{xleft}{Numeric vector. Lower limit of interval censoring. For exact
+data the same as xright}
 
-\item{xright}{Numeric vector. Upper limit of interval censoring. For exact data the same as xleft.}
+\item{xright}{Numeric vector. Upper limit of interval censoring. For exact
+data the same as xleft.}
 
 \item{probs}{Numeric vector. Desired quantiles of the density estimates.}
 
-\item{Alpha}{Numeric constant. Total mass of the centering measure. See details.}
+\item{Alpha}{Numeric constant. Total mass of the centering measure. See
+details.}
 
 \item{Kappa}{Numeric positive constant. See details.}
 
 \item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
+= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.py0}{Integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.py0}{Integer number identifying the centering measure for
+locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{Integer number identifying the centering measure for scales: 2 = Gamma. For more options use MixNRMI2cens.}
+\item{distr.pz0}{Integer number identifying the centering measure for
+scales: 2 = Gamma. For more options use MixNRMI2cens.}
 
-\item{mu.pz0}{Numeric constant. Prior mean of the centering measure for scales.}
+\item{mu.pz0}{Numeric constant. Prior mean of the centering measure for
+scales.}
 
-\item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering measure for scales.}
+\item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering
+measure for scales.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal variation coefficient for sampling the scales.}
+\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+variation coefficient for sampling the scales.}
 
-\item{kappa}{Numeric positive constant. Metropolis-Hastings proposal variation coefficient for sampling the location parameters.}
+\item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
+variation coefficient for sampling the location parameters.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal variation coefficient for sampling the latent U.}
+\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+variation coefficient for sampling the latent U.}
 
-\item{Meps}{Numeric constant. Relative error of the jump sizes in the continuous component of the process. Smaller values imply larger number of jumps.}
+\item{Meps}{Numeric constant. Relative error of the jump sizes in the
+continuous component of the process. Smaller values imply larger number of
+jumps.}
 
-\item{Nx}{Integer constant. Number of grid points for the evaluation of the density estimate.}
+\item{Nx}{Integer constant. Number of grid points for the evaluation of the
+density estimate.}
 
 \item{Nit}{Integer constant. Number of MCMC iterations.}
 
 \item{Pbi}{Numeric constant. Burn-in period proportion of Nit.}
 
-\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See details.}
+\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See
+details.}
 
 \item{printtime}{Logical. If TRUE, prints out the execution time.}
 
-\item{extras}{Logical. If TRUE, gives additional objects: means, sigmas, weights and Js.}
+\item{extras}{Logical. If TRUE, gives additional objects: means, sigmas,
+weights and Js.}
 
 \item{nchains}{The number of chains to run.}
 
-\item{parallel}{Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism}
+\item{parallel}{Whether to run the chains in parallel. Only works on
+UNIX-like systems as it rests on Fork parallelism}
 
-\item{ncores}{Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.}
+\item{ncores}{Number of cores for the parallel run. Defaults to
+parallel::detectCores(), i.e. the maximum number of cores detected by R on
+your system.}
+
+\item{seed}{Random seed for the run. Each chain has an independent seed
+based on the value of `seed`}
 }
 \value{
 a list containing the multiple fits.
@@ -67,8 +89,10 @@ a list containing the multiple fits.
 Multiple chains of MixNRMI2cens
 }
 \examples{
+
 data(salinity)
 \dontrun{
-multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 2, ncores = 2)
+multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 }
+
 }

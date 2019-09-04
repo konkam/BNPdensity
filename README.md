@@ -113,7 +113,7 @@ fit = MixNRMI1(acidity, extras = TRUE)
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
 #>  47.404   0.045  47.454
-plotGOF(fit)
+GOFplot(fit)
 #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
@@ -131,7 +131,7 @@ fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
 #>  52.482   0.000  52.486
-plotGOF(fit)
+GOFplot(fit)
 ```
 
 ![](man/figures/README-unnamed-chunk-7-1.png)<!-- -->

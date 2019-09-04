@@ -18,5 +18,9 @@ an integer vector of the MCMC iterations retained.
 Compute the grid for thinning the MCMC chain
 }
 \details{
-This function creates an real grid then rounds it. If the grid is fine enough, there is a risk that rounding ties, i.e. iteration which are kept twice. To avoid this, if the total number of iterations is smaller than twice the number of iterations desired after thinning, the chain is not thinned.
+This function creates an real grid then rounds it. If the grid is fine
+enough, there is a risk that rounding ties, i.e. iteration which are kept
+twice. To avoid this, if the total number of iterations is smaller than
+twice the number of iterations desired after thinning, the chain is not
+thinned.
 }

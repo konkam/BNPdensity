@@ -16,37 +16,49 @@ multMixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 \item{probs}{Numeric vector. Desired quantiles of the density estimates.}
 
-\item{Alpha}{Numeric constant. Total mass of the centering measure. See details.}
+\item{Alpha}{Numeric constant. Total mass of the centering measure. See
+details.}
 
 \item{Kappa}{Numeric positive constant. See details.}
 
 \item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
+= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.p0}{Integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.p0}{Integer number identifying the centering measure: 1 =
+Normal; 2 = Gamma; 3 = Beta.}
 
-\item{asigma}{Numeric positive constant. Shape parameter of the gamma prior on the standard deviation of the mixture kernel distr.k.}
+\item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
+on the standard deviation of the mixture kernel distr.k.}
 
-\item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior on the standard deviation of the mixture kernel distr.k.}
+\item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
+on the standard deviation of the mixture kernel distr.k.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal variation coefficient for sampling sigma.}
+\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+variation coefficient for sampling sigma.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal variation coefficient for sampling the latent U.}
+\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+variation coefficient for sampling the latent U.}
 
-\item{Meps}{Numeric constant. Relative error of the jump sizes in the continuous component of the process. Smaller values imply larger number of jumps.}
+\item{Meps}{Numeric constant. Relative error of the jump sizes in the
+continuous component of the process. Smaller values imply larger number of
+jumps.}
 
-\item{Nx}{Integer constant. Number of grid points for the evaluation of the density estimate.}
+\item{Nx}{Integer constant. Number of grid points for the evaluation of the
+density estimate.}
 
 \item{Nit}{Integer constant. Number of MCMC iterations.}
 
 \item{Pbi}{Numeric constant. Burn-in period proportion of Nit.}
 
-\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See details.}
+\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See
+details.}
 
 \item{printtime}{Logical. If TRUE, prints out the execution time.}
 
-\item{extras}{Logical. If TRUE, gives additional objects: means, weights and Js (the jump sizes).}
+\item{extras}{Logical. If TRUE, gives additional objects: means, weights and
+Js (the jump sizes).}
 
 \item{nchains}{The number of chains to run.}
 
@@ -61,6 +73,8 @@ a list containing the multiple fits.
 Multiple chains of MixNRMI1
 }
 \examples{
+
 data(acidity)
 multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+
 }
