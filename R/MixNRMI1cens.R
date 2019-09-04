@@ -1,17 +1,17 @@
 #' Normalized Random Measures Mixture of Type I for censored data
-#' 
+#'
 #' Bayesian nonparametric estimation based on normalized measures driven
 #' mixtures for locations.
-#' 
+#'
 #' This generic function fits a normalized random measure (NRMI) mixture model
 #' for density estimation (James et al. 2009) with censored data. Specifically,
 #' the model assumes a normalized generalized gamma (NGG) prior for the
 #' locations (means) of the mixture kernel and a parametric prior for the
 #' common smoothing parameter sigma, leading to a semiparametric mixture model.
-#' 
+#'
 #' This function coincides with \code{\link{MixNRMI1}} when the lower (xleft)
 #' and upper (xright) censoring limits correspond to the same exact value.
-#' 
+#'
 #' The details of the model are: \deqn{X_i|Y_i,\sigma \sim k(\cdot
 #' |Y_i,\sigma)}{X_i|Y_i,sigma ~ k(.|Y_i,sigma)} \deqn{Y_i|P \sim P,\quad
 #' i=1,\dots,n}{Y_i|P ~ P, i=1,...,n} \deqn{P \sim \textrm{NGG(\texttt{Alpha,
@@ -27,10 +27,10 @@
 #' \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process; \code{NGG(1,
 #' Kappa, 1/2; P_0)} defines a Normalized inverse Gaussian process; and
 #' \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process.
-#' 
+#'
 #' The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) +
 #' epsilon}. By default \code{epsilon=sd(x)/4}.
-#' 
+#'
 #' @param xleft Numeric vector. Lower limit of interval censoring. For exact
 #' data the same as xright
 #' @param xright Numeric vector. Upper limit of interval censoring. For exact
@@ -94,17 +94,17 @@
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
-#' 
+#'
 #' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
-#' 
+#'
 #' 3.- Kon Kam King, G., Arbel, J. and Prüenster, I. (2016). Species
 #' Sensitivity Distribution revisited: a Bayesian nonparametric approach. In
 #' preparation.
 #' @keywords distribution models nonparametrics
 #' @examples
-#' 
+#'
 #' ### Example 1
 #' \dontrun{
 #' # Data
@@ -123,7 +123,7 @@
 #' lines(xx,qx[,m],lty=3,col=4)
 #' detach()
 #' }
-#' 
+#'
 #' \dontrun{
 #' ### Example 2
 #' # Data
@@ -144,7 +144,7 @@
 #' hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
 #' detach()
 #' }
-#' 
+#'
 #' @export MixNRMI1cens
 MixNRMI1cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
@@ -290,19 +290,35 @@ MixNRMI1cens <-
 
 
 #' Plot the density estimate and the 95\% credible interval
-#' 
+#'
 #' The density estimate is the mean posterior density computed on the data
 #' points. It is not possible to display a histogram for censored data.
-#' 
-#' 
+#'
+#'
 #' @param fit A fitted object of class NRMI1cens
 #' @return A graph with the density estimate, the 95\% credible interval
 #' @examples
-#' 
+#'
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
 #' plot(out)
-#' 
+#'
 plot.NRMI1cens <- function(fit) {
   plotfit_censored(fit)
+}
+
+#' S3 method for class 'MixNRMI1cens'
+#'
+#' @param fit
+#'
+#' @return A visualisation of the important information about the object
+#' @export
+#'
+#' @examples
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
+#' print(out)
+print.NRMI1cens = function(fit){
+  kernel_name = tolower(give_kernel_name(fit$distr.k))
+  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", nrow(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
 }

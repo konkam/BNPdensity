@@ -1,14 +1,14 @@
 #' Normalized Random Measures Mixture of Type I
-#' 
+#'
 #' Bayesian nonparametric estimation based on normalized measures driven
 #' mixtures for locations.
-#' 
+#'
 #' This generic function fits a normalized random measure (NRMI) mixture model
 #' for density estimation (James et al. 2009). Specifically, the model assumes
 #' a normalized generalized gamma (NGG) prior for the locations (means) of the
 #' mixture kernel and a parametric prior for the common smoothing parameter
 #' sigma, leading to a semiparametric mixture model.
-#' 
+#'
 #' The details of the model are: \deqn{X_i|Y_i,\sigma \sim k(\cdot
 #' |Y_i,\sigma)}{X_i|Y_i,sigma ~ k(.|Y_i,sigma)} \deqn{Y_i|P \sim P,\quad
 #' i=1,\dots,n}{Y_i|P ~ P, i=1,...,n} \deqn{P \sim \textrm{NGG(\texttt{Alpha,
@@ -24,10 +24,10 @@
 #' \code{NGG(Alpha, 1, 0; P_0)} defines a Dirichlet process; \code{NGG(1,
 #' Kappa, 1/2; P_0)} defines a Normalized inverse Gaussian process; and
 #' \code{NGG(1, 0, Gama; P_0)} defines a normalized stable process.
-#' 
+#'
 #' The evaluation grid ranges from \code{min(x) - epsilon} to \code{max(x) +
 #' epsilon}. By default \code{epsilon=sd(x)/4}.
-#' 
+#'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
 #' @param Alpha Numeric constant. Total mass of the centering measure. See
@@ -59,28 +59,39 @@
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means, weights and
 #' Js.
-#' @return The function returns a list with the following components:
-#' \item{xx}{Numeric vector. Evaluation grid.} \item{qx}{Numeric array. Matrix
+#' @return The function returns a MixNRMI1 object. It is based on a list with the following components:
+#' \item{xx}{Numeric vector. Evaluation grid.}
+#' \item{qx}{Numeric array. Matrix
 #' of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
 #' (length(probs)+1)} with the posterior mean and the desired quantiles input
-#' in \code{probs}.} \item{cpo}{Numeric vector of \code{length(x)} with
-#' conditional predictive ordinates.} \item{R}{Numeric vector of
+#' in \code{probs}.}
+#' \item{cpo}{Numeric vector of \code{length(x)} with
+#' conditional predictive ordinates.}
+#' \item{R}{Numeric vector of
 #' \code{length(Nit*(1-Pbi))} with the number of mixtures components
-#' (clusters).} \item{S}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
-#' values of common standard deviation sigma.} \item{U}{Numeric vector of
+#' (clusters).}
+#' \item{S}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
+#' values of common standard deviation sigma.}
+#' \item{U}{Numeric vector of
 #' \code{length(Nit*(1-Pbi))} with the values of the latent variable U.}
 #' \item{Allocs}{List of \code{length(Nit*(1-Pbi))} with the clustering
-#' allocations.} \item{means}{List of \code{length(Nit*(1-Pbi))} with the
-#' cluster means (locations). Only if extras = TRUE.} \item{weights}{List of
+#' allocations.}
+#' \item{means}{List of \code{length(Nit*(1-Pbi))} with the
+#' cluster means (locations). Only if extras = TRUE.}
+#' \item{weights}{List of
 #' \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
 #' \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights
-#' (jump sizes). Only if extras = TRUE.} \item{Nm}{Integer constant. Number of
+#' (jump sizes). Only if extras = TRUE.}
+#' \item{Nm}{Integer constant. Number of
 #' jumps of the continuous component of the unnormalized process.}
 #' \item{Nx}{Integer constant. Number of grid points for the evaluation of the
-#' density estimate.} \item{Nit}{Integer constant. Number of MCMC iterations.}
+#' density estimate.}
+#' \item{Nit}{Integer constant. Number of MCMC iterations.}
 #' \item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
 #' \item{procTime}{Numeric vector with execution time provided by
 #' \code{proc.time} function.}
+#' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
+#' \item{data}{Data used for the fit}
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
@@ -88,13 +99,13 @@
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
-#' 
+#'
 #' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
 #' @keywords distribution models nonparametrics
 #' @examples
-#' 
+#'
 #' ### Example 1
 #' \dontrun{
 #' # Data
@@ -113,7 +124,7 @@
 #' lines(xx,qx[,m],lty=3,col=4)
 #' detach()
 #' }
-#' 
+#'
 #' ### Example 2
 #' ## Do not run
 #' # set.seed(150520)
@@ -156,7 +167,7 @@
 #' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
 #' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
 #' detach()
-#' 
+#'
 #' ### Example 3
 #' ## Do not run
 #' # set.seed(150520)
@@ -165,7 +176,7 @@
 #' #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
 #' #                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
-#' 
+#'
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
 #' # Data
@@ -200,7 +211,7 @@
 #' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
 #' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
 #' detach()
-#' 
+#'
 #' @export MixNRMI1
 MixNRMI1 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
@@ -332,24 +343,36 @@ MixNRMI1 <-
 
 
 #' Plot the density estimate and the 95\% credible interval
-#' 
+#'
 #' The density estimate is the mean posterior density computed on the data
 #' points.
-#' 
-#' 
+#'
+#'
 #' @param fit A fitted object of class NRMI1
 #' @return A graph with the density estimate, the 95\% credible interval and a
 #' histogram of the data
 #' @examples
-#' 
+#'
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' plot(out)
-#' 
+#'
 plot.NRMI1 <- function(fit) {
   plotfit_noncensored(fit)
 }
 
-# print.NRMI1 = function(fit){
-#
-# }
+#' S3 method for class 'MixNRMI1'
+#'
+#' @param fit
+#'
+#' @return A visualisation of the important information about the object
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI1(acidity, Nit = 50)
+#' print(out)
+print.NRMI1 = function(fit){
+  kernel_name = tolower(give_kernel_name(fit$distr.k))
+  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
+}

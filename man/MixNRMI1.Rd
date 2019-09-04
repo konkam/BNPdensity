@@ -61,28 +61,39 @@ See details.}
 Js.}
 }
 \value{
-The function returns a list with the following components:
-\item{xx}{Numeric vector. Evaluation grid.} \item{qx}{Numeric array. Matrix
+The function returns a MixNRMI1 object. It is based on a list with the following components:
+\item{xx}{Numeric vector. Evaluation grid.}
+\item{qx}{Numeric array. Matrix
 of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
 (length(probs)+1)} with the posterior mean and the desired quantiles input
-in \code{probs}.} \item{cpo}{Numeric vector of \code{length(x)} with
-conditional predictive ordinates.} \item{R}{Numeric vector of
+in \code{probs}.}
+\item{cpo}{Numeric vector of \code{length(x)} with
+conditional predictive ordinates.}
+\item{R}{Numeric vector of
 \code{length(Nit*(1-Pbi))} with the number of mixtures components
-(clusters).} \item{S}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
-values of common standard deviation sigma.} \item{U}{Numeric vector of
+(clusters).}
+\item{S}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
+values of common standard deviation sigma.}
+\item{U}{Numeric vector of
 \code{length(Nit*(1-Pbi))} with the values of the latent variable U.}
 \item{Allocs}{List of \code{length(Nit*(1-Pbi))} with the clustering
-allocations.} \item{means}{List of \code{length(Nit*(1-Pbi))} with the
-cluster means (locations). Only if extras = TRUE.} \item{weights}{List of
+allocations.}
+\item{means}{List of \code{length(Nit*(1-Pbi))} with the
+cluster means (locations). Only if extras = TRUE.}
+\item{weights}{List of
 \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
 \item{Js}{List of \code{length(Nit*(1-Pbi))} with the unnormalized weights
-(jump sizes). Only if extras = TRUE.} \item{Nm}{Integer constant. Number of
+(jump sizes). Only if extras = TRUE.}
+\item{Nm}{Integer constant. Number of
 jumps of the continuous component of the unnormalized process.}
 \item{Nx}{Integer constant. Number of grid points for the evaluation of the
-density estimate.} \item{Nit}{Integer constant. Number of MCMC iterations.}
+density estimate.}
+\item{Nit}{Integer constant. Number of MCMC iterations.}
 \item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
 \item{procTime}{Numeric vector with execution time provided by
 \code{proc.time} function.}
+\item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
+\item{data}{Data used for the fit}
 }
 \description{
 Bayesian nonparametric estimation based on normalized measures driven

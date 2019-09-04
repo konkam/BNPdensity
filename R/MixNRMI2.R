@@ -1,14 +1,14 @@
 #' Normalized Random Measures Mixture of Type II
-#' 
+#'
 #' Bayesian nonparametric estimation based on normalized measures driven
 #' mixtures for locations and scales.
-#' 
+#'
 #' This generic function fits a normalized random measure (NRMI) mixture model
 #' for density estimation (James et al. 2009). Specifically, the model assumes
 #' a normalized generalized gamma (NGG) prior for both, locations (means) and
 #' standard deviations, of the mixture kernel, leading to a fully nonparametric
 #' mixture model.
-#' 
+#'
 #' The details of the model are: \deqn{X_i|Y_i,Z_i \sim
 #' k(\cdot|Y_i,Z_i)}{X_i|Y_i,Z_i ~ k(.|Y_i,Z_i)} \deqn{(Y_i,Z_i)|P \sim P,
 #' i=1,\dots,n}{(Y_i,Z_i)|P ~ P, i=1,...,n} \deqn{P \sim
@@ -25,7 +25,7 @@
 #' Normalized inverse Gaussian process; and \code{NGG(1, 0, Gama; P_0)} defines
 #' a normalized stable process. The evaluation grid ranges from \code{min(x) -
 #' epsilon} to \code{max(x) + epsilon}. By default \code{epsilon=sd(x)/4}.
-#' 
+#'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
 #' @param Alpha Numeric constant. Total mass of the centering measure.  See
@@ -90,13 +90,13 @@
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
-#' 
+#'
 #' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
 #' @keywords distribution models nonparametrics
 #' @examples
-#' 
+#'
 #' \dontrun{
 #' ### Example 1
 #' # Data
@@ -115,7 +115,7 @@
 #' lines(xx,qx[,m],lty=3,col=4)
 #' detach()
 #' }
-#' 
+#'
 #' ### Example 2
 #' ## Do not run
 #' # set.seed(150520)
@@ -155,7 +155,7 @@
 #' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
 #' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
 #' detach()
-#' 
+#'
 #' ### Example 3
 #' ## Do not run
 #' # set.seed(150520)
@@ -195,7 +195,7 @@
 #' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
 #' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
 #' detach()
-#' 
+#'
 #' @export MixNRMI2
 MixNRMI2 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
@@ -330,20 +330,36 @@ MixNRMI2 <-
 
 
 #' Plot the density estimate and the 95\% credible interval
-#' 
+#'
 #' The density estimate is the mean posterior density computed on the data
 #' points.
-#' 
-#' 
+#'
+#'
 #' @param fit A fitted object of class NRMI2
 #' @return A graph with the density estimate, the 95\% credible interval and a
 #' histogram of the data
 #' @examples
-#' 
+#'
 #' data(acidity)
 #' out <- MixNRMI2(acidity, Nit = 50)
 #' plot(out)
-#' 
+#'
 plot.NRMI2 <- function(fit) {
   plotfit_noncensored(fit)
+}
+
+#' S3 method for class 'MixNRMI2'
+#'
+#' @param fit
+#'
+#' @return A visualisation of the important information about the object
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI2(acidity, Nit = 50)
+#' print(out)
+print.NRMI2 = function(fit){
+  kernel_name = tolower(give_kernel_name(fit$distr.k))
+  writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", length(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
 }
