@@ -92,10 +92,11 @@
 #' \code{proc.time} function.}
 #' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 #' \item{data}{Data used for the fit}
+#' \item{NRMI_params} A named list with the parameters of the NRMI process
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
-#' \code{\link{MixNRMI2cens}}
+#' \code{\link{MixNRMI2cens}}, \code{\link{mutlMixNRMI1}}
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
@@ -116,12 +117,12 @@
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
 #' m <- ncol(qx)
-#' ymax <- max(qx[,m])
-#' par(mfrow=c(1,1))
-#' hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-#' lines(xx,qx[,1],lwd=2)
-#' lines(xx,qx[,2],lty=3,col=4)
-#' lines(xx,qx[,m],lty=3,col=4)
+#' ymax <- max(qx[, m])
+#' par(mfrow = c(1, 1))
+#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+#' lines(xx, qx[, 1], lwd = 2)
+#' lines(xx, qx[, 2], lty = 3, col = 4)
+#' lines(xx, qx[, m], lty = 3, col = 4)
 #' detach()
 #' }
 #'
@@ -142,30 +143,30 @@
 #' attach(Enzyme1.out)
 #' # Plotting density estimate + 95% credible interval
 #' m <- ncol(qx)
-#' ymax <- max(qx[,m])
-#' par(mfrow=c(1,1))
-#' hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-#' lines(xx,qx[,1],lwd=2)
-#' lines(xx,qx[,2],lty=3,col=4)
-#' lines(xx,qx[,m],lty=3,col=4)
+#' ymax <- max(qx[, m])
+#' par(mfrow = c(1, 1))
+#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+#' lines(xx, qx[, 1], lwd = 2)
+#' lines(xx, qx[, 2], lty = 3, col = 4)
+#' lines(xx, qx[, m], lty = 3, col = 4)
 #' # Plotting number of clusters
-#' par(mfrow=c(2,1))
-#' plot(R,type="l",main="Trace of R")
-#' hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+#' par(mfrow = c(2, 1))
+#' plot(R, type = "l", main = "Trace of R")
+#' hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 #' # Plotting sigma
-#' par(mfrow=c(2,1))
-#' plot(S,type="l",main="Trace of sigma")
-#' hist(S,nclass=20,probability=TRUE,main="Histogram of sigma")
+#' par(mfrow = c(2, 1))
+#' plot(S, type = "l", main = "Trace of sigma")
+#' hist(S, nclass = 20, probability = TRUE, main = "Histogram of sigma")
 #' # Plotting u
-#' par(mfrow=c(2,1))
-#' plot(U,type="l",main="Trace of U")
-#' hist(U,nclass=20,probability=TRUE,main="Histogram of U")
+#' par(mfrow = c(2, 1))
+#' plot(U, type = "l", main = "Trace of U")
+#' hist(U, nclass = 20, probability = TRUE, main = "Histogram of U")
 #' # Plotting cpo
-#' par(mfrow=c(2,1))
-#' plot(cpo,main="Scatter plot of CPO's")
-#' boxplot(cpo,horizontal=TRUE,main="Boxplot of CPO's")
-#' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
-#' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
+#' par(mfrow = c(2, 1))
+#' plot(cpo, main = "Scatter plot of CPO's")
+#' boxplot(cpo, horizontal = TRUE, main = "Boxplot of CPO's")
+#' print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
+#' print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 #' detach()
 #'
 #' ### Example 3
@@ -186,32 +187,31 @@
 #' attach(Galaxy1.out)
 #' # Plotting density estimate + 95% credible interval
 #' m <- ncol(qx)
-#' ymax <- max(qx[,m])
-#' par(mfrow=c(1,1))
-#' hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-#' lines(xx,qx[,1],lwd=2)
-#' lines(xx,qx[,2],lty=3,col=4)
-#' lines(xx,qx[,m],lty=3,col=4)
+#' ymax <- max(qx[, m])
+#' par(mfrow = c(1, 1))
+#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+#' lines(xx, qx[, 1], lwd = 2)
+#' lines(xx, qx[, 2], lty = 3, col = 4)
+#' lines(xx, qx[, m], lty = 3, col = 4)
 #' # Plotting number of clusters
-#' par(mfrow=c(2,1))
-#' plot(R,type="l",main="Trace of R")
-#' hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+#' par(mfrow = c(2, 1))
+#' plot(R, type = "l", main = "Trace of R")
+#' hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 #' # Plotting sigma
-#' par(mfrow=c(2,1))
-#' plot(S,type="l",main="Trace of sigma")
-#' hist(S,nclass=20,probability=TRUE,main="Histogram of sigma")
+#' par(mfrow = c(2, 1))
+#' plot(S, type = "l", main = "Trace of sigma")
+#' hist(S, nclass = 20, probability = TRUE, main = "Histogram of sigma")
 #' # Plotting u
-#' par(mfrow=c(2,1))
-#' plot(U,type="l",main="Trace of U")
-#' hist(U,nclass=20,probability=TRUE,main="Histogram of U")
+#' par(mfrow = c(2, 1))
+#' plot(U, type = "l", main = "Trace of U")
+#' hist(U, nclass = 20, probability = TRUE, main = "Histogram of U")
 #' # Plotting cpo
-#' par(mfrow=c(2,1))
-#' plot(cpo,main="Scatter plot of CPO's")
-#' boxplot(cpo,horizontal=TRUE,main="Boxplot of CPO's")
-#' print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
-#' print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
+#' par(mfrow = c(2, 1))
+#' plot(cpo, main = "Scatter plot of CPO's")
+#' boxplot(cpo, horizontal = TRUE, main = "Boxplot of CPO's")
+#' print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
+#' print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 #' detach()
-#'
 #' @export MixNRMI1
 MixNRMI1 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
@@ -329,7 +329,8 @@ MixNRMI1 <-
     res <- list(
       xx = xx, qx = qx, cpo = cpo, R = R, S = S,
       U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit,
-      Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = x
+      Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = x,
+      NRMI_params = list("Alpha" = Alpha, "Kappa" = Kappa, "Gamma" = Gama)
     )
     if (extras) {
       res$means <- means
@@ -356,14 +357,13 @@ MixNRMI1 <-
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' plot(out)
-#'
 plot.NRMI1 <- function(fit) {
   plotfit_noncensored(fit)
 }
 
 #' S3 method for class 'MixNRMI1'
 #'
-#' @param fit
+#' @param fit A fitted object of class NRMI1
 #'
 #' @return A visualisation of the important information about the object
 #' @export
@@ -372,7 +372,24 @@ plot.NRMI1 <- function(fit) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' print(out)
-print.NRMI1 = function(fit){
-  kernel_name = tolower(give_kernel_name(fit$distr.k))
-  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
+print.NRMI1 <- function(fit) {
+  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(fit$data), "data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100 * fit$Pbi, "% discarded for burn-in."))
+}
+
+#' S3 method for class 'MixNRMI1'
+#'
+#' @param fit A fitted object of class NRMI1
+#'
+#' @return Prints out the text for the summary S3 methods
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI1(acidity, Nit = 50)
+#' summary(out)
+summary.NRMI1 <- function(fit, number_of_clusters = FALSE) {
+  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+  kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
+  summarytext(fit, kernel_comment, number_of_clusters = number_of_clusters)
 }

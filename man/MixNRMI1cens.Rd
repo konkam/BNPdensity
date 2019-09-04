@@ -87,6 +87,9 @@ density estimate.} \item{Nit}{Integer constant. Number of MCMC iterations.}
 \item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
 \item{procTime}{Numeric vector with execution time provided by
 \code{proc.time} function.}
+\item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
+\item{data}{Data used for the fit}
+\item{NRMI_params} A named list with the parameters of the NRMI process
 }
 \description{
 Bayesian nonparametric estimation based on normalized measures driven

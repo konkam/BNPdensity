@@ -94,6 +94,7 @@ density estimate.}
 \code{proc.time} function.}
 \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 \item{data}{Data used for the fit}
+\item{NRMI_params} A named list with the parameters of the NRMI process
 }
 \description{
 Bayesian nonparametric estimation based on normalized measures driven
@@ -141,12 +142,12 @@ out <- MixNRMI1(x)
 # Plotting density estimate + 95\% credible interval
 attach(out)
 m <- ncol(qx)
-ymax <- max(qx[,m])
-par(mfrow=c(1,1))
-hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-lines(xx,qx[,1],lwd=2)
-lines(xx,qx[,2],lty=3,col=4)
-lines(xx,qx[,m],lty=3,col=4)
+ymax <- max(qx[, m])
+par(mfrow = c(1, 1))
+hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+lines(xx, qx[, 1], lwd = 2)
+lines(xx, qx[, 2], lty = 3, col = 4)
+lines(xx, qx[, m], lty = 3, col = 4)
 detach()
 }
 
@@ -167,30 +168,30 @@ data(Enzyme1.out)
 attach(Enzyme1.out)
 # Plotting density estimate + 95\% credible interval
 m <- ncol(qx)
-ymax <- max(qx[,m])
-par(mfrow=c(1,1))
-hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-lines(xx,qx[,1],lwd=2)
-lines(xx,qx[,2],lty=3,col=4)
-lines(xx,qx[,m],lty=3,col=4)
+ymax <- max(qx[, m])
+par(mfrow = c(1, 1))
+hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+lines(xx, qx[, 1], lwd = 2)
+lines(xx, qx[, 2], lty = 3, col = 4)
+lines(xx, qx[, m], lty = 3, col = 4)
 # Plotting number of clusters
-par(mfrow=c(2,1))
-plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+par(mfrow = c(2, 1))
+plot(R, type = "l", main = "Trace of R")
+hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 # Plotting sigma
-par(mfrow=c(2,1))
-plot(S,type="l",main="Trace of sigma")
-hist(S,nclass=20,probability=TRUE,main="Histogram of sigma")
+par(mfrow = c(2, 1))
+plot(S, type = "l", main = "Trace of sigma")
+hist(S, nclass = 20, probability = TRUE, main = "Histogram of sigma")
 # Plotting u
-par(mfrow=c(2,1))
-plot(U,type="l",main="Trace of U")
-hist(U,nclass=20,probability=TRUE,main="Histogram of U")
+par(mfrow = c(2, 1))
+plot(U, type = "l", main = "Trace of U")
+hist(U, nclass = 20, probability = TRUE, main = "Histogram of U")
 # Plotting cpo
-par(mfrow=c(2,1))
-plot(cpo,main="Scatter plot of CPO's")
-boxplot(cpo,horizontal=TRUE,main="Boxplot of CPO's")
-print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
-print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
+par(mfrow = c(2, 1))
+plot(cpo, main = "Scatter plot of CPO's")
+boxplot(cpo, horizontal = TRUE, main = "Boxplot of CPO's")
+print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
+print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 detach()
 
 ### Example 3
@@ -211,32 +212,31 @@ data(Galaxy1.out)
 attach(Galaxy1.out)
 # Plotting density estimate + 95\% credible interval
 m <- ncol(qx)
-ymax <- max(qx[,m])
-par(mfrow=c(1,1))
-hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-lines(xx,qx[,1],lwd=2)
-lines(xx,qx[,2],lty=3,col=4)
-lines(xx,qx[,m],lty=3,col=4)
+ymax <- max(qx[, m])
+par(mfrow = c(1, 1))
+hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+lines(xx, qx[, 1], lwd = 2)
+lines(xx, qx[, 2], lty = 3, col = 4)
+lines(xx, qx[, m], lty = 3, col = 4)
 # Plotting number of clusters
-par(mfrow=c(2,1))
-plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+par(mfrow = c(2, 1))
+plot(R, type = "l", main = "Trace of R")
+hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 # Plotting sigma
-par(mfrow=c(2,1))
-plot(S,type="l",main="Trace of sigma")
-hist(S,nclass=20,probability=TRUE,main="Histogram of sigma")
+par(mfrow = c(2, 1))
+plot(S, type = "l", main = "Trace of sigma")
+hist(S, nclass = 20, probability = TRUE, main = "Histogram of sigma")
 # Plotting u
-par(mfrow=c(2,1))
-plot(U,type="l",main="Trace of U")
-hist(U,nclass=20,probability=TRUE,main="Histogram of U")
+par(mfrow = c(2, 1))
+plot(U, type = "l", main = "Trace of U")
+hist(U, nclass = 20, probability = TRUE, main = "Histogram of U")
 # Plotting cpo
-par(mfrow=c(2,1))
-plot(cpo,main="Scatter plot of CPO's")
-boxplot(cpo,horizontal=TRUE,main="Boxplot of CPO's")
-print(paste('Average log(CPO)=',round(mean(log(cpo)),4)))
-print(paste('Median log(CPO)=',round(median(log(cpo)),4)))
+par(mfrow = c(2, 1))
+plot(cpo, main = "Scatter plot of CPO's")
+boxplot(cpo, horizontal = TRUE, main = "Boxplot of CPO's")
+print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
+print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 detach()
-
 }
 \references{
 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
@@ -249,7 +249,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 }
 \seealso{
 \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
-\code{\link{MixNRMI2cens}}
+\code{\link{MixNRMI2cens}}, \code{\link{mutlMixNRMI1}}
 }
 \author{
 Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.

@@ -66,27 +66,42 @@
 #' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
 #' weights and Js.
 #' @return The function returns a list with the following components:
-#' \item{xx}{Numeric vector. Evaluation grid.} \item{qx}{Numeric array. Matrix
+#' \item{xx}{Numeric vector. Evaluation grid.}
+#' \item{qx}{Numeric array. Matrix
 #' of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
 #' (length(probs)+1)} with the posterior mean and the desired quantiles input
-#' in \code{probs}.} \item{cpo}{Numeric vector of \code{length(x)} with
-#' conditional predictive ordinates.} \item{R}{Numeric vector of
+#' in \code{probs}.}
+#' \item{cpo}{Numeric vector of \code{length(x)} with
+#' conditional predictive ordinates.}
+#' \item{R}{Numeric vector of
 #' \code{length(Nit*(1-Pbi))} with the number of mixtures components
-#' (clusters).} \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
-#' values of the latent variable U.} \item{Allocs}{List of
+#' (clusters).}
+#' \item{U}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
+#' values of the latent variable U.}
+#' \item{Allocs}{List of
 #' \code{length(Nit*(1-Pbi))} with the clustering allocations.}
 #' \item{means}{List of \code{length(Nit*(1-Pbi))} with the cluster means
-#' (locations). Only if extras = TRUE.} \item{sigmas}{Numeric vector of
+#' (locations). Only if extras = TRUE.}
+#' \item{sigmas}{Numeric vector of
 #' \code{length(Nit*(1-Pbi))} with the cluster standard deviations. Only if
-#' extras = TRUE.} \item{weights}{List of \code{length(Nit*(1-Pbi))} with the
-#' mixture weights. Only if extras = TRUE.} \item{Js}{List of
+#' extras = TRUE.}
+#' \item{weights}{List of \code{length(Nit*(1-Pbi))} with the
+#' mixture weights. Only if extras = TRUE.}
+#' \item{Js}{List of
 #' \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
-#' if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
-#' continuous component of the unnormalized process.} \item{Nx}{Integer
+#' if extras = TRUE.}
+#' \item{Nm}{Integer constant. Number of jumps of the
+#' continuous component of the unnormalized process.}
+#' \item{Nx}{Integer
 #' constant. Number of grid points for the evaluation of the density estimate.}
-#' \item{Nit}{Integer constant. Number of MCMC iterations.} \item{Pbi}{Numeric
-#' constant. Burn-in period proportion of \code{Nit}.} \item{procTime}{Numeric
+#' \item{Nit}{Integer constant. Number of MCMC iterations.}
+#' \item{Pbi}{Numeric
+#' constant. Burn-in period proportion of \code{Nit}.}
+#' \item{procTime}{Numeric
 #' vector with execution time provided by \code{proc.time} function.}
+#' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
+#' \item{data}{Data used for the fit}
+#' \item{NRMI_params} A named list with the parameters of the NRMI process
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1}},
@@ -285,7 +300,8 @@ MixNRMI2cens <-
     res <- list(
       xx = xx, qx = qx, cpo = cpo, R = R, U = U,
       Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi,
-      procTime = procTime, distr.k = distr.k, data = data.frame(left = xleft, right = xright)
+      procTime = procTime, distr.k = distr.k, data = data.frame(left = xleft, right = xright),
+      NRMI_params = list("Alpha" = Alpha, "Kappa" = Kappa, "Gamma" = Gama)
     )
     if (extras) {
       res$means <- means
@@ -330,4 +346,21 @@ plot.NRMI2cens <- function(fit) {
 print.NRMI2cens = function(fit){
   kernel_name = tolower(give_kernel_name(fit$distr.k))
   writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", nrow(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
+}
+
+#' S3 method for class 'MixNRMI2cens'
+#'
+#' @param fit A fitted object of class NRMI2cens
+#'
+#' @return Prints out the text for the summary S3 methods
+#' @export
+#'
+#' @examples
+#' data(salinity)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' summary(out)
+summary.NRMI2cens <- function(fit, number_of_clusters = FALSE) {
+  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+  kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
+  summarytext(fit, kernel_comment, number_of_clusters = number_of_clusters)
 }

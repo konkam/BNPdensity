@@ -87,6 +87,9 @@
 #' \item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
 #' \item{procTime}{Numeric vector with execution time provided by
 #' \code{proc.time} function.}
+#' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
+#' \item{data}{Data used for the fit}
+#' \item{NRMI_params} A named list with the parameters of the NRMI process
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
 #' @seealso \code{\link{MixNRMI1}}, \code{\link{MixNRMI2}},
@@ -277,7 +280,8 @@ MixNRMI1cens <-
     res <- list(
       xx = xx, qx = qx, cpo = cpo, R = R, S = S,
       U = U, Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit,
-      Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = data.frame(left = xleft, right = xright)
+      Pbi = Pbi, procTime = procTime, distr.k = distr.k, data = data.frame(left = xleft, right = xright),
+      NRMI_params = list("Alpha" = Alpha, "Kappa" = Kappa, "Gamma" = Gama)
     )
     if (extras) {
       res$means <- means
@@ -321,4 +325,21 @@ plot.NRMI1cens <- function(fit) {
 print.NRMI1cens = function(fit){
   kernel_name = tolower(give_kernel_name(fit$distr.k))
   writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", nrow(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
+}
+
+#' S3 method for class 'MixNRMI1cens'
+#'
+#' @param fit A fitted object of class NRMI1cens
+#'
+#' @return Summary of some relevant information on the fit
+#' @export
+#'
+#' @examples
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
+#' summary(out)
+summary.NRMI1cens <- function(fit, number_of_clusters = FALSE) {
+  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+  kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
+  summarytext(fit, kernel_comment, number_of_clusters = number_of_clusters)
 }
