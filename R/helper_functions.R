@@ -134,3 +134,17 @@ compute_thinning_grid <- function(Nit, thinning_to = 10) {
   }
   return(it_retained)
 }
+
+
+#' Add x and y
+#'
+#' This is a helper function for use in Reduce() over a list of vectors
+#'
+#' @param x first argument of the sum
+#' @param y second argument of the sum
+#'
+#' @return x + y
+#'
+#' @examples
+#' add(1,2)
+add <- function(x, y) {x + y}
