@@ -302,7 +302,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #'
 #' Convert the output of multMixNRMI into a coda mcmc object
 #'
-#'
+#' @importFrom  coda as.mcmc
 #' @param fitlist Output of multMixNRMI.
 #' @param thinning_to Final length of the chain after thinning.
 #' @return a coda::mcmc object
