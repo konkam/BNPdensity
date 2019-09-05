@@ -320,21 +320,22 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
 #' points.
 #'
 #'
-#' @param fitlist A fitted object of class multNRMI
+#' @param x An object of class multNRMI
+#' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval.
 #' Includes a histogram if the data is non censored.
 #' @examples
 #'
 #' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 #' plot(fit)
-plot.multNRMI <- function(fitlist) {
+plot.multNRMI <- function(x, ...) {
   # This assumes that chains have the same length and can be given equal weight when combining
-  res <- fitlist[[1]]
-  nchains <- length(fitlist)
+  res <- x[[1]]
+  nchains <- length(x)
   m <- ncol(res$qx)
-  res$qx[, 1] <- 1 / nchains * Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[, 1]))
-  res$qx[, 2] <- 1 / nchains * Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[, 2]))
-  res$qx[, m] <- 1 / nchains * Reduce(f = add, lapply(X = fitlist, FUN = function(x) x$qx[, m]))
+  res$qx[, 1] <- 1 / nchains * Reduce(f = add, lapply(X = x, FUN = function(x) x$qx[, 1]))
+  res$qx[, 2] <- 1 / nchains * Reduce(f = add, lapply(X = x, FUN = function(x) x$qx[, 2]))
+  res$qx[, m] <- 1 / nchains * Reduce(f = add, lapply(X = x, FUN = function(x) x$qx[, m]))
   plot(res)
 }
 

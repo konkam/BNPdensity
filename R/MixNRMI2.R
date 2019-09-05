@@ -347,7 +347,8 @@ MixNRMI2 <-
 #' points.
 #'
 #'
-#' @param fit A fitted object of class NRMI2
+#' @param x A fitted object of class NRMI2
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval and a
 #' histogram of the data
 #' @examples
@@ -355,8 +356,8 @@ MixNRMI2 <-
 #' data(acidity)
 #' out <- MixNRMI2(acidity, Nit = 50)
 #' plot(out)
-plot.NRMI2 <- function(fit) {
-  plotfit_noncensored(fit)
+plot.NRMI2 <- function(x, ...) {
+  plotfit_noncensored(x)
 }
 
 #' S3 method for class 'MixNRMI2'

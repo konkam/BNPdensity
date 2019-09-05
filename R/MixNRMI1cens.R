@@ -299,15 +299,16 @@ MixNRMI1cens <-
 #' points. It is not possible to display a histogram for censored data.
 #'
 #'
-#' @param fit A fitted object of class NRMI1cens
+#' @param x A fitted object of class MixNRMI1cens
+#' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval
 #' @examples
 #'
 #' data(salinity)
 #' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
 #' plot(out)
-plot.NRMI1cens <- function(fit) {
-  plotfit_censored(fit)
+plot.NRMI1cens <- function(x, ...) {
+  plotfit_censored(x)
 }
 
 #' S3 method for class 'MixNRMI1cens'
