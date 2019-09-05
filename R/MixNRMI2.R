@@ -351,6 +351,7 @@ MixNRMI2 <-
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval and a
 #' histogram of the data
+#' @export
 #' @examples
 #'
 #' data(acidity)

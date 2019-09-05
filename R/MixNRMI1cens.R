@@ -302,6 +302,7 @@ MixNRMI1cens <-
 #' @param x A fitted object of class MixNRMI1cens
 #' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval
+#' @export
 #' @examples
 #'
 #' data(salinity)

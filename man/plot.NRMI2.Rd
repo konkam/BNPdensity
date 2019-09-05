@@ -4,10 +4,12 @@
 \alias{plot.NRMI2}
 \title{Plot the density estimate and the 95\% credible interval}
 \usage{
-\method{plot}{NRMI2}(fit)
+\method{plot}{NRMI2}(x, ...)
 }
 \arguments{
-\item{fit}{A fitted object of class NRMI2}
+\item{x}{A fitted object of class NRMI2}
+
+\item{...}{Further arguments to be passed to generic function, ignored at the moment}
 }
 \value{
 A graph with the density estimate, the 95\% credible interval and a
