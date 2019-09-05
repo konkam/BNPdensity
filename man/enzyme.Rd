@@ -15,7 +15,6 @@ involved in the metabolism of carcinogenetic substances, among a group of
 
 data(enzyme)
 hist(enzyme)
-
 }
 \references{
 Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J.

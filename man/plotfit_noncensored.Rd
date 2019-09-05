@@ -23,5 +23,4 @@ points.
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
 plot(out)
-
 }

@@ -19,5 +19,4 @@ Test if the data is censored
 
 data(salinity)
 BNPdensity:::is_censored(salinity)
-
 }

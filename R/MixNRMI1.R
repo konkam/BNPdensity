@@ -92,11 +92,11 @@
 #' \code{proc.time} function.}
 #' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 #' \item{data}{Data used for the fit}
-#' \item{NRMI_params} A named list with the parameters of the NRMI process
+#' \item{NRMI_params}{A named list with the parameters of the NRMI process}
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
-#' \code{\link{MixNRMI2cens}}, \code{\link{mutlMixNRMI1}}
+#' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
@@ -363,7 +363,8 @@ plot.NRMI1 <- function(fit) {
 
 #' S3 method for class 'MixNRMI1'
 #'
-#' @param fit A fitted object of class NRMI1
+#' @param x A fitted object of class NRMI1
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A visualisation of the important information about the object
 #' @export
@@ -372,14 +373,16 @@ plot.NRMI1 <- function(fit) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' print(out)
-print.NRMI1 <- function(fit) {
-  kernel_name <- tolower(give_kernel_name(fit$distr.k))
-  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(fit$data), "data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100 * fit$Pbi, "% discarded for burn-in."))
+print.NRMI1 <- function(x, ...) {
+  kernel_name <- tolower(give_kernel_name(x$distr.k))
+  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
 }
 
 #' S3 method for class 'MixNRMI1'
 #'
-#' @param fit A fitted object of class NRMI1
+#' @param object A fitted object of class NRMI1cens
+#' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return Prints out the text for the summary S3 methods
 #' @export
@@ -388,8 +391,8 @@ print.NRMI1 <- function(fit) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' summary(out)
-summary.NRMI1 <- function(fit, number_of_clusters = FALSE) {
-  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+summary.NRMI1 <- function(object, number_of_clusters = FALSE, ...) {
+  kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
-  summarytext(fit, kernel_comment, number_of_clusters = number_of_clusters)
+  summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
 }

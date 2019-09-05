@@ -5,9 +5,9 @@
 #' @return A string containing a comment on the NRMI process
 #'
 #' @examples
-#' comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4))
-#' comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.4))
-#' comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.5))
+#' BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4))
+#' BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.4))
+#' BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.5))
 comment_on_NRMI_type <- function(NRMI_param = list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4)) {
   if (NRMI_param$Gamma == 0) {
     return(paste("Dirichlet process with concentration parameter Alpha =", NRMI_param$Alpha))

@@ -29,5 +29,4 @@ set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(salinity$left, salinity$right, extras = TRUE, Nit = 100)
 GOFplots(out)
-
 }

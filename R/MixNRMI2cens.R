@@ -101,11 +101,11 @@
 #' vector with execution time provided by \code{proc.time} function.}
 #' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 #' \item{data}{Data used for the fit}
-#' \item{NRMI_params} A named list with the parameters of the NRMI process
+#' \item{NRMI_params}{A named list with the parameters of the NRMI process}
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
-#' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1}},
-#' \code{\link{MixNRMI1cens}}
+#' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
+#' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
@@ -126,16 +126,16 @@
 #' data(acidity)
 #' x <- acidity
 #' # Fitting the model under default specifications
-#' out <- MixNRMI2cens(x,x)
+#' out <- MixNRMI2cens(x, x)
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
 #' m <- ncol(qx)
-#' ymax <- max(qx[,m])
-#' par(mfrow=c(1,1))
-#' hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-#' lines(xx,qx[,1],lwd=2)
-#' lines(xx,qx[,2],lty=3,col=4)
-#' lines(xx,qx[,m],lty=3,col=4)
+#' ymax <- max(qx[, m])
+#' par(mfrow = c(1, 1))
+#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+#' lines(xx, qx[, 1], lwd = 2)
+#' lines(xx, qx[, 2], lty = 3, col = 4)
+#' lines(xx, qx[, m], lty = 3, col = 4)
 #' detach()
 #' }
 #'
@@ -144,20 +144,22 @@
 #' # Data
 #' data(salinity)
 #' # Fitting the model under special specifications
-#' out <- MixNRMI2cens(xleft=salinity$left,xright=salinity$right,Nit=5000,distr.pz0=10,
-#'   mu.pz0=1,sigma.pz0=2)
+#' out <- MixNRMI2cens(
+#'   xleft = salinity$left, xright = salinity$right, Nit = 5000, distr.pz0 = 10,
+#'   mu.pz0 = 1, sigma.pz0 = 2
+#' )
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
 #' m <- ncol(qx)
-#' ymax <- max(qx[,m])
-#' par(mfrow=c(1,1))
-#' plot(xx,qx$"q0.5",lwd=2,type="l",ylab="Density",xlab="Data")
-#' lines(xx,qx[,2],lty=3,col=4)
-#' lines(xx,qx[,m],lty=3,col=4)
+#' ymax <- max(qx[, m])
+#' par(mfrow = c(1, 1))
+#' plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
+#' lines(xx, qx[, 2], lty = 3, col = 4)
+#' lines(xx, qx[, m], lty = 3, col = 4)
 #' # Plotting number of clusters
-#' par(mfrow=c(2,1))
-#' plot(R,type="l",main="Trace of R")
-#' hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+#' par(mfrow = c(2, 1))
+#' plot(R, type = "l", main = "Trace of R")
+#' hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 #' detach()
 #' }
 #'
@@ -327,14 +329,14 @@ MixNRMI2cens <-
 #' data(salinity)
 #' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' plot(out)
-#'
 plot.NRMI2cens <- function(fit) {
   plotfit_censored(fit)
 }
 
 #' S3 method for class 'MixNRMI2cens'
 #'
-#' @param fit
+#' @param x A fitted object of class MixNRMI2cens
+#' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #'
 #' @return A visualisation of the important information about the object
 #' @export
@@ -343,14 +345,16 @@ plot.NRMI2cens <- function(fit) {
 #' data(salinity)
 #' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' print(out)
-print.NRMI2cens = function(fit){
-  kernel_name = tolower(give_kernel_name(fit$distr.k))
-  writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", nrow(fit$data),"data points.\nThe MCMC algorithm was run for", fit$Nit, "iterations with", 100*fit$Pbi, "% discarded for burn-in."))
+print.NRMI2cens <- function(x, ...) {
+  kernel_name <- tolower(give_kernel_name(x$distr.k))
+  writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", nrow(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
 }
 
 #' S3 method for class 'MixNRMI2cens'
 #'
-#' @param fit A fitted object of class NRMI2cens
+#' @param object A fitted object of class NRMI1cens
+#' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return Prints out the text for the summary S3 methods
 #' @export
@@ -359,8 +363,8 @@ print.NRMI2cens = function(fit){
 #' data(salinity)
 #' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' summary(out)
-summary.NRMI2cens <- function(fit, number_of_clusters = FALSE) {
-  kernel_name <- tolower(give_kernel_name(fit$distr.k))
+summary.NRMI2cens <- function(object, number_of_clusters = FALSE, ...) {
+  kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
-  summarytext(fit, kernel_comment, number_of_clusters = number_of_clusters)
+  summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
 }

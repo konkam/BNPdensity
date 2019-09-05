@@ -15,6 +15,5 @@ See function MixNRMI1
 \examples{
 
 data(Enzyme1.out)
-
 }
 \keyword{datasets}

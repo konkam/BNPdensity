@@ -4,10 +4,12 @@
 \alias{print.multNRMI}
 \title{S3 method for class 'multNRMI'}
 \usage{
-\method{print}{multNRMI}(fitlist)
+\method{print}{multNRMI}(x, ...)
 }
 \arguments{
-\item{fitlist}{An object of class multNRMI}
+\item{x}{An object of class multNRMI}
+
+\item{...}{Further arguments to be passed to generic functions, ignored at the moment}
 }
 \value{
 A visualisation of the important information about the object

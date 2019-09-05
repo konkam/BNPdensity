@@ -4,10 +4,12 @@
 \alias{print.NRMI2cens}
 \title{S3 method for class 'MixNRMI2cens'}
 \usage{
-\method{print}{NRMI2cens}(fit)
+\method{print}{NRMI2cens}(x, ...)
 }
 \arguments{
-\item{fit}{}
+\item{x}{A fitted object of class MixNRMI2cens}
+
+\item{...}{Further arguments to be passed to generic functions, ignored at the moment}
 }
 \value{
 A visualisation of the important information about the object

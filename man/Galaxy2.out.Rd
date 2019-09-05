@@ -16,6 +16,5 @@ See function MixNRMI2.
 \examples{
 
 data(Galaxy2.out)
-
 }
 \keyword{datasets}

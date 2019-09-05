@@ -14,7 +14,6 @@ Wisconsin.
 
 data(acidity)
 hist(acidity)
-
 }
 \references{
 Crawford, S. L., DeGroot, M. H., Kadane, J. B. and Small, M. J.

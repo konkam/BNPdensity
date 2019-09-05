@@ -94,7 +94,7 @@ density estimate.}
 \code{proc.time} function.}
 \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 \item{data}{Data used for the fit}
-\item{NRMI_params} A named list with the parameters of the NRMI process
+\item{NRMI_params}{A named list with the parameters of the NRMI process}
 }
 \description{
 Bayesian nonparametric estimation based on normalized measures driven
@@ -249,7 +249,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 }
 \seealso{
 \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
-\code{\link{MixNRMI2cens}}, \code{\link{mutlMixNRMI1}}
+\code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
 Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.

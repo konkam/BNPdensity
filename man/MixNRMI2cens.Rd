@@ -108,7 +108,7 @@ constant. Burn-in period proportion of \code{Nit}.}
 vector with execution time provided by \code{proc.time} function.}
 \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 \item{data}{Data used for the fit}
-\item{NRMI_params} A named list with the parameters of the NRMI process
+\item{NRMI_params}{A named list with the parameters of the NRMI process}
 }
 \description{
 Bayesian nonparametric estimation based on normalized measures driven
@@ -150,16 +150,16 @@ epsilon} to \code{max(x) + epsilon}. By default \code{epsilon=sd(x)/4}.
 data(acidity)
 x <- acidity
 # Fitting the model under default specifications
-out <- MixNRMI2cens(x,x)
+out <- MixNRMI2cens(x, x)
 # Plotting density estimate + 95\% credible interval
 attach(out)
 m <- ncol(qx)
-ymax <- max(qx[,m])
-par(mfrow=c(1,1))
-hist(x,probability=TRUE,breaks=20,col=grey(.9),ylim=c(0,ymax))
-lines(xx,qx[,1],lwd=2)
-lines(xx,qx[,2],lty=3,col=4)
-lines(xx,qx[,m],lty=3,col=4)
+ymax <- max(qx[, m])
+par(mfrow = c(1, 1))
+hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
+lines(xx, qx[, 1], lwd = 2)
+lines(xx, qx[, 2], lty = 3, col = 4)
+lines(xx, qx[, m], lty = 3, col = 4)
 detach()
 }
 
@@ -168,20 +168,22 @@ detach()
 # Data
 data(salinity)
 # Fitting the model under special specifications
-out <- MixNRMI2cens(xleft=salinity$left,xright=salinity$right,Nit=5000,distr.pz0=10,
-  mu.pz0=1,sigma.pz0=2)
+out <- MixNRMI2cens(
+  xleft = salinity$left, xright = salinity$right, Nit = 5000, distr.pz0 = 10,
+  mu.pz0 = 1, sigma.pz0 = 2
+)
 # Plotting density estimate + 95\% credible interval
 attach(out)
 m <- ncol(qx)
-ymax <- max(qx[,m])
-par(mfrow=c(1,1))
-plot(xx,qx$"q0.5",lwd=2,type="l",ylab="Density",xlab="Data")
-lines(xx,qx[,2],lty=3,col=4)
-lines(xx,qx[,m],lty=3,col=4)
+ymax <- max(qx[, m])
+par(mfrow = c(1, 1))
+plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
+lines(xx, qx[, 2], lty = 3, col = 4)
+lines(xx, qx[, m], lty = 3, col = 4)
 # Plotting number of clusters
-par(mfrow=c(2,1))
-plot(R,type="l",main="Trace of R")
-hist(R,breaks=min(R-0.5):max(R+0.5),probability=TRUE)
+par(mfrow = c(2, 1))
+plot(R, type = "l", main = "Trace of R")
+hist(R, breaks = min(R - 0.5):max(R + 0.5), probability = TRUE)
 detach()
 }
 
@@ -200,8 +202,8 @@ Sensitivity Distribution revisited: a Bayesian nonparametric approach. In
 preparation.
 }
 \seealso{
-\code{\link{MixNRMI2}}, \code{\link{MixNRMI1}},
-\code{\link{MixNRMI1cens}}
+\code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
+\code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
 Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.

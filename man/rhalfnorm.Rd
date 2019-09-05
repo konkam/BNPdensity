@@ -15,10 +15,8 @@ For internal use
 \examples{
 
 ## The function is currently defined as
-function (n, mean = 0, sd = 1) 
-{
-    abs(rnorm(n, mean, sd))
-  }
-
+function(n, mean = 0, sd = 1) {
+  abs(rnorm(n, mean, sd))
+}
 }
 \keyword{internal}

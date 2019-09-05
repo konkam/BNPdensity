@@ -5,7 +5,9 @@
 \alias{salinity}
 \title{Salinity tolerance}
 \format{A data frame with 108 observations on the following two variables:
-\describe{ \item{list("left")}{A numeric vector.} \item{list("right")}{A
+\describe{
+\item{left}{A numeric vector.}
+\item{right}{A
 numeric vector.} }}
 \source{
 \code{fitdistrplus} R-package
@@ -18,7 +20,6 @@ macro-invertebrates.
 
 data(salinity)
 hist(salinity$left)
-
 }
 \references{
 Kefford, B.J., Nugegoda, D., Metzeling, L., Fields, E. 2006.

@@ -15,10 +15,8 @@ For internal use
 \examples{
 
 ## The function is currently defined as
-function (x, df, mean, sd) 
-{
-    pt((x - mean)/sd, df, ncp = 0)
-  }
-
+function(x, df, mean, sd) {
+  pt((x - mean) / sd, df, ncp = 0)
+}
 }
 \keyword{internal}

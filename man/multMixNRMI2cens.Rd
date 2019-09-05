@@ -78,9 +78,6 @@ UNIX-like systems as it rests on Fork parallelism}
 \item{ncores}{Number of cores for the parallel run. Defaults to
 parallel::detectCores(), i.e. the maximum number of cores detected by R on
 your system.}
-
-\item{seed}{Random seed for the run. Each chain has an independent seed
-based on the value of `seed`}
 }
 \value{
 a list containing the multiple fits.
@@ -95,4 +92,8 @@ data(salinity)
 multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
 }
 
+}
+\seealso{
+\code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
+\code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }

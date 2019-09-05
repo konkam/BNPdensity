@@ -76,5 +76,8 @@ Multiple chains of MixNRMI1
 
 data(acidity)
 multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
-
+}
+\seealso{
+\code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
+\code{\link{MixNRMI2cens}}
 }

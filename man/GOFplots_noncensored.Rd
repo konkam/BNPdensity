@@ -28,5 +28,4 @@ set.seed(150520)
 data(acidity)
 out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 BNPdensity:::GOFplots_noncensored(out)
-
 }

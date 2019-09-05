@@ -22,5 +22,4 @@ set.seed(150520)
 data(salinity)
 out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, extras = TRUE, Nit = 100)
 BNPdensity:::plotPDF_censored(out)
-
 }

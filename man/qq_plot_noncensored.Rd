@@ -32,5 +32,4 @@ Function.
 # data(acidity)
 # out <- MixNRMI1(acidity, extras = TRUE, Nit = 100)
 # BNPdensity:::qq_plot_noncensored(out)
-
 }

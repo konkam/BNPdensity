@@ -13,7 +13,6 @@ Velocities of 82 galaxies diverging from our own galaxy.
 
 data(galaxy)
 hist(galaxy)
-
 }
 \references{
 Roeder, K. (1990) "Density estimation with confidence sets

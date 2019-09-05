@@ -6,12 +6,16 @@ noncentral_generalised_factorial_coefficient <- memoise::memoise(function(n, k, 
   # print(paste('n =', n, 'k =', k))
   stopifnot(n >= 0, k >= 0)
   if (k == 0) {
-    if (n == 0) 1
-    else Rmpfr::pochMpfr(r, n)
+    if (n == 0) {
+      1
+    } else {
+      Rmpfr::pochMpfr(r, n)
+    }
   }
   else {
-    if (k > n) 0
-    else {
+    if (k > n) {
+      0
+    } else {
       (s * k + r - n + 1) * noncentral_generalised_factorial_coefficient(n - 1, k, s, r) + s * noncentral_generalised_factorial_coefficient(n - 1, k - 1, s, r)
     }
   }

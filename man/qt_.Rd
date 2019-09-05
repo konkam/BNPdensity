@@ -15,10 +15,8 @@ For internal use
 \examples{
 
 ## The function is currently defined as
-function (p, df, mean, sd) 
-{
-    sd * qt(p, df, ncp = 0) + mean
-  }
-
+function(p, df, mean, sd) {
+  sd * qt(p, df, ncp = 0) + mean
+}
 }
 \keyword{internal}

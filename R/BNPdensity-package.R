@@ -18,7 +18,6 @@
 #'
 #' data(acidity)
 #' hist(acidity)
-#'
 NULL
 
 
@@ -71,7 +70,6 @@ NULL
 #' example(MixNRMI2)
 #' example(MixNRMI1cens)
 #' example(MixNRMI2cens)
-#'
 NULL
 
 
@@ -92,7 +90,6 @@ NULL
 #' @examples
 #'
 #' data(Enzyme1.out)
-#'
 NULL
 
 
@@ -114,7 +111,6 @@ NULL
 #' @examples
 #'
 #' data(Enzyme2.out)
-#'
 NULL
 
 
@@ -141,7 +137,6 @@ NULL
 #'
 #' data(enzyme)
 #' hist(enzyme)
-#'
 NULL
 
 
@@ -162,7 +157,6 @@ NULL
 #' @examples
 #'
 #' data(Galaxy1.out)
-#'
 NULL
 
 
@@ -184,7 +178,6 @@ NULL
 #' @examples
 #'
 #' data(Galaxy2.out)
-#'
 NULL
 
 
@@ -208,7 +201,6 @@ NULL
 #'
 #' data(galaxy)
 #' hist(galaxy)
-#'
 NULL
 
 #' Salinity tolerance
@@ -220,7 +212,9 @@ NULL
 #' @name salinity
 #' @docType data
 #' @format A data frame with 108 observations on the following two variables:
-#' \describe{ \item{list("left")}{A numeric vector.} \item{list("right")}{A
+#' \describe{
+#' \item{left}{A numeric vector.}
+#' \item{right}{A
 #' numeric vector.} }
 #' @references Kefford, B.J., Nugegoda, D., Metzeling, L., Fields, E. 2006.
 #' Validating species sensitivity distributions using salinity tolerance of
@@ -233,8 +227,4 @@ NULL
 #'
 #' data(salinity)
 #' hist(salinity$left)
-#'
 NULL
-
-
-

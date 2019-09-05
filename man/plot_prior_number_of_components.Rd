@@ -28,5 +28,4 @@ process. The Dirichlet process is provided for comparison.
 \examples{
 
 plot_prior_number_of_components(50, 0.4)
-
 }

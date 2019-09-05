@@ -15,10 +15,8 @@ For internal use
 \examples{
 
 ## The function is currently defined as
-function (n, df, mean, sd) 
-{
-    mean + sd * rt(n, df, ncp = 0)
-  }
-
+function(n, df, mean, sd) {
+  mean + sd * rt(n, df, ncp = 0)
+}
 }
 \keyword{internal}

@@ -4,10 +4,14 @@
 \alias{summary.NRMI1cens}
 \title{S3 method for class 'MixNRMI1cens'}
 \usage{
-\method{summary}{NRMI1cens}(fit, number_of_clusters = FALSE)
+\method{summary}{NRMI1cens}(object, number_of_clusters = FALSE, ...)
 }
 \arguments{
-\item{fit}{A fitted object of class NRMI1cens}
+\item{object}{A fitted object of class NRMI1cens}
+
+\item{number_of_clusters}{Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})}
+
+\item{...}{Further arguments to be passed to generic function, ignored at the moment}
 }
 \value{
 Summary of some relevant information on the fit

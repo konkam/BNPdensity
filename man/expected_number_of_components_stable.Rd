@@ -32,5 +32,4 @@ Computes the expected number of components for a stable process.
 \examples{
 
 expected_number_of_components_stable(100, 0.8)
-
 }

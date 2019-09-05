@@ -21,5 +21,4 @@ points. It is not possible to display a histogram for censored data.
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
 plot(out)
-
 }

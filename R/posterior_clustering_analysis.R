@@ -1,12 +1,12 @@
 #' Compute the optimal clustering from an MCMC sample
-#' 
+#'
 #' Summarises the posterior on all possible clusterings by an optimal
 #' clustering where optimality is defined as minimising the posterior
 #' expectation of a specific loss function, the Variation of Information or
 #' Binder's loss function. Computation can be lengthy for large datasets,
 #' because of the large size of the space of all clusterings.
-#' 
-#' 
+#'
+#'
 #' @param fit The fitted object, obtained from one of the MixNRMIx functions
 #' @param loss_type Defines the loss function to be used in the expected
 #' posterior loss minimisation. Can be one of "VI" (Variation of Information),
@@ -132,11 +132,11 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
 
 
 #' Plot the clustering and the Cumulative Distribution Function
-#' 
+#'
 #' This is a function to visualise the clustering induced by the BNP model. The
 #' data points are plotted with a color reflecting their cluster.
-#' 
-#' 
+#'
+#'
 #' @param fit The fitted object, obtained from one of the MixNRMIx functions
 #' @param clustering A vector of integers with the same length as the data,
 #' representing the allocation variable for data each point.

@@ -28,5 +28,4 @@ Computes the expected number of components for a Dirichlet process.
 \examples{
 
 expected_number_of_components_Dirichlet(100, 1.2)
-
 }

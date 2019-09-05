@@ -17,7 +17,7 @@ A string containing a comment on the NRMI process
 Comment on the NRMI process depending on the value of the parameters
 }
 \examples{
-comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4))
-comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.4))
-comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.5))
+BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4))
+BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.4))
+BNPdensity:::comment_on_NRMI_type(list("Alpha" = 1, "Kappa" = 0.1, "Gamma" = 0.5))
 }

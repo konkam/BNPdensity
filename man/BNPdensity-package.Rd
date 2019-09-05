@@ -36,7 +36,6 @@ example(MixNRMI1)
 example(MixNRMI2)
 example(MixNRMI1cens)
 example(MixNRMI2cens)
-
 }
 \references{
 Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I.
