@@ -324,6 +324,7 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
 #' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #' @return A graph with the density estimate, the 95\% credible interval.
 #' Includes a histogram if the data is non censored.
+#' @export
 #' @examples
 #'
 #' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
