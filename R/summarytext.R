@@ -7,7 +7,7 @@
 #' @return Prints out the text for the summary S3 methods
 summarytext <- function(fit, kernel_comment, number_of_clusters = FALSE) {
   NRMI_comment <- paste("Density estimation using a", comment_on_NRMI_type(fit$NRMI_params))
-  ndata <- ifelse(is_censored(object[[1]]$data), nrow(object[[1]]$data), length(object[[1]]$data))
+  ndata <- ifelse(is_censored(fit$data), nrow(fit$data), length(fit$data))
   data_comment <- paste("There were", ndata, "data points.")
   MCMC_comment <- paste("The MCMC algorithm was run for ", fit$Nit, " iterations with ", 100 * fit$Pbi, "% discarded for burn-in.", sep = "")
   if (number_of_clusters) {
