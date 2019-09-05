@@ -314,10 +314,6 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
   return(res)
 }
 
-add <- function(x, y) x + y
-
-
-
 #' Plot the density estimate and the 95\% credible interval
 #'
 #' The density estimate is the mean posterior density computed on the data
