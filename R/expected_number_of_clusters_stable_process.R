@@ -73,13 +73,12 @@ expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL, sile
 
 #' Computes the expected number of components for a Dirichlet process.
 #'
-#' Computes the expected number of components for a Dirichlet process.
-#'
 #'
 #' @param n Number of data points
 #' @param Alpha Numeric constant. Total mass of the centering measure.
 #' @param ntrunc Level of truncation when computing the expectation. Defaults
 #' to n. If greater than n, it is fixed to n.
+#' @param silence Boolean. Whether to print the current calculation step for the Stable process, as the function can be long
 #' @return A real value which approximates the expected number of components
 #'
 #' Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M.
@@ -107,8 +106,6 @@ expected_number_of_components_Dirichlet <- function(n, Alpha, ntrunc = NULL, sil
 
 
 
-#' Computes the expected number of components for a stable process.
-#'
 #' Computes the expected number of components for a stable process.
 #'
 #'
@@ -141,9 +138,6 @@ expected_number_of_components_stable <- function(n, Gama, ntrunc = NULL) {
 
 
 
-#' Plot the prior number of components for a stable process and for a Dirichlet
-#' process with Alpha = 1.
-#'
 #' This plots the prior distribution on the number of components for the stable
 #' process. The Dirichlet process is provided for comparison.
 #'

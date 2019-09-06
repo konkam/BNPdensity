@@ -14,6 +14,8 @@ expected_number_of_components_Dirichlet(n, Alpha, ntrunc = NULL,
 
 \item{ntrunc}{Level of truncation when computing the expectation. Defaults
 to n. If greater than n, it is fixed to n.}
+
+\item{silence}{Boolean. Whether to print the current calculation step for the Stable process, as the function can be long}
 }
 \value{
 A real value which approximates the expected number of components
