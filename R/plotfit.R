@@ -15,7 +15,7 @@
 #' plot(out)
 plotfit_noncensored <- function(fit) {
   m <- ncol(fit$qx)
-  nbins <- length(hist(fit$data)$breaks) - 1
+  nbins <- length(hist(fit$data, plot = FALSE)$breaks) - 1
   ggplot(data.frame(xx = fit$xx, infCI = fit$qx[, 2], supCI = fit$qx[, m], y = fit$qx[, 1]), aes_string(x = "xx")) +
     theme_classic() +
     geom_histogram(
