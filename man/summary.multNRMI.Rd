@@ -21,6 +21,6 @@ S3 method for class 'multNRMI'
 }
 \examples{
 data(salinity)
-out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 summary(out)
 }
