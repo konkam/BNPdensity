@@ -327,7 +327,7 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
 #' @export
 #' @examples
 #'
-#' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+#' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 #' plot(fit)
 plot.multNRMI <- function(x, ...) {
   # This assumes that chains have the same length and can be given equal weight when combining
@@ -350,7 +350,7 @@ plot.multNRMI <- function(x, ...) {
 #'
 #' @examples
 #' data(salinity)
-#' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+#' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 #' print(out)
 print.multNRMI <- function(x, ...) {
   print(x[[1]])
@@ -368,7 +368,7 @@ print.multNRMI <- function(x, ...) {
 #'
 #' @examples
 #' data(salinity)
-#' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+#' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 #' summary(out)
 summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object[[1]]$distr.k))

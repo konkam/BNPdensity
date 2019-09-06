@@ -21,6 +21,6 @@ points.
 }
 \examples{
 
-fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 20, ncores = 2)
+fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 plot(fit)
 }
