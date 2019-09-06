@@ -17,7 +17,9 @@ is_semiparametric <- function(fit) {
   return(!is.null(fit$S))
 }
 
-
+convert_nan_to_0 = function(vec){
+  ifelse(is.nan(vec), yes = 0, no = vec)
+}
 
 #' Repeat the common scale parameter of a semiparametric model to match the
 #' dimension of the location parameters.

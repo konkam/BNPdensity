@@ -163,10 +163,11 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL, sil
   }
   if (is.null(grid)) grid <- 1:n
   grid <- unique(round(grid)) # Make sure it is a grid of integers
-  print("Computing the prior probability on the number of clusters for the Dirichlet process")
+  writeLines("Computing the prior probability on the number of clusters for the Dirichlet process")
   Pk_Dirichlet <- data.frame(K = grid, Pk = Vectorize(Pkn_Dirichlet, vectorize.args = "k")(grid, n, Alpha), Process = "Dirichlet")
-  print("Computing the prior probability on the number of clusters for the Stable process")
+  writeLines("Computing the prior probability on the number of clusters for the Stable process")
   Pk_Stable <- data.frame(K = grid, Pk = unlist(lapply(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama, silence), asNumeric_no_warning)), Process = "Stable")
+  Pk_Stable$Pk = convert_nan_to_0(Pk_Stable$Pk) #Correct when the numbers are 0 up to machine precision.
   to_plot <- rbind(
     Pk_Dirichlet,
     Pk_Stable
@@ -178,7 +179,6 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL, sil
     viridis::scale_colour_viridis(discrete = T, name = "Process") +
     ylab(expression(P[K]))
 }
-
 
 #' If the function Rmpfr::asNumeric returns a warning about inefficiency, silence it.
 #'
