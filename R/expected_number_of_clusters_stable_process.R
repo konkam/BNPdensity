@@ -18,11 +18,11 @@ log_Vnk_PY <- function(n, k, Alpha, Gama) {
 # }
 
 Cnk <- function(n, k, Gama) {
-  # factor_k <- gmp::factorialZ(k)
+  factor_k <- gmp::factorialZ(k)
   # Using more precise sums (package PreciseSums did not afford any improvement)
   # This function still risks underflow/overflow in spite of the arbitrary precision packages
-  # sum((-1)^(1:k) * gmp::chooseZ(n = k, k = 1:k) * Rmpfr::pochMpfr(-(1:k) * Gama, n) / factor_k)
-  (-1)^(n - k) * noncentral_generalised_factorial_coefficient(n = n, k = k, s = Gama, r = 0)
+  sum((-1)^(1:k) * gmp::chooseZ(n = k, k = 1:k) * Rmpfr::pochMpfr(-(1:k) * Gama, n) / factor_k)
+  # (-1)^(n - k) * noncentral_generalised_factorial_coefficient(n = n, k = k, s = Gama, r = 0) #This tends to hang for the moment, need to find a solution to memoisation
 }
 log_Cnk <- function(n, k, Gama) {
   log(Cnk(n, k, Gama))
@@ -37,7 +37,8 @@ log_Cnk <- function(n, k, Gama) {
 # library(gmp)
 
 
-Pkn_PY <- function(k, n, Alpha, Gama) {
+Pkn_PY <- function(k, n, Alpha, Gama, silence = TRUE) {
+  if (!silence) print(k)
   exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama) + log_Cnk(n = n, k = k, Gama = Gama))
   # Using this form, the inaccuracies in Cnk (i.e. getting a negative number) do not give NaN.
   # This error might be cancelled when computing the expected number of components.
@@ -53,13 +54,13 @@ Pkn_Dirichlet <- function(k, n, Alpha) {
 # Pkn_Dirichlet(3, 5, 0.2)
 
 
-expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL) {
+expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL, silence = TRUE) {
   if (is.null(ntrunc)) {
     ntrunc <- n
   } else if (ntrunc > n) ntrunc <- n
   res <- 0
   for (k in 1:ntrunc) {
-    # print(k)
+    if (!silence) print(k)
     # print(k*Pkn_PY(k, n, Alpha, Gama))
     res <- res + k * Pkn_PY(k, n, Alpha, Gama)
   }
@@ -89,13 +90,13 @@ expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL) {
 #'
 #' expected_number_of_components_Dirichlet(100, 1.2)
 #' @export expected_number_of_components_Dirichlet
-expected_number_of_components_Dirichlet <- function(n, Alpha, ntrunc = NULL) {
+expected_number_of_components_Dirichlet <- function(n, Alpha, ntrunc = NULL, silence = TRUE) {
   if (is.null(ntrunc)) {
     ntrunc <- n
   } else if (ntrunc > n) ntrunc <- n
   res <- 0
   for (k in 1:ntrunc) {
-    # print(k)
+    if (!silence) print(k)
     # print(k*Pkn_PY(k, n, Alpha, Gama))
     res <- res + k * Pkn_Dirichlet(k, n, Alpha)
   }
@@ -151,14 +152,16 @@ expected_number_of_components_stable <- function(n, Gama, ntrunc = NULL) {
 #' @param Gama Numeric constant. 0 <= Gama <=1.
 #' @param Alpha Numeric constant. Total mass of the centering measure for the
 #' Dirichlet process.
-#' @param grid Level of truncation when computing the expectation. Defaults to
+#' @param grid Integer vector. Level of truncation when computing the expectation. Defaults to
 #' n. If greater than n, it is fixed to n.
+#' @param silence Boolean. Whether to print the current calculation step for the Stable process, as the function can be long
+#'
 #' @return A plot with the prior distribution on the number of components.
 #' @examples
 #'
 #' plot_prior_number_of_components(50, 0.4)
 #' @export plot_prior_number_of_components
-plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
+plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL, silence = TRUE) {
   if (!requireNamespace("Rmpfr", quietly = TRUE) && !requireNamespace("gmp", quietly = TRUE)) {
     stop("Packages Rmpfr and gmp are needed for this function to work. Please install them.",
       call. = FALSE
@@ -166,9 +169,13 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
   }
   if (is.null(grid)) grid <- 1:n
   grid <- unique(round(grid)) # Make sure it is a grid of integers
+  print("Computing the prior probability on the number of clusters for the Dirichlet process")
+  Pk_Dirichlet <- data.frame(K = grid, Pk = Vectorize(Pkn_Dirichlet, vectorize.args = "k")(grid, n, Alpha), Process = "Dirichlet")
+  print("Computing the prior probability on the number of clusters for the Stable process")
+  Pk_Stable <- data.frame(K = grid, Pk = unlist(lapply(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama, silence), asNumeric_no_warning)), Process = "Stable")
   to_plot <- rbind(
-    data.frame(K = grid, Pk = unlist(lapply(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama), asNumeric_no_warning)), Process = "Stable"),
-    data.frame(K = grid, Pk = Vectorize(Pkn_Dirichlet, vectorize.args = "k")(grid, n, Alpha), Process = "Dirichlet")
+    Pk_Dirichlet,
+    Pk_Stable
   )
   ggplot(data = to_plot, aes_string(x = "K", y = "Pk", colour = "factor(Process)", group = "Process")) +
     geom_point() +
@@ -187,17 +194,17 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
 #' @param x An object of class Rmpfr::mpfr1
 #'
 #' @return a "numeric" number
-asNumeric_no_warning = function(x){
+asNumeric_no_warning <- function(x) {
   tryCatch({
     Rmpfr::asNumeric(x)
   }, warning = function(w) {
     if (grepl(pattern = "inefficient", x = as.character(w))) {
       suppressWarnings(Rmpfr::asNumeric(x))
     }
-    else{
+    else {
       w
     }
   }, error = function(e) {
-    print(paste('error:', e))
+    print(paste("error:", e))
   })
 }
