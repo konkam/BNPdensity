@@ -167,7 +167,7 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
   if (is.null(grid)) grid <- 1:n
   grid <- unique(round(grid)) # Make sure it is a grid of integers
   to_plot <- rbind(
-    data.frame(K = grid, Pk = Rmpfr::toNum(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama)), Process = "Stable"),
+    data.frame(K = grid, Pk = unlist(lapply(Vectorize(Pkn_PY, vectorize.args = "k")(grid, n, 0, Gama), asNumeric_no_warning)), Process = "Stable"),
     data.frame(K = grid, Pk = Vectorize(Pkn_Dirichlet, vectorize.args = "k")(grid, n, Alpha), Process = "Dirichlet")
   )
   ggplot(data = to_plot, aes_string(x = "K", y = "Pk", colour = "factor(Process)", group = "Process")) +
@@ -176,4 +176,28 @@ plot_prior_number_of_components <- function(n, Gama, Alpha = 1, grid = NULL) {
     theme_classic() +
     viridis::scale_colour_viridis(discrete = T, name = "Process") +
     ylab(expression(P[K]))
+}
+
+
+#' If the function Rmpfr::asNumeric returns a warning about inefficiency, silence it.
+#'
+#' The function Rmpfr::asNumeric prints the following warning: In asMethod(object) : coercing "mpfr1" via "mpfr" (inefficient). It is not clear how to avoid it nor how to silence it, hence this function.
+#' A cleaner solution may be available at: https://stackoverflow.com/questions/4948361/how-do-i-save-warnings-and-errors-as-output-from-a-function/4952908#4952908
+#'
+#' @param x An object of class Rmpfr::mpfr1
+#'
+#' @return a "numeric" number
+asNumeric_no_warning = function(x){
+  tryCatch({
+    Rmpfr::asNumeric(x)
+  }, warning = function(w) {
+    if (grepl(pattern = "inefficient", x = as.character(w))) {
+      suppressWarnings(Rmpfr::asNumeric(x))
+    }
+    else{
+      w
+    }
+  }, error = function(e) {
+    print(paste('error:', e))
+  })
 }
