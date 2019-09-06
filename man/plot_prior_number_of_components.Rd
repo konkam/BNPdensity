@@ -5,7 +5,8 @@
 \title{Plot the prior number of components for a stable process and for a Dirichlet
 process with Alpha = 1.}
 \usage{
-plot_prior_number_of_components(n, Gama, Alpha = 1, grid = NULL)
+plot_prior_number_of_components(n, Gama, Alpha = 1, grid = NULL,
+  silence = TRUE)
 }
 \arguments{
 \item{n}{Number of data points}
@@ -15,8 +16,10 @@ plot_prior_number_of_components(n, Gama, Alpha = 1, grid = NULL)
 \item{Alpha}{Numeric constant. Total mass of the centering measure for the
 Dirichlet process.}
 
-\item{grid}{Level of truncation when computing the expectation. Defaults to
+\item{grid}{Integer vector. Level of truncation when computing the expectation. Defaults to
 n. If greater than n, it is fixed to n.}
+
+\item{silence}{Boolean. Whether to print the current calculation step for the Stable process, as the function can be long}
 }
 \value{
 A plot with the prior distribution on the number of components.
