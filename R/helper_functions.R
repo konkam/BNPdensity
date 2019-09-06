@@ -146,5 +146,7 @@ compute_thinning_grid <- function(Nit, thinning_to = 10) {
 #' @return x + y
 #'
 #' @examples
-#' BNPdensity:::add(1,2)
-add <- function(x, y) {x + y}
+#' BNPdensity:::add(1, 2)
+add <- function(x, y) {
+  x + y
+}
