@@ -15,7 +15,7 @@ summarytext <- function(fit, kernel_comment, number_of_clusters = FALSE) {
     clustering_comment <- paste("The estimated number of clusters in the data is ", length(unique(estimated_clustering)), ".", sep = "")
   }
   else {
-    clustering_comment <- "To obtain information on the estimated number of clusters, please use summary(object, number_of_clusters = TRUE)."
+    clustering_comment <- "To obtain information on the estimated number of clusters,\n please use summary(object, number_of_clusters = TRUE)."
   }
-  writeLines(paste(NRMI_comment, "\n", kernel_comment, "\n", data_comment, "\n", MCMC_comment, "\n", clustering_comment, sep = ""))
+  writeLines(paste(NRMI_comment, "\n\n", kernel_comment, "\n\n", data_comment, "\n\n", MCMC_comment, "\n\n", clustering_comment, sep = ""))
 }
