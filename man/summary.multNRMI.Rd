@@ -20,7 +20,7 @@ Prints out the text for the summary S3 methods
 S3 method for class 'multNRMI'
 }
 \examples{
-data(salinity)
+\dontrun{data(salinity)
 out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-summary(out)
+summary(out)}
 }
