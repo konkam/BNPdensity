@@ -15,9 +15,15 @@
 #' plot(out)
 plotfit_noncensored <- function(fit) {
   m <- ncol(fit$qx)
+  nbins <- length(hist(fit$data, plot = FALSE)$breaks) - 1
   ggplot(data.frame(xx = fit$xx, infCI = fit$qx[, 2], supCI = fit$qx[, m], y = fit$qx[, 1]), aes_string(x = "xx")) +
     theme_classic() +
-    geom_histogram(data = data.frame(x = fit$x), aes_string(x = "x", y = "..density.."), fill = grDevices::grey(0.9), colour = "black") +
+    geom_histogram(
+      data = data.frame(x = fit$data), aes_string(x = "x", y = "..density.."),
+      fill = grDevices::grey(0.9),
+      colour = "black",
+      bins = nbins
+    ) +
     geom_line(aes_string(y = "y"), size = 1.) +
     geom_line(aes_string(y = "infCI"), colour = "blue", linetype = "dotted") +
     geom_line(aes_string(y = "supCI"), colour = "blue", linetype = "dotted") +

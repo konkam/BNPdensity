@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  # fig.path = "man/figures/README-",
   cache = T
 )
 options(mc.cores = parallel::detectCores())
@@ -55,11 +55,46 @@ We also provide a way to visualise the prior distribution on the number of compo
 ```{r}
 plot_prior_number_of_components(50, 0.4) 
 ```
+## How to fit a dataset
+
+We illustrate the package by estimating the distribution of the `acidity` dataset.
+
+```{r}
+library(BNPdensity)
+data(acidity)
+str(acidity)
+```
+
+```{r}
+hist(acidity)
+```
+
+
+```{r}
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, Nit = 3000)
+```
+
+`MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide common S3 methods.
+
+```{r}
+print(fit)
+```
+
+```{r}
+plot(fit)
+```
+
+
+```{r}
+summary(fit)
+```
 
 
 ## How to use the convergence diagnostics
 
-We rely on the convergence diagnostics included in the package `coda` by Martyn Plummer. We only convert the output of multiple chains into an mcmc object.
+We also provide an interface to run several chains in parallel, using the functions `multMixNRMI1()`. We interface our package with the `coda` package by providing a conversion method for the output this function. This allows for instance to compute the convergence diagnostics included in `coda`.
 
 One detail is that due to the Nonparametric nature of the model, the number of parameters which could potentially be monitored for convergence of the chains varies. 
 The location parameter of the clusters, for instance, vary at each iteration, and even the labels of the clusters vary, which makes them tricky to follow.
@@ -70,7 +105,7 @@ library(BNPdensity)
 library(coda)
 data(acidity)
 fitlist = multMixNRMI1(acidity, Nit = 5000)
-mcmc_list = convert_to_mcmc(fitlist)
+mcmc_list = as.mcmc(fitlist)
 coda::traceplot(mcmc_list)
 coda::gelman.diag(mcmc_list)
 ```
@@ -84,7 +119,7 @@ coda::gelman.diag(mcmc_list)
 library(BNPdensity)
 data(acidity)
 fit = MixNRMI1(acidity, extras = TRUE)
-plotGOF(fit)
+GOFplots(fit)
 ```
 
 ### Censored data
@@ -93,7 +128,7 @@ plotGOF(fit)
 library(BNPdensity)
 data(salinity)
 fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
-plotGOF(fit)
+GOFplots(fit)
 ```
 
 ## Posterior analysis of the clustering structure

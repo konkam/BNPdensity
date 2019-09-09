@@ -17,7 +17,9 @@ is_semiparametric <- function(fit) {
   return(!is.null(fit$S))
 }
 
-
+convert_nan_to_0 = function(vec){
+  ifelse(is.nan(vec), yes = 0, no = vec)
+}
 
 #' Repeat the common scale parameter of a semiparametric model to match the
 #' dimension of the location parameters.
@@ -146,5 +148,7 @@ compute_thinning_grid <- function(Nit, thinning_to = 10) {
 #' @return x + y
 #'
 #' @examples
-#' BNPdensity:::add(1,2)
-add <- function(x, y) {x + y}
+#' BNPdensity:::add(1, 2)
+add <- function(x, y) {
+  x + y
+}
