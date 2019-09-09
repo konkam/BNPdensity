@@ -327,8 +327,9 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
 #' @export
 #' @examples
 #'
+#' \donttest{data(salinity)
 #' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' plot(fit)
+#' plot(fit)}
 plot.multNRMI <- function(x, ...) {
   # This assumes that chains have the same length and can be given equal weight when combining
   res <- x[[1]]
@@ -349,9 +350,9 @@ plot.multNRMI <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#' data(salinity)
+#' \donttest{data(salinity)
 #' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' print(out)
+#' print(out)}
 print.multNRMI <- function(x, ...) {
   print(x[[1]])
   writeLines(paste(length(x), "independent MCMC chains were run in parallel"))
@@ -367,9 +368,9 @@ print.multNRMI <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#' data(salinity)
+#' \donttest{data(salinity)
 #' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' summary(out)
+#' summary(out)}
 summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object[[1]]$distr.k))
   NRMI_comment <- paste("Density estimation using a", comment_on_NRMI_type(object[[1]]$NRMI_params))

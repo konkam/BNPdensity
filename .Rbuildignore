@@ -5,4 +5,5 @@
 ^README-.*\.png$
 cran-comments.md
 README_cache
+README_files
 ^CRAN-RELEASE$
