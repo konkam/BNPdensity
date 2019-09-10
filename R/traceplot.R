@@ -3,9 +3,9 @@
 #' This function works when coda is not yet loaded by the user. If coda is
 #' loaded, it gets overwritten. See also file multMixNRMI.R
 #'
-#'
 #' @param fitlist Output of multMixNRMI.
 #' @return A traceplot for multiple chains.
+#' @export
 traceplot <- function(fitlist) {
   param <- value <- chain_id <- iteration <- NULL
   mcmc_object <- convert_to_mcmc(fitlist)

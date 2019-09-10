@@ -39,10 +39,10 @@ log_Cnk <- function(n, k, Gama) {
 
 Pkn_PY <- function(k, n, Alpha, Gama, silence = TRUE) {
   if (!silence) print(k)
-  exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama) + log_Cnk(n = n, k = k, Gama = Gama))
+  # exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama) + log_Cnk(n = n, k = k, Gama = Gama))
   # Using this form, the inaccuracies in Cnk (i.e. getting a negative number) do not give NaN.
   # This error might be cancelled when computing the expected number of components.
-  # exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama)) * Cnk(n = n, k = k, Gama = Gama)
+  exp(log_Vnk_PY(n = n, k = k, Alpha = Alpha, Gama = Gama) - k * log(Gama)) * Cnk(n = n, k = k, Gama = Gama)
 }
 
 # Pkn_PY(3, 5, 0.2, 0.4)

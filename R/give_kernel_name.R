@@ -7,7 +7,6 @@ kern_idx <- setNames(object = c("Normal", "Gamma", "Beta", "Double Exponential",
 #' @inheritParams MixNRMI1
 #'
 #' @return A character with the name of the distribution used as the kernel
-#' @export
 #'
 #' @examples
 #' BNPdensity:::give_kernel_name(4)
