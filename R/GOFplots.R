@@ -310,8 +310,6 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for non censored data
 #'
-#' Plot Goodness of fits graphical checks for non censored data
-#'
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or
 #' MixNRMI2, MixMRMI1cens or MixMRMI2cens
