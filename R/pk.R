@@ -1,7 +1,7 @@
 #' Kernel distribution function
 #'
 #' This functions evaluates the cumulative distribution function at a certain
-#' datapoint.
+#' data point.
 #'
 #' For internal use
 #'

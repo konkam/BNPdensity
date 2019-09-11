@@ -43,8 +43,6 @@ get_quantiles_semi_BNPdensity <- function(fit, ps = seq(-5, 5, length.out = 100)
 
 #' Plot the empirical and fitted CDF for non censored data.
 #'
-#' Plot the empirical and fitted CDF for non censored data.
-#'
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or
 #' MixNRMI2.
@@ -67,7 +65,7 @@ plotCDF_noncensored <- function(fit) {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     stat_ecdf(data = data.frame(data), aes(y = NULL), geom = "step") +
     xlab("Data")
@@ -75,8 +73,6 @@ plotCDF_noncensored <- function(fit) {
 
 
 
-#' Plot the Turnbull CDF and fitted CDF for censored data.
-#'
 #' Plot the Turnbull CDF and fitted CDF for censored data.
 #'
 #'
@@ -103,7 +99,7 @@ plotCDF_censored <- function(fit) {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     geom_step(data = data.frame(x = c(Survival_object$time, max(grid)), y = c(1 - Survival_object$surv, 1)), aes_string(x = "x", y = "y")) +
     xlab("Data")
@@ -113,12 +109,9 @@ plotCDF_censored <- function(fit) {
 
 #' Plot the density and a histogram for non censored data.
 #'
-#' Plot the density and a histogram for non censored data.
-#'
-#'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or
 #' MixNRMI2.
-#' @return Plot of the ensity and a histogram for non censored data.
+#' @return Plot of the density and a histogram for non censored data.
 #' @examples
 #'
 #' set.seed(150520)
@@ -135,12 +128,10 @@ plotPDF_noncensored <- function(fit) {
 
 #' Plot the density for censored data.
 #'
-#' Plot the density for censored data.
-#'
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1cens
 #' or MixNRMI2cens.
-#' @return Plot of the ensity and a histogram for non censored data.
+#' @return Plot of the density and a histogram for non censored data.
 #' @examples
 #'
 #' set.seed(150520)
@@ -157,7 +148,7 @@ plotPDF_censored <- function(fit) {
     pdf <- get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes_string(x = "data", y = "PDF")) +
-    geom_line(colour = "red") +
+    geom_line(color = "red") +
     theme_classic() +
     xlab("Data")
 }
@@ -165,8 +156,6 @@ plotPDF_censored <- function(fit) {
 
 
 
-#' Plot the percentile-percentile graph for non censored data.
-#'
 #' Plot the percentile-percentile graph for non censored data.
 #'
 #'
@@ -190,7 +179,7 @@ pp_plot_noncensored <- function(fit) {
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical percentiles") +
     ylab("Empirical percentiles")
@@ -198,8 +187,6 @@ pp_plot_noncensored <- function(fit) {
 
 
 
-#' Plot the quantile-quantile graph for non censored data.
-#'
 #' Plot the quantile-quantile graph for non censored data.
 #'
 #' This function may be rather slow for many iterations/many data because it
@@ -232,7 +219,7 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical quantiles") +
     ylab("Empirical quantiles")
@@ -240,9 +227,6 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
 
 
 
-#' Plot the percentile-percentile graph for non censored data, using the
-#' Turnbull estimator the position of the percentiles.
-#'
 #' Plot the percentile-percentile graph for non censored data, using the
 #' Turnbull estimator the position of the percentiles.
 #'
@@ -268,7 +252,7 @@ pp_plot_censored <- function(fit) {
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical percentiles") +
     ylab("Empirical percentiles (Turnbull)")
@@ -287,8 +271,6 @@ compute_quantiles_from_Turnbull_estimate <- function(Survival_object) {
 
 
 
-#' Plot the quantile-quantile graph for censored data.
-#'
 #' Plot the quantile-quantile graph for censored data.
 #'
 #' This function may be rather slow for many iterations/many data because it
@@ -318,7 +300,7 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes_string(x = "x", y = "y")) +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, colour = "red") +
+    geom_abline(slope = 1, intercept = 0, color = "red") +
     theme_classic() +
     xlab("Theoretical quantiles") +
     ylab("Empirical quantiles (Turnbull)")
@@ -361,8 +343,6 @@ GOFplots_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 
 #' Plot Goodness of fits graphical checks for censored data
 #'
-#' Plot Goodness of fits graphical checks for censored data
-#'
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or
 #' MixNRMI2, MixMRMI1cens or MixMRMI2cens
@@ -392,8 +372,6 @@ GOFplots_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 
 
 
-#' Plot Goodness of fits graphical checks for censored data
-#'
 #' Plot Goodness of fits graphical checks for censored data
 #'
 #'

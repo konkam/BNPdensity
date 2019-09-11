@@ -36,7 +36,7 @@ NULL
 #' line (gamma and lognormal) and one with bounded support (beta). The options
 #' for the normalized random measures are members of the class of normalized
 #' generalized gamma, which include the Dirichlet process, the normalized
-#' inversed gaussian process and the normalized stable process.  The type of
+#' inverse gaussian process and the normalized stable process.  The type of
 #' censored data handled by the package is right, left and interval.
 #'
 #' \tabular{ll}{ Package: \tab BNPdensity\cr Type: \tab Package\cr Version:
@@ -195,7 +195,7 @@ NULL
 #' \describe{ \item{list("velocity")}{A numeric vector.} }
 #' @references Roeder, K. (1990) "Density estimation with confidence sets
 #' exemplified by superclusters and voids in the galaxies". Journal of the
-#' American Statitical Association. 85, 617-624.
+#' American Statistical Association. 85, 617-624.
 #' @keywords datasets
 #' @examples
 #'
@@ -218,7 +218,7 @@ NULL
 #' numeric vector.} }
 #' @references Kefford, B.J., Nugegoda, D., Metzeling, L., Fields, E. 2006.
 #' Validating species sensitivity distributions using salinity tolerance of
-#' riverine macroinvertebrates in the southern Murray-darling Basin (Vitoria,
+#' riverine macroinvertebrates in the southern Murray-darling Basin (Vittoria,
 #' Australia). Canadian Journal of Fisheries and Aquatic Science, 63,
 #' 1865-1877.
 #' @source \code{fitdistrplus} R-package

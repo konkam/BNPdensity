@@ -1,7 +1,7 @@
-#' Conditional posterior distribution of the distict vectors (Ystar,Zstar)
+#' Conditional posterior distribution of the distinct vectors (Ystar,Zstar)
 #'
 #' This function evaluates the ratio of conditional posterior distributions of
-#' the distict latent vectors (Ystar,Zstar).
+#' the distinct latent vectors (Ystar,Zstar).
 #'
 #' For internal use.
 #'

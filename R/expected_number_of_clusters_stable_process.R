@@ -22,7 +22,7 @@ Cnk <- function(n, k, Gama) {
   # Using more precise sums (package PreciseSums did not afford any improvement)
   # This function still risks underflow/overflow in spite of the arbitrary precision packages
   sum((-1)^(1:k) * gmp::chooseZ(n = k, k = 1:k) * Rmpfr::pochMpfr(-(1:k) * Gama, n) / factor_k)
-  # (-1)^(n - k) * noncentral_generalised_factorial_coefficient(n = n, k = k, s = Gama, r = 0) #This tends to hang for the moment, need to find a solution to memoisation
+  # (-1)^(n - k) * noncentral_generalized_factorial_coefficient(n = n, k = k, s = Gama, r = 0) #This tends to hang for the moment, need to find a solution to memoisation
 }
 log_Cnk <- function(n, k, Gama) {
   log(Cnk(n, k, Gama))
@@ -83,7 +83,7 @@ expected_number_of_components_PY <- function(n, Alpha, Gama, ntrunc = NULL, sile
 #'
 #' Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M.
 #' Ruggiero, “Are gibbs-type priors the most natural generalization of the
-#' dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no.
+#' Dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no.
 #' 2, pp. 212–229, 2015.
 #' @examples
 #'
@@ -116,12 +116,12 @@ expected_number_of_components_Dirichlet <- function(n, Alpha, ntrunc = NULL, sil
 #' @return A real value of type mpfr1 which approximates the expected number of
 #' components
 #'
-#' In spite of the high precision arithmetics packages used for in function, it
+#' In spite of the high precision arithmetic packages used for in function, it
 #' can be numerically unstable for small values of Gama. This is because
-#' evaluating a sum with alternated signs, in the generalised factorial
+#' evaluating a sum with alternated signs, in the generalized factorial
 #' coefficients, is tricky. Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H.
 #' Mena, I. Prünster, and M. Ruggiero, “Are gibbs-type priors the most natural
-#' generalization of the dirichlet process?,” IEEE Trans. Pattern Anal. Mach.
+#' generalization of the Dirichlet process?,” IEEE Trans. Pattern Anal. Mach.
 #' Intell., vol. 37, no. 2, pp. 212–229, 2015.
 #' @examples
 #'

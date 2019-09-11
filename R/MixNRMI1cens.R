@@ -317,7 +317,7 @@ plot.NRMI1cens <- function(x, ...) {
 #' @param x A fitted object of class MixNRMI1cens
 #' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #'
-#' @return A visualisation of the important information about the object
+#' @return A visualization of the important information about the object
 #' @export
 #'
 #' @examples

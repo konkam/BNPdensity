@@ -1,4 +1,4 @@
-#' Non-standard student-t densit
+#' Non-standard student-t density
 #'
 #' Computes the density.
 #'

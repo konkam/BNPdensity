@@ -1,7 +1,7 @@
-#' Conditional posterior distribution of the distict Ystar
+#' Conditional posterior distribution of the distinct Ystar
 #'
 #' This function evaluates the ratio of conditional posterior distributions of
-#' the distict latents Ystar.
+#' the distinct latents Ystar.
 #'
 #' For internal use.
 #'

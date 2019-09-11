@@ -1,4 +1,4 @@
-#' Inversed jump heights function
+#' Invert jump heights function
 #'
 #' Determines the jump heights of an increasing additive process by inverting
 #' the M(v) function.

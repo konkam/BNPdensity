@@ -346,7 +346,7 @@ plot.multNRMI <- function(x, ...) {
 #' @param x An object of class multNRMI
 #' @param ... Further arguments to be passed to generic functions, ignored at the moment
 #'
-#' @return A visualisation of the important information about the object
+#' @return A visualization of the important information about the object
 #' @export
 #'
 #' @examples
