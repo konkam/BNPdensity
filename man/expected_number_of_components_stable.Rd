@@ -18,12 +18,12 @@ to n. If greater than n, it is fixed to n.}
 A real value of type mpfr1 which approximates the expected number of
 components
 
-In spite of the high precision arithmetics packages used for in function, it
+In spite of the high precision arithmetic packages used for in function, it
 can be numerically unstable for small values of Gama. This is because
-evaluating a sum with alternated signs, in the generalised factorial
+evaluating a sum with alternated signs, in the generalized factorial
 coefficients, is tricky. Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H.
 Mena, I. Prünster, and M. Ruggiero, “Are gibbs-type priors the most natural
-generalization of the dirichlet process?,” IEEE Trans. Pattern Anal. Mach.
+generalization of the Dirichlet process?,” IEEE Trans. Pattern Anal. Mach.
 Intell., vol. 37, no. 2, pp. 212–229, 2015.
 }
 \description{

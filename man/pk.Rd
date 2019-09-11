@@ -8,7 +8,7 @@ pk(q, distr = NULL, mu = NULL, sigma = NULL)
 }
 \description{
 This functions evaluates the cumulative distribution function at a certain
-datapoint.
+data point.
 }
 \details{
 For internal use

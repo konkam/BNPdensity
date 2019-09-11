@@ -2,7 +2,7 @@
 % Please edit documentation in R/rfystarcens2.R
 \name{rfystarcens2}
 \alias{rfystarcens2}
-\title{Conditional posterior distribution of the distict Ystar in the case of
+\title{Conditional posterior distribution of the distinct Ystar in the case of
 censoring}
 \usage{
 rfystarcens2(v, v2, xleft, xright, censor_code, distr.k, sigma.k, distr.p0,
@@ -10,7 +10,7 @@ rfystarcens2(v, v2, xleft, xright, censor_code, distr.k, sigma.k, distr.p0,
 }
 \description{
 This function evaluates the ratio of conditional posterior distributions of
-the distict latents Ystar.
+the distinct latents Ystar.
 }
 \details{
 For internal use

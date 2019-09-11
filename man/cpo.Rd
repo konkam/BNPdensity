@@ -7,7 +7,7 @@
 cpo(obj)
 }
 \description{
-This function computes conditional predictive ordinates for each datapoint.
+This function computes conditional predictive ordinates for each data point.
 }
 \details{
 For internal use.

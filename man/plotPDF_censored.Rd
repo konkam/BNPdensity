@@ -11,7 +11,7 @@ plotPDF_censored(fit)
 or MixNRMI2cens.}
 }
 \value{
-Plot of the ensity and a histogram for non censored data.
+Plot of the density and a histogram for non censored data.
 }
 \description{
 Plot the density for censored data.

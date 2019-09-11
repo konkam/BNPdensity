@@ -2,13 +2,13 @@
 % Please edit documentation in R/rfystar.R
 \name{rfystar}
 \alias{rfystar}
-\title{Conditional posterior distribution of the distict Ystar}
+\title{Conditional posterior distribution of the distinct Ystar}
 \usage{
 rfystar(v, v2, x, distr.k, sigma.k, distr.p0, mu.p0, sigma.p0)
 }
 \description{
 This function evaluates the ratio of conditional posterior distributions of
-the distict latents Ystar.
+the distinct latents Ystar.
 }
 \details{
 For internal use.

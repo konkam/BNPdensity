@@ -16,7 +16,7 @@ line (gaussian and double exponential), two more kernels in the positive
 line (gamma and lognormal) and one with bounded support (beta). The options
 for the normalized random measures are members of the class of normalized
 generalized gamma, which include the Dirichlet process, the normalized
-inversed gaussian process and the normalized stable process.  The type of
+inverse gaussian process and the normalized stable process.  The type of
 censored data handled by the package is right, left and interval.
 }
 \details{

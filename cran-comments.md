@@ -8,12 +8,7 @@
 * check_rhub()
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
+There were no ERRORs, WARNINGs or NOTEs. 
 
-There was 1 NOTE:
-
-* New maintainer:
-  Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
-  Old maintainer(s):   Ernesto Barrios <ebarrios@itam.mx>
-  
-  I am taking over maintenance of the package from Ernesto Barrios. He is ready to send a confirmatory email to whomever it might concern.
+## Downstream dependencies
+There are currently no downstream dependencies for this package.

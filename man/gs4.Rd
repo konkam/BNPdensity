@@ -7,7 +7,7 @@
 gs4(ystar, x, idx, distr.k, sigma.k, distr.p0, mu.p0, sigma.p0)
 }
 \description{
-This funciton resamples the distinct Ystar in the semiparametric model.
+This function resamples the distinct Ystar in the semiparametric model.
 }
 \details{
 For internal use.

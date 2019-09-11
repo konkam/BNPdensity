@@ -7,7 +7,7 @@
 qt_(p, df, mean, sd)
 }
 \description{
-Compuytes the quantiles.
+Computes the quantiles.
 }
 \details{
 For internal use

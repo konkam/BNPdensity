@@ -2,7 +2,7 @@
 % Please edit documentation in R/dt_.R
 \name{dt_}
 \alias{dt_}
-\title{Non-standard student-t densit}
+\title{Non-standard student-t density}
 \usage{
 dt_(x, df, mean, sd)
 }

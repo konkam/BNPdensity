@@ -1,7 +1,5 @@
 #' Tests if a fit is a semi parametric or nonparametric model.
 #'
-#' Tests if a fit is a semi parametric or nonparametric model.
-#'
 #'
 #' @param fit The result of the fit, obtained through the function MixNRMI1 or
 #' MixNRMI2.
@@ -24,9 +22,6 @@ convert_nan_to_0 = function(vec){
 #' Repeat the common scale parameter of a semiparametric model to match the
 #' dimension of the location parameters.
 #'
-#' Repeat the common scale parameter of a semiparametric model to match the
-#' dimension of the location parameters.
-#'
 #'
 #' @param semiparametric_fit The result of the fit, obtained through the
 #' function MixNRMI1.
@@ -39,8 +34,6 @@ fill_sigmas <- function(semiparametric_fit) {
 
 
 
-#' Create a plotting grid from non-censored data.
-#'
 #' Create a plotting grid from non-censored data.
 #'
 #'
@@ -56,8 +49,6 @@ grid_from_data_noncensored <- function(data, npoints = 100) {
 
 #' Create a plotting grid from censored data.
 #'
-#' Create a plotting grid from censored data.
-#'
 #'
 #' @param data Censored input data from which to compute the grid.
 #' @param npoints Number of points on the grid.
@@ -71,8 +62,6 @@ grid_from_data_censored <- function(data, npoints = 100) {
 
 
 
-#' Create a plotting grid from censored or non-censored data.
-#'
 #' Create a plotting grid from censored or non-censored data.
 #'
 #'
@@ -93,8 +82,6 @@ grid_from_data <- function(data, npoints = 100) {
 
 #' Test if the data is censored
 #'
-#' Test if the data is censored
-#'
 #'
 #' @param dat The dataset to be tested
 #' @return TRUE if the data is censored
@@ -113,8 +100,6 @@ is_censored <- function(dat) {
 
 
 
-#' Compute the grid for thinning the MCMC chain
-#'
 #' Compute the grid for thinning the MCMC chain
 #'
 #' This function creates an real grid then rounds it. If the grid is fine
