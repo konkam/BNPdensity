@@ -17,9 +17,6 @@ quantiles}
 quantile-quantile plot for non censored data.
 }
 \description{
-Plot the quantile-quantile graph for non censored data.
-}
-\details{
 This function may be rather slow for many iterations/many data because it
 relies on numerical inversion of the mixture Cumulative Distribution
 Function.

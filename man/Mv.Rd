@@ -8,7 +8,7 @@ Mv(u, alpha, beta, gama, low, upp, N)
 }
 \description{
 This function evaluates the M(v) function that determines the jump heights
-in the "continuous" part of an increasing additive procecess.
+in the "continuous" part of an increasing additive process.
 }
 \details{
 For internal use.

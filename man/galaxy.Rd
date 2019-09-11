@@ -17,6 +17,6 @@ hist(galaxy)
 \references{
 Roeder, K. (1990) "Density estimation with confidence sets
 exemplified by superclusters and voids in the galaxies". Journal of the
-American Statitical Association. 85, 617-624.
+American Statistical Association. 85, 617-624.
 }
 \keyword{datasets}

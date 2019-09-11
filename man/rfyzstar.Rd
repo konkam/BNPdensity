@@ -2,14 +2,14 @@
 % Please edit documentation in R/rfyzstar.R
 \name{rfyzstar}
 \alias{rfyzstar}
-\title{Conditional posterior distribution of the distict vectors (Ystar,Zstar)}
+\title{Conditional posterior distribution of the distinct vectors (Ystar,Zstar)}
 \usage{
 rfyzstar(v, v2, z, z2, x, distr.k, distr.py0, mu.py0, sigma.py0, distr.pz0,
   mu.pz0, sigma.pz0)
 }
 \description{
 This function evaluates the ratio of conditional posterior distributions of
-the distict latent vectors (Ystar,Zstar).
+the distinct latent vectors (Ystar,Zstar).
 }
 \details{
 For internal use.

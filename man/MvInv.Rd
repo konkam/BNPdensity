@@ -2,7 +2,7 @@
 % Please edit documentation in R/MvInv.R
 \name{MvInv}
 \alias{MvInv}
-\title{Inversed jump heights function}
+\title{Invert jump heights function}
 \usage{
 MvInv(eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001)
 }

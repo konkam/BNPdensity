@@ -12,7 +12,7 @@
 \item{...}{Further arguments to be passed to generic function, ignored at the moment}
 }
 \value{
-A visualisation of the important information about the object
+A visualization of the important information about the object
 }
 \description{
 S3 method for class 'MixNRMI1'
