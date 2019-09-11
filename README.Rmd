@@ -164,3 +164,4 @@ out <- MixNRMI2(acidity,  extras = TRUE)
 clustering = compute_optimal_clustering(out)
 plot_clustering_and_CDF(out, clustering)
 ```
+
