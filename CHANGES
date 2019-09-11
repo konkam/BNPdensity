@@ -1,6 +1,22 @@
+2019-09-11  Guillaume KON KAM KING  <guillaume.konkamking.work@gmail.com>
+
+	* DESCRIPTION (Version, Date): Release 2019.09.11
+
+	Many changes in put in place for the revision to the Journal of Statistical Software.
+
+	* Use S3 paradigm to add plot, summary and print methods to the fit objects.
+
+	* change convert_to_mcmc to as.mcmc to provide a more standard interfacing with the R package coda
+
+	* renamed plot_GOF to GOFplots which is more similar to "Goodness of fit plots"
+
+	* Extensive spell checking to convert to US spelling
+
+	* Converted the documentation to Roxygen
+
 2019-07-09  Guillaume KON KAM KING  <guillaume.konkamking.work@gmail.com>
 
-	* DESCRIPTION (Version, Date): Release 0.2.0
+	* DESCRIPTION (Version, Date): Release 2019.07.09
 
 	Many changes in put in place for the submission to the Journal of Statistical Software.
 
