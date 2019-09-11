@@ -1,6 +1,6 @@
 #' Kernel density function
 #'
-#' This functions evaluates a density at a certain datapoint.  There are 4
+#' This functions evaluates a density at a certain data point.  There are 4
 #' density options (1 = Gaussian, 2 = Gamma, 3 = Beta, 4 = double exponential,
 #' 5 = lognormal). All densities are parametrized in terms of mean and standard
 #' deviation.

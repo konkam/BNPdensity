@@ -1,7 +1,7 @@
 #' Continuous Jump heights function
 #'
 #' This function evaluates the M(v) function that determines the jump heights
-#' in the "continuous" part of an increasing additive procecess.
+#' in the "continuous" part of an increasing additive process.
 #'
 #' For internal use.
 #'

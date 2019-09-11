@@ -366,7 +366,7 @@ plot.NRMI2 <- function(x, ...) {
 #' @param x A fitted object of class NRMI2
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
-#' @return A visualisation of the important information about the object
+#' @return A visualization of the important information about the object
 #' @export
 #'
 #' @examples

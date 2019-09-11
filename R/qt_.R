@@ -1,6 +1,6 @@
 #' Quantile function non-standard Student-t
 #'
-#' Compuytes the quantiles.
+#' Computes the quantiles.
 #'
 #' For internal use
 #'

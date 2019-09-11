@@ -1,6 +1,6 @@
 #' Resampling Ystar function
 #'
-#' This funciton resamples the distinct Ystar in the semiparametric model.
+#' This function resamples the distinct Ystar in the semiparametric model.
 #'
 #' For internal use.
 #'

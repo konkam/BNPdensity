@@ -1,6 +1,6 @@
 #' Conditional predictive ordinate function
 #'
-#' This function computes conditional predictive ordinates for each datapoint.
+#' This function computes conditional predictive ordinates for each data point.
 #'
 #' For internal use.
 #'
