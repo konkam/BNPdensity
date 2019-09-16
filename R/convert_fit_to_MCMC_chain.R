@@ -1,5 +1,6 @@
-Convert_to_matrix_list <- function(fitlist, thinning_to = 1000) {
+Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE) {
   # number of iterations * number of parameters
+  if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
   if (is_semiparametric(fitlist[[1]])) {
     fitlist <- lapply(fitlist, function(fit) {
@@ -42,7 +43,7 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000) {
     unlist(parallel::mclapply(
       X = it_retained,
       FUN = function(it) sum(dpred(it)),
-      mc.cores = parallel::detectCores()
+      mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
     ))
   }
 
