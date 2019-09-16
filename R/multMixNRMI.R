@@ -300,14 +300,15 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 
 #' Convert the output of multMixNRMI into a coda mcmc object
 #'
-#' Convert the output of multMixNRMI into a coda mcmc object
-#'
 #' @importFrom  coda as.mcmc
 #' @param fitlist Output of multMixNRMI.
 #' @param thinning_to Final length of the chain after thinning.
 #' @return a coda::mcmc object
 #' @method as.mcmc multNRMI
 #' @export
+#' data(acidity)
+#' out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+#' coda::as.mcmc(out)
 as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
   res <- coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to), coda::mcmc))
   class(res) <- c("multNRMI", class(res))
