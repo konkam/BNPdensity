@@ -15,9 +15,6 @@ compute_thinning_grid(Nit, thinning_to = 10)
 an integer vector of the MCMC iterations retained.
 }
 \description{
-Compute the grid for thinning the MCMC chain
-}
-\details{
 This function creates an real grid then rounds it. If the grid is fine
 enough, there is a risk that rounding ties, i.e. iteration which are kept
 twice. To avoid this, if the total number of iterations is smaller than

@@ -18,9 +18,9 @@ devtools::install_github("konkam/BNPdensity")
 You will need to have the CRAN package `devtools`
 installed.
 
-## How to select the parameters of the Normalized Generalised Gamma process
+## How to select the parameters of the Normalized Generalized Gamma process
 
-We suggest the Normalised stable process, which corresponds to setting
+We suggest the Normalized stable process, which corresponds to setting
 `Alpha = 1, Kappa = 0` in the `MixNRMIx` functions. The stable process
 is a convenient model because its parameter γ has a convenient
 interpretation: it can be used to tune how informative the prior on the
@@ -32,7 +32,7 @@ choose the parameters may be found in Lijoi et al. (2007b), notably by
 considering the expected prior number of components.
 
 We provide a function to compute the expected number of components for a
-normalised stable process:
+normalized stable process:
 
 ``` r
 library(BNPdensity)
@@ -204,16 +204,16 @@ is not ordered. This means that for any reasonably sized problem, each
 configuration in the posterior will have been explored no more than once
 or twice, and that many potentially good configurations will not be
 present in the MCMC sample. Moreover, the lack of ordering makes it not
-trivial to summarise the posterior by an optimal clustering and to
+trivial to summarize the posterior by an optimal clustering and to
 provide credible sets.
 
-We suggest using the approach developped in S. Wade and Z. Ghahramani,
+We suggest using the approach developed in S. Wade and Z. Ghahramani,
 “Bayesian cluster analysis: Point estimation and credible balls (with
 discussion),” Bayesian Anal., vol. 13, no. 2, pp. 559–626, 2018.
 
-The main proposal from this paper is to summarise the posterior on all
+The main proposal from this paper is to summarize the posterior on all
 possible clusterings by an optimal clustering where optimality is
-defined as minimising the posterior expectation of a specific loss
+defined as minimizing the posterior expectation of a specific loss
 function, the Variation of Information. Credible sets are also
 available.
 
@@ -232,11 +232,11 @@ install.packages("GreedyEPL")
 Note that investigating the clustering makes more sense for the fully
 Nonparametric NRMI model than for the Semiparametric. This is because to
 use a single scale parameters for all the clusters, the Semiparametric
-model may favour numerous small clusters, for flexibility. The larger
+model may favor numerous small clusters, for flexibility. The larger
 number of clusters may render interpretation of the clusters more
 challenging.
 
-The clustering structure may be visualised as follows:
+The clustering structure may be visualized as follows:
 
 ``` r
 data(acidity)
