@@ -133,7 +133,7 @@ qmix_one_val <- function(p, locations, scales, weights, distr.k) {
   qmix_one_val_with_scales(p, locations, scales, weights, distr.k, max_scale, min_loc, max_loc)
 }
 
-qmix <- function(ps, locations, scales, weights, distr.k) {
+qmix <- function(ps, locations, scales, weights, distr.k, parallel = TRUE) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
   max_scale <- max(scales)
