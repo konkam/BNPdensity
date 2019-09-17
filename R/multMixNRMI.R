@@ -306,6 +306,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' @return a coda::mcmc object
 #' @method as.mcmc multNRMI
 #' @export
+#' @example
 #' data(acidity)
 #' out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' coda::as.mcmc(out)
