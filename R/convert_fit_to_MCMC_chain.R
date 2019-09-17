@@ -68,11 +68,6 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE)
   }
 }
 
-
-
-
-#' Convert the output of multMixNRMI into a coda mcmc object
-#'
 #' Convert the output of multMixNRMI into a coda mcmc object
 #'
 #'
