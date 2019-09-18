@@ -1,7 +1,7 @@
 Package: BNPdensity
 Type: Package
 Title: Ferguson-Klass Type Algorithm for Posterior Normalized Random Measures
-Version: 2019.9.11
+Version: 2019.9.18
 Authors@R: c(
   person("Julyan", "Arbel", role = c("ctb")),
   person("Ernesto", "Barrios", role = c("aut"), email = "ebarrios@itam.mx"),
