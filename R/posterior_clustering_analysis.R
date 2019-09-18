@@ -143,7 +143,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
 #' @param label_vector A vector of data labels to be plotted, to provide some
 #' identification to each point.
 #' @return A plot of the Cumulative Distribution Function (or Turnbull estimate
-#' for censored data) with data points whose colour denotes the cluster
+#' for censored data) with data points whose color denotes the cluster
 #' allocation. For censored data, right or left censored data points are not
 #' represented, while interval censored data points are represented at the
 #' middle of the censoring interval.

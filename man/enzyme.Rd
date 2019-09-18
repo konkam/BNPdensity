@@ -19,7 +19,7 @@ hist(enzyme)
 \references{
 Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J.
 and Bechtel, P.R. (1993). A population and family study of
-N-acetyltransferase using caffeine urinary metabilites. Clin. Pharm. Therp.,
+N-acetyltransferase using caffeine urinary metabolites. Clin. Pharm. Therp.,
 54, 134-141.
 }
 \keyword{datasets}

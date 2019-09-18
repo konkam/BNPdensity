@@ -24,7 +24,7 @@ hist(salinity$left)
 \references{
 Kefford, B.J., Nugegoda, D., Metzeling, L., Fields, E. 2006.
 Validating species sensitivity distributions using salinity tolerance of
-riverine macroinvertebrates in the southern Murray-darling Basin (Vittoria,
+riverine macroinvertebrates in the southern Murray-darling Basin (Victoria,
 Australia). Canadian Journal of Fisheries and Aquatic Science, 63,
 1865-1877.
 }
