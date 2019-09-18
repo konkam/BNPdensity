@@ -130,7 +130,7 @@ NULL
 #' \describe{ \item{list("enzyme")}{A numeric vector.} }
 #' @references Bechtel, Y. C., Bonaiti-Pellie, C., Poisson, N., Magnette, J.
 #' and Bechtel, P.R. (1993). A population and family study of
-#' N-acetyltransferase using caffeine urinary metabilites. Clin. Pharm. Therp.,
+#' N-acetyltransferase using caffeine urinary metabolites. Clin. Pharm. Therp.,
 #' 54, 134-141.
 #' @keywords datasets
 #' @examples
@@ -218,7 +218,7 @@ NULL
 #' numeric vector.} }
 #' @references Kefford, B.J., Nugegoda, D., Metzeling, L., Fields, E. 2006.
 #' Validating species sensitivity distributions using salinity tolerance of
-#' riverine macroinvertebrates in the southern Murray-darling Basin (Vittoria,
+#' riverine macroinvertebrates in the southern Murray-darling Basin (Victoria,
 #' Australia). Canadian Journal of Fisheries and Aquatic Science, 63,
 #' 1865-1877.
 #' @source \code{fitdistrplus} R-package
