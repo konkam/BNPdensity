@@ -20,8 +20,15 @@ The density estimate is the mean posterior density computed on the data
 points.
 }
 \examples{
+## Example for non censored data
 
 data(acidity)
 out <- MixNRMI2(acidity, Nit = 50)
+plot(out)
+
+## Example for censored data
+
+data(salinity)
+out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 plot(out)
 }

@@ -356,11 +356,24 @@ MixNRMI1 <-
 #' @export
 #' @examples
 #'
+#' ## Example for non censored data
+#'
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' plot(out)
+#'
+#' ## Example for censored data
+#'
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
+#' plot(out)
 plot.NRMI1 <- function(x, ...) {
-  plotfit_noncensored(x)
+  if (is_censored(x$data)) {
+    plotfit_censored(x)
+  }
+  else {
+    plotfit_noncensored(x)
+  }
 }
 
 #' S3 method for class 'MixNRMI1'
@@ -372,8 +385,17 @@ plot.NRMI1 <- function(x, ...) {
 #' @export
 #'
 #' @examples
+#'
+#' ## Example for non censored data
+#'
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
+#' print(out)
+#'
+#' ## Example for censored data
+#'
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
 #' print(out)
 print.NRMI1 <- function(x, ...) {
   kernel_name <- tolower(give_kernel_name(x$distr.k))
@@ -390,8 +412,17 @@ print.NRMI1 <- function(x, ...) {
 #' @export
 #'
 #' @examples
+#'
+#' ## Example for non censored data
+#'
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
+#' summary(out)
+#'
+#' ## Example for censored data
+#'
+#' data(salinity)
+#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
 #' summary(out)
 summary.NRMI1 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))

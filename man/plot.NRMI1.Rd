@@ -21,7 +21,15 @@ points.
 }
 \examples{
 
+## Example for non censored data
+
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
+plot(out)
+
+## Example for censored data
+
+data(salinity)
+out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
 plot(out)
 }
