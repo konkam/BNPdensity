@@ -17,6 +17,3 @@ x + y
 \description{
 This is a helper function for use in Reduce() over a list of vectors
 }
-\examples{
-BNPdensity:::add(1, 2)
-}
