@@ -74,6 +74,6 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE,
 #' @param fitlist Output of multMixNRMI.
 #' @param thinning_to Final length of the chain after thinning.
 #' @return a coda::mcmc object
-convert_to_mcmc <- function(fitlist, thinning_to = 1000) {
-  coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to), coda::mcmc))
+convert_to_mcmc <- function(fitlist, thinning_to = 1000, ncores = parallel::detectCores()) {
+  coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to, ncores = ncores), coda::mcmc))
 }

@@ -310,8 +310,8 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' data(acidity)
 #' out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' coda::as.mcmc(out, ncores = 2)
-as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000) {
-  res <- coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to), coda::mcmc))
+as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000, ncores = parallel::detectCores()) {
+  res <- coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to, ncores = ncores), coda::mcmc))
   class(res) <- c("multNRMI", class(res))
   return(res)
 }
