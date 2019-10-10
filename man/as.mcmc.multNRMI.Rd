@@ -4,7 +4,8 @@
 \alias{as.mcmc.multNRMI}
 \title{Convert the output of multMixNRMI into a coda mcmc object}
 \usage{
-\method{as.mcmc}{multNRMI}(fitlist, thinning_to = 1000)
+\method{as.mcmc}{multNRMI}(fitlist, thinning_to = 1000,
+  ncores = parallel::detectCores())
 }
 \arguments{
 \item{fitlist}{Output of multMixNRMI.}
