@@ -61,7 +61,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
     mc.set.seed = TRUE
   )
-  return(structure(res, class = c("multNRMI", "NRMI1")))
+  return(structure(res, class = c("multNRMI")))
 }
 
 
@@ -136,7 +136,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
     mc.set.seed = TRUE
   )
-  return(structure(res, class = c("multNRMI", "NRMI2")))
+  return(structure(res, class = c("multNRMI")))
 }
 
 
@@ -211,7 +211,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
     mc.set.seed = TRUE
   )
-  return(structure(res, class = c("multNRMI", "NRMI1cens")))
+  return(structure(res, class = c("multNRMI")))
 }
 
 
@@ -293,7 +293,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
     mc.set.seed = TRUE
   )
-  return(structure(res, class = c("multNRMI", "NRMI2cens")))
+  return(structure(res, class = c("multNRMI")))
 }
 
 
@@ -306,7 +306,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' @return a coda::mcmc object
 #' @method as.mcmc multNRMI
 #' @export
-#' @example
+#' @examples
 #' data(acidity)
 #' out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' coda::as.mcmc(out)

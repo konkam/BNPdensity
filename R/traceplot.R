@@ -1,7 +1,7 @@
 #' Draw a traceplot for multiple chains
 #'
-#' This function works when coda is not yet loaded by the user. If coda is
-#' loaded, it gets overwritten. See also file multMixNRMI.R
+#' This is a convenience function which works when coda is not yet loaded by the user. If coda is
+#' loaded, it gets masked. See also file multMixNRMI.R
 #'
 #' @param fitlist Output of multMixNRMI.
 #' @return A traceplot for multiple chains.

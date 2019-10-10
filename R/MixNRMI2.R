@@ -353,12 +353,24 @@ MixNRMI2 <-
 #' histogram of the data
 #' @export
 #' @examples
+#' ## Example for non censored data
 #'
 #' data(acidity)
 #' out <- MixNRMI2(acidity, Nit = 50)
 #' plot(out)
+#'
+#' ## Example for censored data
+#'
+#' data(salinity)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' plot(out)
 plot.NRMI2 <- function(x, ...) {
-  plotfit_noncensored(x)
+  if (is_censored(x$data)) {
+    plotfit_censored(x)
+  }
+  else {
+    plotfit_noncensored(x)
+  }
 }
 
 #' S3 method for class 'MixNRMI2'
@@ -370,8 +382,13 @@ plot.NRMI2 <- function(x, ...) {
 #' @export
 #'
 #' @examples
+#' #' ## Example for censored data
 #' data(acidity)
 #' out <- MixNRMI2(acidity, Nit = 50)
+#' print(out)
+#'
+#' data(salinity)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' print(out)
 print.NRMI2 <- function(x, ...) {
   kernel_name <- tolower(give_kernel_name(x$distr.k))
@@ -380,7 +397,7 @@ print.NRMI2 <- function(x, ...) {
 
 #' S3 method for class 'MixNRMI2'
 #'
-#' @param object A fitted object of class NRMI1cens
+#' @param object A fitted object of class NRMI2
 #' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
@@ -390,6 +407,10 @@ print.NRMI2 <- function(x, ...) {
 #' @examples
 #' data(acidity)
 #' out <- MixNRMI2(acidity, Nit = 50)
+#' summary(out)
+#'
+#' data(salinity)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
 #' summary(out)
 summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))

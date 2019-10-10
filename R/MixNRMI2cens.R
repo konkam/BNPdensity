@@ -311,62 +311,6 @@ MixNRMI2cens <-
       res$weights <- weights
       res$Js <- Js
     }
-    return(structure(res, class = "NRMI2cens"))
+    return(structure(res, class = "NRMI2"))
   }
 
-
-
-#' Plot the density estimate and the 95\% credible interval
-#'
-#' The density estimate is the mean posterior density computed on the data
-#' points. It is not possible to display a histogram for censored data.
-#'
-#'
-#' @param x A fitted object of class MixNRMI2cens
-#' @param ... Further arguments to be passed to generic functions, ignored at the moment
-#' @return A graph with the density estimate, the 95\% credible interval
-#' @export
-#' @examples
-#'
-#' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
-#' plot(out)
-plot.NRMI2cens <- function(x, ...) {
-  plotfit_censored(x)
-}
-
-#' S3 method for class 'MixNRMI2cens'
-#'
-#' @param x A fitted object of class MixNRMI2cens
-#' @param ... Further arguments to be passed to generic functions, ignored at the moment
-#'
-#' @return A visualization of the important information about the object
-#' @export
-#'
-#' @examples
-#' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
-#' print(out)
-print.NRMI2cens <- function(x, ...) {
-  kernel_name <- tolower(give_kernel_name(x$distr.k))
-  writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", nrow(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
-}
-
-#' S3 method for class 'MixNRMI2cens'
-#'
-#' @param object A fitted object of class NRMI1cens
-#' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
-#' @param ... Further arguments to be passed to generic function, ignored at the moment
-#'
-#' @return Prints out the text for the summary S3 methods
-#' @export
-#'
-#' @examples
-#' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
-#' summary(out)
-summary.NRMI2cens <- function(object, number_of_clusters = FALSE, ...) {
-  kernel_name <- tolower(give_kernel_name(object$distr.k))
-  kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
-  summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
-}
