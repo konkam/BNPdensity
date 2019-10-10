@@ -13,6 +13,6 @@ traceplot(fitlist)
 A traceplot for multiple chains.
 }
 \description{
-This function works when coda is not yet loaded by the user. If coda is
-loaded, it gets overwritten. See also file multMixNRMI.R
+This is a convenience function which works when coda is not yet loaded by the user. If coda is
+loaded, it gets masked. See also file multMixNRMI.R
 }
