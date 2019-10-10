@@ -11,6 +11,8 @@
 \item{fitlist}{Output of multMixNRMI.}
 
 \item{thinning_to}{Final length of the chain after thinning.}
+
+\item{ncores}{Specify the number of cores to use in the conversion}
 }
 \value{
 a coda::mcmc object
