@@ -1,4 +1,4 @@
-Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE) {
+Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE, ncores = parallel::detectCores()) {
   # number of iterations * number of parameters
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
@@ -43,7 +43,7 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE)
     unlist(parallel::mclapply(
       X = it_retained,
       FUN = function(it) sum(dpred(it)),
-      mc.cores = ifelse(test = parallel, yes = parallel::detectCores(), no = 1)
+      mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
     ))
   }
 
