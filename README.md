@@ -12,7 +12,7 @@ You can install BNPdensity from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("konkam/BNPdensity")
+devtools::install_github("konkam/BNPdensity", dependencies = TRUE, upgrade = TRUE)
 ```
 
 You will need to have the CRAN package `devtools`
