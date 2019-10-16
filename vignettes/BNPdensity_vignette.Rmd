@@ -1,0 +1,165 @@
+---
+title: "Bayesian nonparametric density estimation using BNPdensity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bayesian nonparametric density estimation using BNPdensity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BNPdensity)
+```
+
+
+# BNPdensity
+
+Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
+
+
+
+
+
+## How to select the parameters of the Normalized Generalized Gamma process
+
+We suggest the Normalized stable process, which corresponds to setting `Alpha = 1, Kappa = 0` in the `MixNRMIx` functions.
+The stable process is a convenient model because its parameter γ has a convenient interpretation: it can be used to tune how informative the prior on the number of components is. 
+Small values of `Gama` bring the process closer to a Dirichlet process, where the prior on the number of components is a relatively peaked distribution around $\alpha \log n$. 
+Larger values of `Gama` make this distribution flatter. 
+More guidelines on how to choose the parameters may be found in Lijoi et al. (2007b), notably by considering the expected prior number of components.
+
+We provide a function to compute the expected number of components for a normalized stable process:
+
+```{r}
+library(BNPdensity)
+expected_number_of_components_stable(100, 0.8)
+```
+
+This number may be compared to the prior number of components induced by a Dirichlet process with `Alpha = 1`:
+
+```{r}
+expected_number_of_components_Dirichlet(100, 1.)
+```
+
+We also provide a way to visualise the prior distribution on the number of components:
+
+```{r}
+plot_prior_number_of_components(50, 0.4) 
+```
+
+## How to fit a dataset
+
+We illustrate the package by estimating the distribution of the `acidity` dataset.
+
+```{r}
+library(BNPdensity)
+data(acidity)
+str(acidity)
+```
+
+```{r}
+hist(acidity)
+```
+
+
+```{r}
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, Nit = 3000)
+```
+
+`MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide common S3 methods.
+
+```{r}
+print(fit)
+```
+
+```{r}
+plot(fit)
+```
+
+
+```{r}
+summary(fit)
+```
+
+
+## How to use the convergence diagnostics
+
+We also provide an interface to run several chains in parallel, using the functions `multMixNRMI1()`. We interface our package with the `coda` package by providing a conversion method for the output this function. This allows for instance to compute the convergence diagnostics included in `coda`.
+
+One detail is that due to the Nonparametric nature of the model, the number of parameters which could potentially be monitored for convergence of the chains varies. 
+The location parameter of the clusters, for instance, vary at each iteration, and even the labels of the clusters vary, which makes them tricky to follow.
+However, it is possible to monitor the log-likelihood of the data along the iterations, the value of the latent variable `u`, the number of components and for the semi-parametric model, the value of the common scale parameter.
+
+```{r}
+library(BNPdensity)
+library(coda)
+data(acidity)
+fitlist = multMixNRMI1(acidity, Nit = 5000)
+mcmc_list = as.mcmc(fitlist)
+coda::traceplot(mcmc_list)
+coda::gelman.diag(mcmc_list)
+```
+
+
+## How to use the Goodness of fit plots
+
+### Non censored data
+
+```{r}
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, extras = TRUE)
+GOFplots(fit)
+```
+
+### Censored data
+
+```{r}
+library(BNPdensity)
+data(salinity)
+fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
+GOFplots(fit)
+```
+
+## Posterior analysis of the clustering structure
+
+The MCMC algorithm provides a sample of the posterior distribution on the space of all clusterings. 
+This is a very large discrete space, which is not ordered. 
+This means that for any reasonably sized problem, each configuration in the posterior will have been explored no more than once or twice, and that many potentially good configurations will not be present in the MCMC sample.
+Moreover, the lack of ordering makes it not trivial to summarize the posterior by an optimal clustering and to provide credible sets.
+
+We suggest using the approach developed in S. Wade and Z. Ghahramani, “Bayesian cluster analysis: Point estimation and credible balls (with discussion),” Bayesian Anal., vol. 13, no. 2, pp. 559–626, 2018.
+
+The main proposal from this paper is to summarize the posterior on all possible clusterings by an optimal clustering where optimality is defined as minimizing the posterior expectation of a specific loss function, the Variation of Information.
+Credible sets are also available.
+
+We use the implementation described in R. Rastelli and N. Friel, “Optimal Bayesian estimators for latent variable cluster models,” Stat. Comput., vol. 28, no. 6, pp. 1169–1186, Nov. 2018, which is faster and implemented in the CRAN package `GreedyEPL`.
+
+Using this approach requires installing the R package `GreedyEPL`, which can be achieved with the following command:
+
+```{r GreedyEPL, eval = FALSE}
+install.packages("GreedyEPL")
+```
+
+
+Note that investigating the clustering makes more sense for the fully Nonparametric NRMI model than for the Semiparametric.
+This is because to use a single scale parameters for all the clusters, the Semiparametric model may favor numerous small clusters, for flexibility.
+The larger number of clusters may render interpretation of the clusters more challenging.
+
+The clustering structure may be visualized as follows:
+
+```{r}
+data(acidity)
+out <- MixNRMI2(acidity,  extras = TRUE)
+clustering = compute_optimal_clustering(out)
+plot_clustering_and_CDF(out, clustering)
+```

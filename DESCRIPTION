@@ -27,6 +27,9 @@ Imports:
     tidyr,
     viridis
 Suggests:
-  GreedyEPL,
-  Rmpfr, 
-  gmp
+    GreedyEPL,
+    Rmpfr,
+    gmp,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
