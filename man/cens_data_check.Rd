@@ -6,8 +6,13 @@
 \usage{
 cens_data_check(xleft, xright)
 }
+\arguments{
+\item{xleft}{left bounds for the censored dataset. Can be a real number or NA}
+
+\item{xright}{right bounds for the censored dataset}
+}
 \description{
-Performs censoring data check.
+Checks that a censored dataset is valid. This performs two checks: check that the dataset does not contain only NA, and check that the for interval censored data, the bounds are in the right order.
 }
 \details{
 For internal use
