@@ -38,7 +38,7 @@ plotfit_noncensored <- function(fit) {
 #'
 #'
 #' @param fit A fitted object of class NRMI1cens or NRMI2cens
-#' @return A graph with the density estimate, the 95\% credible interval
+#' @return A graph with the density estimate and the 95\% credible interval
 #' @examples
 #'
 #' data(acidity)
@@ -53,4 +53,16 @@ plotfit_censored <- function(fit) {
     geom_line(aes_string(y = "supCI"), colour = "blue", linetype = "dotted") +
     xlab("Data") +
     ylab("Density")
+}
+
+#' Plot the density estimate and grey lines to represent the uncertainty on the density estimate
+#'
+#' @param fit A fitted object of class NRMI1 or NRMI2
+#'
+#' @return A graph with the density estimate, the 95\% credible interval and a histogram of the data.
+#' @export
+#'
+#' @examples
+plotfit_manylines = function(fit) {
+  1+1
 }
