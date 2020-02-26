@@ -15,7 +15,7 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: yes
 ByteCompile: yes
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends: R(>= 3.3.0)
 Maintainer: Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
 Imports:
@@ -31,5 +31,6 @@ Suggests:
     Rmpfr,
     gmp,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
