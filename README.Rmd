@@ -38,6 +38,8 @@ We consider a one-dimensional density estimation problem. As an example, we pick
 
 We illustrate the package by estimating the distribution of the `acidity` dataset.
 
+Let's have a quick overview of the acidity dataset:
+
 ```{r}
 library(BNPdensity)
 data(acidity)
