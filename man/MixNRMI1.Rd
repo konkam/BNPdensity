@@ -155,17 +155,8 @@ x <- acidity
 # Fitting the model under default specifications
 out <- MixNRMI1(x)
 # Plotting density estimate + 95\% credible interval
-attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
-detach()
+plot(out)
 }
-
 ### Example 2
 ## Do not run
 # set.seed(150520)
@@ -182,13 +173,7 @@ x <- enzyme
 data(Enzyme1.out)
 attach(Enzyme1.out)
 # Plotting density estimate + 95\% credible interval
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(Enzyme1.out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")
@@ -226,13 +211,7 @@ x <- galaxy
 data(Galaxy1.out)
 attach(Galaxy1.out)
 # Plotting density estimate + 95\% credible interval
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(Galaxy1.out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")
