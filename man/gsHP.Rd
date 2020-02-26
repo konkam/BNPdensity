@@ -45,7 +45,7 @@ function(ystar, rstar, distr) {
     sigma.py0 <- sqrt(t1 / (t1 + 1)^2 / (t1 + 2))
   }
   else {
-    stop("Argument \\"distr\\" should be defined numeric with possible values 1,2 or 3")
+    stop("Argument \"distr\" should be defined numeric with possible values 1,2 or 3")
   }
   return(list(mu.py0 = mu.py0, sigma.py0 = sigma.py0))
 }

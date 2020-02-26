@@ -4,11 +4,26 @@
 \alias{MixNRMI1}
 \title{Normalized Random Measures Mixture of Type I}
 \usage{
-MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-  Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
-  bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
-  Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-  extras = TRUE)
+MixNRMI1(
+  x,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = 1,
+  distr.p0 = 1,
+  asigma = 0.5,
+  bsigma = 0.5,
+  delta = 3,
+  Delta = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE
+)
 }
 \arguments{
 \item{x}{Numeric vector. Data set to which the density is fitted.}

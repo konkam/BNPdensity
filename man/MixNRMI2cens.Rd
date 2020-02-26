@@ -4,11 +4,29 @@
 \alias{MixNRMI2cens}
 \title{Normalized Random Measures Mixture of Type II for censored data}
 \usage{
-MixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-  Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1,
-  distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4,
-  kappa = 2, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-  Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
+MixNRMI2cens(
+  xleft,
+  xright,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = 1,
+  distr.py0 = 1,
+  distr.pz0 = 2,
+  mu.pz0 = 3,
+  sigma.pz0 = sqrt(10),
+  delta = 4,
+  kappa = 2,
+  Delta = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE
+)
 }
 \arguments{
 \item{xleft}{Numeric vector. Lower limit of interval censoring. For exact

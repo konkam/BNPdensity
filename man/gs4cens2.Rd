@@ -4,8 +4,18 @@
 \alias{gs4cens2}
 \title{Resampling Ystar function in the case of censoring}
 \usage{
-gs4cens2(ystar, xleft, xright, censor_code, idx, distr.k, sigma.k,
-  distr.p0, mu.p0, sigma.p0)
+gs4cens2(
+  ystar,
+  xleft,
+  xright,
+  censor_code,
+  idx,
+  distr.k,
+  sigma.k,
+  distr.p0,
+  mu.p0,
+  sigma.p0
+)
 }
 \description{
 This function resamples the distinct Ystar in the semiparametric model.

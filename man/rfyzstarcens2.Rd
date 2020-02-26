@@ -5,8 +5,22 @@
 \title{Conditional posterior distribution of the distinct vectors (Ystar,Zstar) in
 the case of censoring}
 \usage{
-rfyzstarcens2(v, v2, z, z2, xleft, xright, censor_code, distr.k, distr.py0,
-  mu.py0, sigma.py0, distr.pz0, mu.pz0, sigma.pz0)
+rfyzstarcens2(
+  v,
+  v2,
+  z,
+  z2,
+  xleft,
+  xright,
+  censor_code,
+  distr.k,
+  distr.py0,
+  mu.py0,
+  sigma.py0,
+  distr.pz0,
+  mu.pz0,
+  sigma.pz0
+)
 }
 \description{
 This function evaluates the ratio of conditional posterior distributions of

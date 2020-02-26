@@ -4,8 +4,12 @@
 \alias{expected_number_of_components_Dirichlet}
 \title{Computes the expected number of components for a Dirichlet process.}
 \usage{
-expected_number_of_components_Dirichlet(n, Alpha, ntrunc = NULL,
-  silence = TRUE)
+expected_number_of_components_Dirichlet(
+  n,
+  Alpha,
+  ntrunc = NULL,
+  silence = TRUE
+)
 }
 \arguments{
 \item{n}{Number of data points}

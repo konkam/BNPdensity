@@ -4,9 +4,25 @@
 \alias{gsYZstarcens2}
 \title{Jointly resampling Ystar and Zstar function in the case of censoring}
 \usage{
-gsYZstarcens2(ystar, zstar, nstar, rstar, idx, xleft, xright, censor_code,
-  delta, kappa, distr.k, distr.py0, mu.py0, sigma.py0, distr.pz0, mu.pz0,
-  sigma.pz0)
+gsYZstarcens2(
+  ystar,
+  zstar,
+  nstar,
+  rstar,
+  idx,
+  xleft,
+  xright,
+  censor_code,
+  delta,
+  kappa,
+  distr.k,
+  distr.py0,
+  mu.py0,
+  sigma.py0,
+  distr.pz0,
+  mu.pz0,
+  sigma.pz0
+)
 }
 \description{
 This function resamples jointly the distinct pairs (Ystar,Zstar) in the

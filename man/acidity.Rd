@@ -4,8 +4,7 @@
 \name{acidity}
 \alias{acidity}
 \title{Acidity Index Dataset}
-\format{A data frame with 155 observations on the following variable:
-\describe{ \item{list("acidity")}{A numeric vector.} }}
+\format{A real vector with 155 observations.}
 \description{
 Concerns an acidity index measured in a sample of 155 lakes in north-central
 Wisconsin.

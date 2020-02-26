@@ -4,8 +4,23 @@
 \alias{gsYZstar}
 \title{Jointly resampling Ystar and Zstar function}
 \usage{
-gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta, kappa, distr.k,
-  distr.py0, mu.py0, sigma.py0, distr.pz0, mu.pz0, sigma.pz0)
+gsYZstar(
+  ystar,
+  zstar,
+  nstar,
+  rstar,
+  idx,
+  x,
+  delta,
+  kappa,
+  distr.k,
+  distr.py0,
+  mu.py0,
+  sigma.py0,
+  distr.pz0,
+  mu.pz0,
+  sigma.pz0
+)
 }
 \description{
 This function resamples jointly the distinct pairs (Ystar,Zstar) in the
