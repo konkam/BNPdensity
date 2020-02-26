@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    toc: yes
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -28,6 +30,51 @@ devtools::install_github("konkam/BNPdensity", dependencies = TRUE, upgrade = TRU
 ```
 
 You will need to have the CRAN package `devtools` installed.
+
+
+## Problem setting
+
+We consider a one-dimensional density estimation problem. As an example, we pick the `acidity` dataset, which contains an acidity index measured in a sample of 155 lakes in north-central Wisconsin (Crawford et al. (1992)).
+
+We illustrate the package by estimating the distribution of the `acidity` dataset.
+
+```{r}
+library(BNPdensity)
+data(acidity)
+str(acidity)
+```
+
+```{r}
+hist(acidity)
+```
+
+This dataset shows clear signs of multimodality, and it might be tempting to fit a bimodal normal distribution. However, some asymmetry in the two apparent clusters, or the extreme point on the left suggest that a mixture with more components might be more appropriate.
+
+A Bayesian Nonparametric approach avoids the need to specify an arbitrary number of clusters in advance, it rather aims at estimating an optimal number of clusters from the dataset by means of an infinite mixture model.
+
+The most famous Bayesian Nonparametric model for infinite mixtures is the [Dirichlet process](https://en.wikipedia.org/wiki/Dirichlet_process). However, it implies a fairly informative a priori distribution on the number of components in the mixture: the mode of the prior distribution is proportional to the logarithm of the number of data points, and the distribution is fairly peaked.
+This might not accurately reflect the prior information available on the number of components, or might induce an unwanted bias in the case of prior mis-specification.
+Models more general than the Dirichlet process, such as Normalized Random Measure models (Barrios et al. (2013)) allow overcoming this limitation by specifying a **less informative** prior. In what follows, we present how to use Normalized Random Measure models for density estimation.
+
+## Obtaining a Bayesian Nonparametric density estimate in a few seconds
+
+```{r}
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, Nit = 3000)
+```
+
+`MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide common S3 methods.
+
+```{r}
+print(fit)
+```
+
+```{r}
+plot(fit)
+```
+
+
 
 ## How to select the parameters of the Normalized Generalized Gamma process
 
