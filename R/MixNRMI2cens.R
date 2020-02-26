@@ -128,15 +128,7 @@
 #' # Fitting the model under default specifications
 #' out <- MixNRMI2cens(x, x)
 #' # Plotting density estimate + 95% credible interval
-#' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
-#' detach()
+#' plot(out)
 #' }
 #'
 #' \dontrun{
@@ -150,12 +142,7 @@
 #' )
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
+#' plot(out)
 #' # Plotting number of clusters
 #' par(mfrow = c(2, 1))
 #' plot(R, type = "l", main = "Trace of R")
