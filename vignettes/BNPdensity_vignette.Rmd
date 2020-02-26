@@ -10,19 +10,26 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  cache = TRUE
 )
+options(mc.cores = parallel::detectCores())
 ```
+
+
+
+Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
+
+
+# Problem setting
+
+We consider a one-dimensional density estimation problem.
+
+
 
 ```{r setup}
 library(BNPdensity)
 ```
-
-
-# BNPdensity
-
-Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
-
 
 
 
@@ -38,7 +45,6 @@ More guidelines on how to choose the parameters may be found in Lijoi et al. (20
 We provide a function to compute the expected number of components for a normalized stable process:
 
 ```{r}
-library(BNPdensity)
 expected_number_of_components_stable(100, 0.8)
 ```
 
