@@ -8,8 +8,7 @@
 #'
 #' @name acidity
 #' @docType data
-#' @format A data frame with 155 observations on the following variable:
-#' \describe{ \item{list("acidity")}{A numeric vector.} }
+#' @format A real vector with 155 observations.
 #' @references Crawford, S. L., DeGroot, M. H., Kadane, J. B. and Small, M. J.
 #' (1992). Modeling lake chemistry distributions: approximate Bayesian methods
 #' for estimating a finite mixture model. Technometrics, 34, 441-453.
