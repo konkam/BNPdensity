@@ -1,35 +1,6 @@
 #' Multiple chains of MixNRMI1
 #'
-#' @param x Numeric vector. Data set to which the density is fitted.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
-#' @param asigma Numeric positive constant. Shape parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, weights and
-#' Js (the jump sizes).
+#' @inheritParams MixNRMI1
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
@@ -70,40 +41,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 #' Multiple chains of MixNRMI2
 #'
-#' @param x Numeric vector. Data set to which the density is fitted.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
-#' scales: 2 = Gamma. For more options use MixNRMI2cens.
-#' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
-#' scales.
-#' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
-#' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the scales.
-#' @param kappa Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
-#' weights and Js.
+#' @inheritParams MixNRMI2
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
@@ -144,39 +82,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 #' Multiple chains of MixNRMI1cens
 #'
-#' @param xleft Numeric vector. Lower limit of interval censoring. For exact
-#' data the same as xright
-#' @param xright Numeric vector. Upper limit of interval censoring. For exact
-#' data the same as xleft.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
-#' @param asigma Numeric positive constant. Shape parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, weights and
-#' Js (the jump sizes).
+#' @inheritParams MixNRMI1cens
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on
 #' UNIX-like systems as it rests on Fork parallelism
@@ -218,43 +124,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 
 #' Multiple chains of MixNRMI2cens
 #'
-#' @param xleft Numeric vector. Lower limit of interval censoring. For exact
-#' data the same as xright
-#' @param xright Numeric vector. Upper limit of interval censoring. For exact
-#' data the same as xleft.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
-#' scales: 2 = Gamma. For more options use MixNRMI2cens.
-#' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
-#' scales.
-#' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
-#' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the scales.
-#' @param kappa Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
-#' weights and Js.
+#' @inheritParams MixNRMI2cens
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on
 #' UNIX-like systems as it rests on Fork parallelism
