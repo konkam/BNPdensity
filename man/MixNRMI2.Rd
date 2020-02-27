@@ -40,13 +40,11 @@ details.}
 \item{Gama}{Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
 details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.py0}{Integer number identifying the centering measure for
-locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.py0}{The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{Integer number identifying the centering measure for
+\item{distr.pz0}{he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.}
 
 \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for

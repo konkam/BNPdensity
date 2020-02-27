@@ -38,11 +38,9 @@ details.}
 \item{Gama}{Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
 1}.  See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.p0}{Integer number identifying the centering measure: 1 =
-Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.p0}{The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
 \item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}

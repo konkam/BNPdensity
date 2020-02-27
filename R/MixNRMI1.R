@@ -35,10 +35,8 @@
 #' @param Kappa Numeric positive constant. See details.
 #' @param Gama Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
 #' 1}.  See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.p0 The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.
 #' @param asigma Numeric positive constant. Shape parameter of the gamma prior
 #' on the standard deviation of the mixture kernel \code{distr.k}.
 #' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
@@ -203,6 +201,8 @@ MixNRMI1 <-
     if (is.null(distr.p0)) {
       stop("Argument distr.p0 is NULL. Should be provided. See help for details.")
     }
+    distr.k = process_dist_name(distr.k)
+    distr.p0 = process_dist_name(distr.p0)
     tInit <- proc.time()
     n <- length(x)
     y <- x

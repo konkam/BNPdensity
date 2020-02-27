@@ -33,11 +33,9 @@
 #' @param Kappa Numeric positive constant. See details.
 #' @param Gama Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
 #' details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
+#' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.py0 The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.pz0 he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 #' scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
 #' scales.
@@ -200,6 +198,9 @@ MixNRMI2 <-
     if (is.null(distr.py0)) {
       stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
     }
+    distr.k = process_dist_name(distr.k)
+    distr.py0 = process_dist_name(distr.py0)
+    distr.pz0 = process_dist_name(distr.pz0)
     tInit <- proc.time()
     n <- length(x)
     y <- x
