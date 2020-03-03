@@ -19,10 +19,10 @@ Compute_log_likelihood_given_params <- function(fit_, it_retained, parallel, nco
   else {
     dpred <- function(iter) {
       log(dmix(fit_$data,
-               locations = fit_$means[[iter]],
-               scales = fit_$sigmas[[iter]],
-               weights = fit_$weights[[iter]],
-               distr.k = fit_$distr.k
+        locations = fit_$means[[iter]],
+        scales = fit_$sigmas[[iter]],
+        weights = fit_$weights[[iter]],
+        distr.k = fit_$distr.k
       ))
     }
   }

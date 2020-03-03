@@ -24,7 +24,7 @@
 #' }
 fcondYXAcens2 <-
   function(xleft, xright, censor_code_filters, distr, Tau, J,
-             sigma) {
+           sigma) {
     K <- matrix(NA, nrow = length(Tau), ncol = length(xleft))
     for (i in seq(Tau)) {
       K[i, ] <- dkcens2(

@@ -58,7 +58,7 @@
 #' }
 gsYZstar <-
   function(ystar, zstar, nstar, rstar, idx, x, delta, kappa, distr.k,
-             distr.py0, mu.py0, sigma.py0, distr.pz0, mu.pz0, sigma.pz0) {
+           distr.py0, mu.py0, sigma.py0, distr.pz0, mu.pz0, sigma.pz0) {
     for (j in seq(rstar)) {
       flag <- 1
       while (flag == 1) {

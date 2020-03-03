@@ -19,10 +19,12 @@
 #'     print(K, Tauy, Tauz, J)
 #'   }
 #'   pK <- prop.table(K, margin = 2)
-#'   j <- apply(pK, 2, function(x) sample(length(Tauy),
+#'   j <- apply(pK, 2, function(x) {
+#'     sample(length(Tauy),
 #'       size = 1,
 #'       prob = x
-#'     ))
+#'     )
+#'   })
 #'   return(matrix(c(y = Tauy[j], z = Tauz[j]),
 #'     nrow = length(x),
 #'     ncol = 2
@@ -39,10 +41,12 @@ fcondYZXA <-
       print(K, Tauy, Tauz, J)
     }
     pK <- prop.table(K, margin = 2)
-    j <- apply(pK, 2, function(x) sample(length(Tauy),
+    j <- apply(pK, 2, function(x) {
+      sample(length(Tauy),
         size = 1,
         prob = x
-      ))
+      )
+    })
     return(matrix(c(y = Tauy[j], z = Tauz[j]),
       nrow = length(x),
       ncol = 2
