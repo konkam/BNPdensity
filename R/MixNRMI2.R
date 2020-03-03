@@ -124,8 +124,8 @@
 #' # data(enzyme)
 #' # x <- enzyme
 #' #  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#' #                          distr.k = 2, distr.py0 = 2,
-#' #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
+#' #                          distr.k = "gamma", distr.py0 = "gamma",
+#' #                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -158,8 +158,8 @@
 #' # data(galaxy)
 #' # x <- galaxy
 #' #  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#' #                          distr.k = 1, distr.py0 = 2,
-#' #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
+#' #                          distr.k = "normal", distr.py0 = "gamma",
+#' #                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -188,19 +188,19 @@
 #' @export MixNRMI2
 MixNRMI2 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-             Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
-             sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
-             Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-             extras = TRUE) {
+           Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
+           sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
+           Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
+           extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.py0)) {
       stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
     }
-    distr.k = process_dist_name(distr.k)
-    distr.py0 = process_dist_name(distr.py0)
-    distr.pz0 = process_dist_name(distr.pz0)
+    distr.k <- process_dist_name(distr.k)
+    distr.py0 <- process_dist_name(distr.py0)
+    distr.pz0 <- process_dist_name(distr.pz0)
     tInit <- proc.time()
     n <- length(x)
     y <- x
@@ -397,4 +397,21 @@ summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
   summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
+}
+
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
+#'
+#' @param object A fit obtained through from the function MixNRMI2/MixNRMI2cens
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI2(acidity, Nit = 50)
+#' cpo(out)
+cpo.NRMI2 <- function(object, ...) {
+  return(object$cpo)
 }

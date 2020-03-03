@@ -3,18 +3,17 @@ library(usethis)
 
 set.seed(150520)
 data(enzyme)
-x <- enzyme
-Enzyme1.out <- MixNRMI1(x,
-  Alpha = 1, Kappa = 0.007, Gama = 0.5,
-  distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps = 0.005,
-  Nit = 5000, Pbi = 0.2
-)
+Enzyme1.out <- MixNRMI1(enzyme, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = "gamma", distr.p0 = "gamma", asigma = 1, bsigma = 1, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 usethis::use_data(Enzyme1.out, overwrite = T)
 
 set.seed(150520)
+data(enzyme)
+Enzyme2.out <- MixNRMI2(enzyme, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = "gamma", distr.py0 = "gamma", distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps = 0.005, Nit = 5000, Pbi = 0.2)
+usethis::use_data(Enzyme2.out, overwrite = T)
+
+set.seed(150520)
 data(galaxy)
-x <- galaxy
-Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1, delta = 7, Meps = 0.005, Nit = 5000, Pbi = 0.2)
+Galaxy1.out <- MixNRMI1(galaxy, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = "normal", distr.p0 = "gamma", asigma = 1, bsigma = 1, delta = 7, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 
 # # This is for diagnostic
 # attach(Galaxy1.out)
@@ -38,23 +37,7 @@ Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = 1, di
 
 usethis::use_data(Galaxy1.out, overwrite = T)
 
-
-set.seed(150520)
-data(enzyme)
-x <- enzyme
-Enzyme2.out <- MixNRMI2(x,
-  Alpha = 1, Kappa = 0.007, Gama = 0.5,
-  distr.k = 2, distr.py0 = 2,
-  distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps = 0.005,
-  Nit = 5000, Pbi = 0.2
-)
-usethis::use_data(Enzyme2.out, overwrite = T)
-
 set.seed(150520)
 data(galaxy)
-x <- galaxy
-Galaxy2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-                          distr.k = 1, distr.py0 = 2,
-                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
-                          Nit = 5000, Pbi = 0.2)
+Galaxy2.out <- MixNRMI2(galaxy, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = "normal", distr.py0 = "gamma", distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1,  Meps = 0.005, Nit = 5000, Pbi = 0.2)
 usethis::use_data(Galaxy2.out, overwrite = T)

@@ -121,7 +121,7 @@
 #' # data(enzyme)
 #' # x <- enzyme
 #' # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#' #                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005,
+#' #                          distr.k = "gamma", distr.p0 = "gamma", asigma = 1, bsigma = 1, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -158,7 +158,7 @@
 #' # data(galaxy)
 #' # x <- galaxy
 #' #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#' #                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
+#' #                          distr.k = "normal", distr.p0 = "gamma", asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #'
 #' # The output of this run is already loaded in the package
@@ -192,17 +192,17 @@
 #' @export MixNRMI1
 MixNRMI1 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-             Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
-             delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-             Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE) {
+           Gama = 0.4, distr.k = "normal", distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
+           delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
+           Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.p0)) {
       stop("Argument distr.p0 is NULL. Should be provided. See help for details.")
     }
-    distr.k = process_dist_name(distr.k)
-    distr.p0 = process_dist_name(distr.p0)
+    distr.k <- process_dist_name(distr.k)
+    distr.p0 <- process_dist_name(distr.p0)
     tInit <- proc.time()
     n <- length(x)
     y <- x
@@ -397,14 +397,24 @@ print.NRMI1 <- function(x, ...) {
 #' data(acidity)
 #' out <- MixNRMI1(acidity, Nit = 50)
 #' summary(out)
-#'
-#' ## Example for censored data
-#'
-#' data(salinity)
-#' out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
-#' summary(out)
 summary.NRMI1 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
   summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
+}
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
+#'
+#' @param object A fit obtained through from the functions MixNRMI1/MixNRMI1cens
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI1(acidity, Nit = 50)
+#' cpo(out)
+cpo.NRMI1 <- function(object, ...) {
+  return(object$cpo)
 }

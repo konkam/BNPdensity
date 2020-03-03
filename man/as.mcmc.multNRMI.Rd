@@ -21,6 +21,6 @@ Convert the output of multMixNRMI into a coda mcmc object
 }
 \examples{
 data(acidity)
-out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+out <- multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 coda::as.mcmc(out, ncores = 2)
 }

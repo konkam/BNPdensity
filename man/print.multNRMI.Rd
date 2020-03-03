@@ -18,7 +18,9 @@ A visualization of the important information about the object
 S3 method for class 'multNRMI'
 }
 \examples{
-\donttest{data(salinity)
+\donttest{
+data(salinity)
 out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-print(out)}
+print(out)
+}
 }

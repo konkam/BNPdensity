@@ -10,9 +10,9 @@ MixNRMI2(
   Alpha = 1,
   Kappa = 0,
   Gama = 0.4,
-  distr.k = 1,
-  distr.py0 = 1,
-  distr.pz0 = 2,
+  distr.k = "normal",
+  distr.py0 = "normal",
+  distr.pz0 = "gamma",
   mu.pz0 = 3,
   sigma.pz0 = sqrt(10),
   delta = 4,
@@ -168,8 +168,8 @@ plot(out)
 # data(enzyme)
 # x <- enzyme
 #  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#                          distr.k = 2, distr.py0 = 2,
-#                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
+#                          distr.k = "gamma", distr.py0 = "gamma",
+#                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
@@ -202,8 +202,8 @@ detach()
 # data(galaxy)
 # x <- galaxy
 #  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#                          distr.k = 1, distr.py0 = 2,
-#                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
+#                          distr.k = "normal", distr.py0 = "gamma",
+#                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following

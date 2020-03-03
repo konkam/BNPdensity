@@ -136,25 +136,27 @@
 #' @export MixNRMI1cens
 MixNRMI1cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-             Kappa = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
-             bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
-             Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-             extras = TRUE) {
+           Kappa = 0, Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5,
+           bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
+           Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
+           extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.p0)) {
       stop("Argument distr.p0 is NULL. Should be provided. See help for details.")
     }
-    distr.k = process_dist_name(distr.k)
-    distr.p0 = process_dist_name(distr.p0)
+    distr.k <- process_dist_name(distr.k)
+    distr.p0 <- process_dist_name(distr.p0)
     tInit <- proc.time()
     cens_data_check(xleft, xright)
     xpoint <- as.numeric(na.omit(0.5 * (xleft + xright)))
     npoint <- length(xpoint)
     censor_code <- censor_code_rl(xleft, xright)
-    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code ==
-        x)
+    censor_code_filters <- lapply(0:3, FUN = function(x) {
+      censor_code ==
+        x
+    })
     names(censor_code_filters) <- 0:3
     n <- length(xleft)
     y <- seq(n)
@@ -277,4 +279,3 @@ MixNRMI1cens <-
     }
     return(structure(res, class = "NRMI1"))
   }
-

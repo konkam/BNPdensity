@@ -26,10 +26,4 @@ S3 method for class 'MixNRMI1'
 data(acidity)
 out <- MixNRMI1(acidity, Nit = 50)
 summary(out)
-
-## Example for censored data
-
-data(salinity)
-out <- MixNRMI1cens(salinity$left, salinity$right, Nit = 50)
-summary(out)
 }
