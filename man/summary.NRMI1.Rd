@@ -7,7 +7,7 @@
 \method{summary}{NRMI1}(object, number_of_clusters = FALSE, ...)
 }
 \arguments{
-\item{object}{A fitted object of class NRMI1cens}
+\item{object}{A fitted object of class NRMI1}
 
 \item{number_of_clusters}{Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})}
 

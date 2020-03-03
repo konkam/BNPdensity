@@ -198,7 +198,7 @@ detach()
 # data(galaxy)
 # x <- galaxy
 #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
+#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 
 # The output of this run is already loaded in the package

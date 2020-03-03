@@ -158,7 +158,7 @@
 #' # data(galaxy)
 #' # x <- galaxy
 #' #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#' #                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
+#' #                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #'
 #' # The output of this run is already loaded in the package
@@ -383,7 +383,7 @@ print.NRMI1 <- function(x, ...) {
 
 #' S3 method for class 'MixNRMI1'
 #'
-#' @param object A fitted object of class NRMI1cens
+#' @param object A fitted object of class NRMI1
 #' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
