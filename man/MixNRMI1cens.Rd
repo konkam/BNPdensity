@@ -15,8 +15,8 @@ MixNRMI1cens(
   distr.p0 = "normal",
   asigma = 0.5,
   bsigma = 0.5,
-  delta = 3,
-  Delta = 2,
+  delta_S = 3,
+  delta_U = 2,
   Meps = 0.01,
   Nx = 150,
   Nit = 1500,
@@ -53,10 +53,10 @@ on the standard deviation of the mixture kernel \code{distr.k}.}
 \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_S}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling sigma.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the

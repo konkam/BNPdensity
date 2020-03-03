@@ -15,9 +15,9 @@ MixNRMI2(
   distr.pz0 = "gamma",
   mu.pz0 = 3,
   sigma.pz0 = sqrt(10),
-  delta = 4,
+  delta_S = 4,
   kappa = 2,
-  Delta = 2,
+  delta_U = 2,
   Meps = 0.01,
   Nx = 150,
   Nit = 1500,
@@ -53,13 +53,13 @@ scales.}
 \item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering
 measure for scales.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_S}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the scales.}
 
 \item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the location parameters.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the

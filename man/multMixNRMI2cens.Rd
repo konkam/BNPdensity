@@ -60,14 +60,8 @@ scales.}
 \item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering
 measure for scales.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the scales.}
-
 \item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the location parameters.}
-
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of

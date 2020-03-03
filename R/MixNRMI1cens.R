@@ -47,9 +47,9 @@
 #' on the standard deviation of the mixture kernel \code{distr.k}.
 #' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
 #' on the standard deviation of the mixture kernel \code{distr.k}.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_S Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the latent U.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
@@ -137,7 +137,7 @@
 MixNRMI1cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
            Kappa = 0, Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5,
-           bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
+           bsigma = 0.5, delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150,
            Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
            extras = TRUE) {
     if (is.null(distr.k)) {
@@ -196,7 +196,7 @@ MixNRMI1cens <-
       if (Gama != 0) {
         u <- gs3(u,
           n = n, r = r, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = Delta
+          gama = Gama, delta = delta_U
         )
       }
       JiC <- MvInv(
@@ -224,7 +224,7 @@ MixNRMI1cens <-
       sigma <- gs5cens2(
         sigma = sigma, xleft = xleft, xright = xright,
         censor_code = censor_code, y = y, distr = distr.k,
-        asigma = asigma, bsigma = bsigma, delta = delta
+        asigma = asigma, bsigma = bsigma, delta = delta_S
       )
       Fxx[, j] <- fcondXA(xx,
         distr = distr.k, Tau = Tau, J = J,

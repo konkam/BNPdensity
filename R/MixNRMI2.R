@@ -41,11 +41,11 @@
 #' scales.
 #' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
 #' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_S Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the scales.
 #' @param kappa Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the latent U.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
@@ -189,7 +189,7 @@
 MixNRMI2 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
            Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
-           sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
+           sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
            Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
            extras = TRUE) {
     if (is.null(distr.k)) {
@@ -241,7 +241,7 @@ MixNRMI2 <-
       if (Gama != 0) {
         u <- gs3(u,
           n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = Delta
+          gama = Gama, delta = delta_U
         )
       }
       JiC <- MvInv(
@@ -251,7 +251,7 @@ MixNRMI2 <-
       Nm <- length(JiC)
       TauyC <- rk(Nm, distr = distr.py0, mu = mu.py0, sigma = sigma.py0)
       TauzC <- rk(Nm, distr = distr.pz0, mu = mu.pz0, sigma = sigma.pz0)
-      tt <- gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta,
+      tt <- gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta_S,
         kappa,
         distr.k = distr.k, distr.py0 = distr.py0,
         mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0,

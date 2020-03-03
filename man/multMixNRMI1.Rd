@@ -51,12 +51,6 @@ on the standard deviation of the mixture kernel \code{distr.k}.}
 \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling sigma.}
-
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
-
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
 jumps.}
