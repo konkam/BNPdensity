@@ -30,7 +30,7 @@ dist_name_k_index_converter <- function(distname) {
 
 #' Process the distribution name argument into a distribution index
 #'
-#' This function is intented to help with compatibility with the previous versions of the package.
+#' This function is intended to help with compatibility with the previous versions of the package.
 #'
 #' @param distname Can be an integer or a distribution name. Allowed names are "normal", "gamma", "beta", "exponential", "lognormal", "half-Cauchy", "half-normal", "half-student", "uniform" and "truncated normal", or their common abbreviations "norm", "exp", "halfcauchy", "halfnorm", "halft" and "unif".
 #'

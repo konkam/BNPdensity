@@ -15,7 +15,7 @@
 #' @export multMixNRMI1
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
-                         delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
+                         delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
@@ -25,7 +25,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
       MixNRMI1(
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
-        delta, Delta, Meps, Nx, Nit, Pbi,
+        delta_S, delta_U, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
     },
@@ -56,7 +56,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' @export multMixNRMI2
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
-                         sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
+                         sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
                          Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = FALSE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
@@ -67,7 +67,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
       MixNRMI2(
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
-        sigma.pz0, delta, kappa, Delta, Meps,
+        sigma.pz0, delta_S, kappa, delta_U, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
     },
@@ -99,7 +99,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' @export multMixNRMI1cens
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                              Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
-                             delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
+                             delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                              Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                              nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
@@ -110,7 +110,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
       MixNRMI1cens(
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
-        delta, Delta, Meps, Nx, Nit, Pbi,
+        delta_S, delta_U, Meps, Nx, Nit, Pbi,
         epsilon, printtime, extras
       )
     },
@@ -144,7 +144,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' @export multMixNRMI2cens
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
                              Kappa = 0, Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma",
-                             mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
+                             mu.pz0 = 3, sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
                              printtime = TRUE, extras = TRUE,
                              nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
@@ -156,7 +156,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
       MixNRMI2cens(
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
-        sigma.pz0, delta, kappa, Delta, Meps,
+        sigma.pz0, delta_S, kappa, delta_U, Meps,
         Nx, Nit, Pbi, epsilon, printtime, extras
       )
     },

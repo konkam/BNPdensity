@@ -13,5 +13,5 @@ process_dist_name(distname)
 an integer both if distname is an integer or a character
 }
 \description{
-This function is intented to help with compatibility with the previous versions of the package.
+This function is intended to help with compatibility with the previous versions of the package.
 }

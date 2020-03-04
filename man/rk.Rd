@@ -9,7 +9,7 @@ rk(n, distr = NULL, mu = NULL, sigma = NULL)
 \description{
 This function simulates from a density.  There are 4 density options (1 =
 Gaussian, 2 = Gamma, 3 = Beta, 4 = double exponential, 5 = lognormal). All
-densities are parametrized in terms of mean and standard deviation.
+densities are parameterized in terms of mean and standard deviation.
 }
 \details{
 For internal use.
