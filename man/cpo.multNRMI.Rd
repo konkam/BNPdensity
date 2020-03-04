@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{A fit obtained through from the functions MixNRMI1/MixNRMI1cens}
 
-\item{...}{}
+\item{...}{Further arguments to be passed to generic function, ignored at the moment}
 }
 \value{
 A vector of Conditional Predictive Ordinates (CPOs)

@@ -23,12 +23,12 @@ points.
 ## Example for non censored data
 
 data(acidity)
-out <- MixNRMI2(acidity, Nit = 50)
+out <- MixNRMI2(acidity, Nit = 20)
 plot(out)
 
 ## Example for censored data
 
 data(salinity)
-out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 plot(out)
 }
