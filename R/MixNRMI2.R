@@ -337,13 +337,13 @@ MixNRMI2 <-
 #' ## Example for non censored data
 #'
 #' data(acidity)
-#' out <- MixNRMI2(acidity, Nit = 50)
+#' out <- MixNRMI2(acidity, Nit = 20)
 #' plot(out)
 #'
 #' ## Example for censored data
 #'
 #' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 #' plot(out)
 plot.NRMI2 <- function(x, ...) {
   if (is_censored(x$data)) {
@@ -365,11 +365,11 @@ plot.NRMI2 <- function(x, ...) {
 #' @examples
 #' #' ## Example for censored data
 #' data(acidity)
-#' out <- MixNRMI2(acidity, Nit = 50)
+#' out <- MixNRMI2(acidity, Nit = 20)
 #' print(out)
 #'
 #' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 #' print(out)
 print.NRMI2 <- function(x, ...) {
   kernel_name <- tolower(give_kernel_name(x$distr.k))
@@ -387,11 +387,11 @@ print.NRMI2 <- function(x, ...) {
 #'
 #' @examples
 #' data(acidity)
-#' out <- MixNRMI2(acidity, Nit = 50)
+#' out <- MixNRMI2(acidity, Nit = 20)
 #' summary(out)
 #'
 #' data(salinity)
-#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 50)
+#' out <- MixNRMI2cens(salinity$left, salinity$right, Nit = 20)
 #' summary(out)
 summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
@@ -403,7 +403,7 @@ summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
 #' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
 #'
 #' @param object A fit obtained through from the function MixNRMI2/MixNRMI2cens
-#' @param ...
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A vector of Conditional Predictive Ordinates (CPOs)
 #' @export

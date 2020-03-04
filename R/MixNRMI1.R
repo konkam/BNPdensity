@@ -121,7 +121,8 @@
 #' # data(enzyme)
 #' # x <- enzyme
 #' # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#' #                          distr.k = "gamma", distr.p0 = "gamma", asigma = 1, bsigma = 1, Meps=0.005,
+#' #                          distr.k = "gamma", distr.p0 = "gamma",
+#'                            asigma = 1, bsigma = 1, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -158,7 +159,8 @@
 #' # data(galaxy)
 #' # x <- galaxy
 #' #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#' #                          distr.k = "normal", distr.p0 = "gamma", asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
+#' #                          distr.k = "normal", distr.p0 = "gamma",
+#'                            asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #'
 #' # The output of this run is already loaded in the package
@@ -406,7 +408,7 @@ summary.NRMI1 <- function(object, number_of_clusters = FALSE, ...) {
 #' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
 #'
 #' @param object A fit obtained through from the functions MixNRMI1/MixNRMI1cens
-#' @param ...
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A vector of Conditional Predictive Ordinates (CPOs)
 #' @export
