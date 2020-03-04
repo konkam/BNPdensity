@@ -162,7 +162,7 @@ plot(out)
 # x <- enzyme
 # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
 #                          distr.k = "gamma", distr.p0 = "gamma",
-                           asigma = 1, bsigma = 1, Meps=0.005,
+#                          asigma = 1, bsigma = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
@@ -200,7 +200,7 @@ detach()
 # x <- galaxy
 #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
 #                          distr.k = "normal", distr.p0 = "gamma",
-                           asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
+#                          asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 
 # The output of this run is already loaded in the package
