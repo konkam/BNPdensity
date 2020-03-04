@@ -275,7 +275,7 @@ summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
 #' This function assumes that all chains have the same size. To allow for different chain sizes, care should be paid to proper weighting.
 #'
 #' @param object A fit obtained through from the functions MixNRMI1/MixNRMI1cens
-#' @param ...
+#' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A vector of Conditional Predictive Ordinates (CPOs)
 #' @export
