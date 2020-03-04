@@ -4,8 +4,15 @@
 \alias{ptnorm}
 \title{Distribution function truncated normal}
 \usage{
-ptnorm(q, mean = 0, sd = 1, lower = -Inf, upper = Inf,
-  lower.tail = TRUE, log.p = FALSE)
+ptnorm(
+  q,
+  mean = 0,
+  sd = 1,
+  lower = -Inf,
+  upper = Inf,
+  lower.tail = TRUE,
+  log.p = FALSE
+)
 }
 \description{
 Computes the cumulative distribution function.

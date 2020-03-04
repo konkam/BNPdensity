@@ -4,8 +4,7 @@
 \alias{comment_on_NRMI_type}
 \title{Comment on the NRMI process depending on the value of the parameters}
 \usage{
-comment_on_NRMI_type(NRMI_param = list(Alpha = 1, Kappa = 0, Gamma =
-  0.4))
+comment_on_NRMI_type(NRMI_param = list(Alpha = 1, Kappa = 0, Gamma = 0.4))
 }
 \arguments{
 \item{NRMI_param}{A named list of the form list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4)}

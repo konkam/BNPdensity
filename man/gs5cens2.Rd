@@ -4,8 +4,17 @@
 \alias{gs5cens2}
 \title{Conditional posterior distribution of sigma in the case of censoring}
 \usage{
-gs5cens2(sigma, xleft, xright, censor_code, y, distr = 1, asigma = 1,
-  bsigma = 2, delta = 4)
+gs5cens2(
+  sigma,
+  xleft,
+  xright,
+  censor_code,
+  y,
+  distr = 1,
+  asigma = 1,
+  bsigma = 2,
+  delta = 4
+)
 }
 \description{
 This function simulates from the conditional posterior distribution of

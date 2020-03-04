@@ -36,22 +36,18 @@
 #' @param Kappa Numeric positive constant. See details.
 #' @param Gama Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
 #' details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
-#' scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half
-#' Student-t, 9 = Uniform, 10 = Truncated Normal.
+#' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.py0 The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.pz0 The distribution name for the centering measure for scales.  Allowed names are "gamma", "lognormal", "half-Cauchy", "half-normal", "half-student", "uniform" and "truncated normal", or their common abbreviations "norm", "exp", "lnorm", "halfcauchy", "halfnorm", "halft" and "unif", or an integer number identifying the centering measure for scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half Student-t, 9 = Uniform, 10 = Truncated Normal.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
 #' scales.
 #' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
 #' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_S Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the scales.
 #' @param kappa Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the latent U.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
@@ -128,15 +124,7 @@
 #' # Fitting the model under default specifications
 #' out <- MixNRMI2cens(x, x)
 #' # Plotting density estimate + 95% credible interval
-#' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
-#' detach()
+#' plot(out)
 #' }
 #'
 #' \dontrun{
@@ -150,12 +138,7 @@
 #' )
 #' # Plotting density estimate + 95% credible interval
 #' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
+#' plot(out)
 #' # Plotting number of clusters
 #' par(mfrow = c(2, 1))
 #' plot(R, type = "l", main = "Trace of R")
@@ -166,23 +149,28 @@
 #' @export MixNRMI2cens
 MixNRMI2cens <-
   function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-             Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
-             mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
-             Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
-             printtime = TRUE, extras = TRUE) {
+           Kappa = 0, Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma",
+           mu.pz0 = 3, sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2,
+           Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
+           printtime = TRUE, extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.py0)) {
       stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
     }
+    distr.k <- process_dist_name(distr.k)
+    distr.py0 <- process_dist_name(distr.py0)
+    distr.pz0 <- process_dist_name(distr.pz0)
     tInit <- proc.time()
     cens_data_check(xleft, xright)
     xpoint <- as.numeric(na.omit(0.5 * (xleft + xright)))
     npoint <- length(xpoint)
     censor_code <- censor_code_rl(xleft, xright)
-    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code ==
-        x)
+    censor_code_filters <- lapply(0:3, FUN = function(x) {
+      censor_code ==
+        x
+    })
     names(censor_code_filters) <- 0:3
     n <- length(xleft)
     y <- seq(n)
@@ -223,7 +211,7 @@ MixNRMI2cens <-
       if (Gama != 0) {
         u <- gs3(u,
           n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = Delta
+          gama = Gama, delta = delta_U
         )
       }
       JiC <- MvInv(
@@ -237,7 +225,7 @@ MixNRMI2cens <-
         tt <- gsYZstarcens2(
           ystar = ystar, zstar = zstar,
           nstar = nstar, rstar = rstar, idx = idx, xleft = xleft,
-          xright = xright, censor_code = censor_code, delta = delta,
+          xright = xright, censor_code = censor_code, delta = delta_S,
           kappa = kappa, distr.k = distr.k, distr.py0 = distr.py0,
           mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0,
           mu.pz0 = mu.pz0, sigma.pz0 = sigma.pz0
@@ -313,4 +301,3 @@ MixNRMI2cens <-
     }
     return(structure(res, class = "NRMI2"))
   }
-

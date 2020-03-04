@@ -4,11 +4,26 @@
 \alias{MixNRMI1}
 \title{Normalized Random Measures Mixture of Type I}
 \usage{
-MixNRMI1(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-  Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
-  bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
-  Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-  extras = TRUE)
+MixNRMI1(
+  x,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = "normal",
+  distr.p0 = 1,
+  asigma = 0.5,
+  bsigma = 0.5,
+  delta_S = 3,
+  delta_U = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE
+)
 }
 \arguments{
 \item{x}{Numeric vector. Data set to which the density is fitted.}
@@ -23,11 +38,9 @@ details.}
 \item{Gama}{Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
 1}.  See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.p0}{Integer number identifying the centering measure: 1 =
-Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.p0}{The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
 \item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
@@ -35,10 +48,10 @@ on the standard deviation of the mixture kernel \code{distr.k}.}
 \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_S}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling sigma.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
@@ -140,24 +153,15 @@ x <- acidity
 # Fitting the model under default specifications
 out <- MixNRMI1(x)
 # Plotting density estimate + 95\% credible interval
-attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
-detach()
+plot(out)
 }
-
 ### Example 2
 ## Do not run
 # set.seed(150520)
 # data(enzyme)
 # x <- enzyme
 # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#                          distr.k = 2, distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.005,
+#                          distr.k = "gamma", distr.p0 = "gamma", asigma = 1, bsigma = 1, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 # The output of this run is already loaded in the package
 # To show results run the following
@@ -167,13 +171,7 @@ x <- enzyme
 data(Enzyme1.out)
 attach(Enzyme1.out)
 # Plotting density estimate + 95\% credible interval
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(Enzyme1.out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")
@@ -200,7 +198,7 @@ detach()
 # data(galaxy)
 # x <- galaxy
 #  Galaxy1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#                          distr.k = 1, distr.p0 = 2, asigma = 1, bsigma = 1,  Meps=0.005,
+#                          distr.k = "normal", distr.p0 = "gamma", asigma = 1, bsigma = 1, delta = 7, Meps=0.005,
 #                          Nit = 5000, Pbi = 0.2)
 
 # The output of this run is already loaded in the package
@@ -211,13 +209,7 @@ x <- galaxy
 data(Galaxy1.out)
 attach(Galaxy1.out)
 # Plotting density estimate + 95\% credible interval
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(Galaxy1.out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")

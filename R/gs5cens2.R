@@ -37,7 +37,7 @@
 #' }
 gs5cens2 <-
   function(sigma, xleft, xright, censor_code, y, distr = 1, asigma = 1,
-             bsigma = 2, delta = 4) {
+           bsigma = 2, delta = 4) {
     sigmaStar <- rgamma(1, shape = delta, rate = delta / sigma)
     sigmaT <- sigma
     qgammas <- sigmaT / sigmaStar

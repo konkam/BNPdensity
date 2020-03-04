@@ -18,7 +18,7 @@ For internal use.
 ## The function is currently defined as
 function(x, distr = NULL, mu = NULL, sigma = NULL) {
   if (is.null(distr)) {
-    stop("Argument \\"distr\\" should be defined numeric with possible values 1,2, or 3")
+    stop("Argument \"distr\" should be defined numeric with possible values 1,2, or 3")
   }
   else if (distr == 1) {
     a <- ifelse(is.null(mu), 0, mu)
@@ -37,14 +37,14 @@ function(x, distr = NULL, mu = NULL, sigma = NULL) {
       1) * (1 - mu))
     if (any(c(a, b) <= 0)) {
       stop(paste(
-        "\\nNegative Beta parameters:\\n a =", a,
-        ";\\t b =", b
+        "\nNegative Beta parameters:\n a =", a,
+        ";\t b =", b
       ))
     }
     p0 <- dbeta(x, shape1 = a, shape2 = b)
   }
   else {
-    stop("Argument \\"distr\\" should be defined numeric with possible values 1,2, or 3")
+    stop("Argument \"distr\" should be defined numeric with possible values 1,2, or 3")
   }
   return(p0)
 }

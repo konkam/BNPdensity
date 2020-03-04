@@ -8,8 +8,7 @@
 #'
 #' @name acidity
 #' @docType data
-#' @format A data frame with 155 observations on the following variable:
-#' \describe{ \item{list("acidity")}{A numeric vector.} }
+#' @format A real vector with 155 observations.
 #' @references Crawford, S. L., DeGroot, M. H., Kadane, J. B. and Small, M. J.
 #' (1992). Modeling lake chemistry distributions: approximate Bayesian methods
 #' for estimating a finite mixture model. Technometrics, 34, 441-453.
@@ -79,8 +78,7 @@ NULL
 #' Fit of MixNRMI1 function to the enzyme dataset
 #'
 #' This object contains the output when setting set.seed(150520) and running
-#' the function MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = 2,
-#' distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.001, Nit = 5000, Pbi = 0.2)
+#' the function Enzyme1.out <- MixNRMI1(enzyme, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = "gamma", distr.p0 = "gamma", asigma = 1, bsigma = 1, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 #'
 #' See function MixNRMI1
 #'
@@ -99,10 +97,7 @@ NULL
 #' Fit of MixNRMI2 function to the enzyme dataset
 #'
 #' This object contains the output when setting set.seed(150520) and running
-#' the function Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama =
-#' 0.5, distr.k = 2, distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,
-#' Meps=0.001, Nit = 5000, Pbi = 0.2)
-#'
+#' the function Enzyme2.out <- MixNRMI2(enzyme, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = "gamma", distr.py0 = "gamma", distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 #' See function MixNRMI2
 #'
 #' @name Enzyme2.out
@@ -146,8 +141,7 @@ NULL
 #' Fit of MixNRMI1 function to the galaxy dataset
 #'
 #' This object contains the output when setting set.seed(150520) and running
-#' the function MixNRMI1(x, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = 1,
-#' distr.p0 = 2, asigma = 1, bsigma = 1, Meps=0.001, Nit = 5000, Pbi = 0.2)
+#' the function MixNRMI1(galaxy, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = "normal", distr.p0 = "gamma", asigma = 1, bsigma = 1, delta = 7, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 #'
 #' See function MixNRMI1.
 #'
@@ -166,9 +160,7 @@ NULL
 #' Fit of MixNRMI2 function to the galaxy dataset
 #'
 #' This object contains the output when setting set.seed(150520) and running
-#' the function MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5, distr.k = 1,
-#' distr.py0 = 2, distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.001, Nit =
-#' 5000, Pbi = 0.2)
+#' the function Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama = 0.5, distr.k = "gamma", distr.py0 = "gamma", distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps = 0.005, Nit = 5000, Pbi = 0.2)
 #'
 #' See function MixNRMI2.
 #'

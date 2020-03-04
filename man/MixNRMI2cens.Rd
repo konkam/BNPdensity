@@ -4,11 +4,29 @@
 \alias{MixNRMI2cens}
 \title{Normalized Random Measures Mixture of Type II for censored data}
 \usage{
-MixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-  Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1,
-  distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4,
-  kappa = 2, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-  Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE)
+MixNRMI2cens(
+  xleft,
+  xright,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = "normal",
+  distr.py0 = "normal",
+  distr.pz0 = "gamma",
+  mu.pz0 = 3,
+  sigma.pz0 = sqrt(10),
+  delta_S = 4,
+  kappa = 2,
+  delta_U = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE
+)
 }
 \arguments{
 \item{xleft}{Numeric vector. Lower limit of interval censoring. For exact
@@ -27,15 +45,11 @@ details.}
 \item{Gama}{Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
 details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.py0}{Integer number identifying the centering measure for
-locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.py0}{The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{Integer number identifying the centering measure for
-scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half
-Student-t, 9 = Uniform, 10 = Truncated Normal.}
+\item{distr.pz0}{The distribution name for the centering measure for scales.  Allowed names are "gamma", "lognormal", "half-Cauchy", "half-normal", "half-student", "uniform" and "truncated normal", or their common abbreviations "norm", "exp", "lnorm", "halfcauchy", "halfnorm", "halft" and "unif", or an integer number identifying the centering measure for scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half Student-t, 9 = Uniform, 10 = Truncated Normal.}
 
 \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for
 scales.}
@@ -43,13 +57,13 @@ scales.}
 \item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering
 measure for scales.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_S}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the scales.}
 
 \item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the location parameters.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
@@ -152,15 +166,7 @@ x <- acidity
 # Fitting the model under default specifications
 out <- MixNRMI2cens(x, x)
 # Plotting density estimate + 95\% credible interval
-attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
-detach()
+plot(out)
 }
 
 \dontrun{
@@ -174,12 +180,7 @@ out <- MixNRMI2cens(
 )
 # Plotting density estimate + 95\% credible interval
 attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")

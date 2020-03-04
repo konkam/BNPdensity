@@ -34,7 +34,7 @@
 #' }
 dkcens2 <-
   function(xleft, xright, c_code_filters, distr = NULL, mu = NULL,
-             sigma = NULL) {
+           sigma = NULL) {
     res <- seq_along(xleft)
     res[c_code_filters[["1"]]] <- dk(
       x = xleft[c_code_filters[["1"]]],

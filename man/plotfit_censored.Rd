@@ -10,7 +10,7 @@ plotfit_censored(fit)
 \item{fit}{A fitted object of class NRMI1cens or NRMI2cens}
 }
 \value{
-A graph with the density estimate, the 95\% credible interval
+A graph with the density estimate and the 95\% credible interval
 }
 \description{
 The density estimate is the mean posterior density computed on the data

@@ -1,3 +1,22 @@
+2020-02-XX  Guillaume KON KAM KING  <guillaume.konkamking.work@gmail.com>
+
+	* DESCRIPTION (Version, Date): Release 2020-02-XX
+
+  Improvements in code organisation and user interface.
+
+	* Re-wrote the help to showcase "plot"" and other new S3 methods.
+
+	* Various improvements to the doc and the README file
+
+	* Changed interface for distribution names to use characters instead of integers, i.e. use "norm", "gamma" instead of "1", "2". Preserved backwards compatibility.
+
+	* Cleaned the namespace of some functions
+
+	* Removed two classes to reduce code duplication
+
+	* Changed the names of some arguments that differed only in the capitalization (BREAKING).
+
+
 2019-09-18  Guillaume KON KAM KING  <guillaume.konkamking.work@gmail.com>
 
 	* DESCRIPTION (Version, Date): Release 2019.09.18

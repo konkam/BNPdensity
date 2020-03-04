@@ -12,11 +12,91 @@ You can install BNPdensity from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("konkam/BNPdensity")
+devtools::install_github("konkam/BNPdensity", dependencies = TRUE, upgrade = TRUE)
 ```
 
-You will need to have the CRAN package `devtools`
-installed.
+You will need to have the CRAN package `devtools` installed.
+
+## Problem setting
+
+We consider a one-dimensional density estimation problem. As an example,
+we pick the `acidity` dataset, which contains an acidity index measured
+in a sample of 155 lakes in north-central Wisconsin (Crawford et al.
+(1992)).
+
+We illustrate the package by estimating the distribution of the
+`acidity` dataset.
+
+Let’s have a quick overview of the acidity dataset:
+
+``` r
+library(BNPdensity)
+data(acidity)
+str(acidity)
+#>  num [1:155] 2.93 3.91 3.73 3.69 3.82 ...
+```
+
+``` r
+hist(acidity)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+This dataset shows clear signs of multimodality, and it might be
+tempting to fit a bimodal normal distribution. However, some asymmetry
+in the two apparent clusters, or the extreme point on the left suggest
+that a mixture with more components might be more appropriate.
+
+A Bayesian Nonparametric approach avoids the need to specify an
+arbitrary number of clusters in advance, it rather aims at estimating an
+optimal number of clusters from the dataset by means of an infinite
+mixture model.
+
+The most famous Bayesian Nonparametric model for infinite mixtures is
+the [Dirichlet
+process](https://en.wikipedia.org/wiki/Dirichlet_process). However, it
+implies a fairly informative a priori distribution on the number of
+components in the mixture: the mode of the prior distribution is
+proportional to the logarithm of the number of data points, and the
+distribution is fairly peaked. This might not accurately reflect the
+prior information available on the number of components, or might induce
+an unwanted bias in the case of prior mis-specification. Models more
+general than the Dirichlet process, such as Normalized Random Measure
+models (Barrios et al. (2013)) allow overcoming this limitation by
+specifying a **less informative** prior. In what follows, we present how
+to use Normalized Random Measure models for density estimation.
+
+## Obtaining a Bayesian Nonparametric density estimate in a few seconds
+
+``` r
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, Nit = 3000)
+#> MCMC iteration 500 of 3000 
+#> MCMC iteration 1000 of 3000 
+#> MCMC iteration 1500 of 3000 
+#> MCMC iteration 2000 of 3000 
+#> MCMC iteration 2500 of 3000 
+#> MCMC iteration 3000 of 3000 
+#>  >>> Total processing time (sec.):
+#>    user  system elapsed 
+#>  77.454   0.260  77.720
+```
+
+`MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide
+common S3 methods.
+
+``` r
+print(fit)
+#> Fit of a semiparametric normal mixture model on 155 data points.
+#> The MCMC algorithm was run for 3000 iterations with 10 % discarded for burn-in.
+```
+
+``` r
+plot(fit)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ## How to select the parameters of the Normalized Generalized Gamma process
 
@@ -38,7 +118,7 @@ normalized stable process:
 library(BNPdensity)
 expected_number_of_components_stable(100, 0.8)
 #> 1 'mpfr' number of precision  5300   bits 
-#> [1] 42.7094763347433064145139642374761953935253068800586645704061217932416521673216907205393634497387972550423672434248859853361487805996952132428560926301735979533962638142919404245491320418681146784117675560180180997897282151292943142921297120817286344277056532757201595800714590399801677580702348825476449555104774274897690717000458400780607335224957505642484513472533071356437832922468218811058624371598679991922247578979527622066152240312741621582983449454587742014738374261209928436865458013868459635836514415533408847942283699058466218465661304372077549346754754275121921814735346212725066178828226717075277232621519641895705391136625948612074142339580470342092448293688243480992850978992403497102847376421266264478072691640608266093779281787084116016688298257625264151386576179078300622956769752677608717950109926087638199943458107790372665551885265327164919674565823322119685775409502437206065096591074028037310013746802805763272997327361578989028373338101309163355379821181170147389233251989072209330180918520528393655319318639895074310114218241697995900064982050710406525820477683889052900277360670969502511993685089281685384529730226668468252315463797567163871977846036005950883423952365091248314552153703995699839012485091395887925071273380982174320743129811746851032817149541351629118801652203235928207673097109874143882905678985903497701028455475882246459109961351322459122178215039563311710681870538381442385456732732345958405084458427383775726002258077957996564219300933845643215966461641784547945616409630066291778349690565899480469847731894606043486473685568118112287972667409028307
+#> [1] 42.7094763347433063870164430179377602285097873537020509591067085108693089953308485568922629628925609670388816355409267145879811608727979635644774974037316163731591853953068391985644986476120011372960450707841949357628205832352455972108307720257846739029935831367778087474278900096286104350854420468743750780953727437388381753822866058766720173377298935849197133078525375521665344039604097969307794640101701067874475659220445305472235893927481095361462556416422489918801010270531398200441645390722656975243565592756687766475481859394293400264017298519219232910313654037149553666679890694710843958583376865920388291893659788102528801718172192946031922288386233821810410501186383355395149325749466413257183113733305353511545188982744656555395398972901331812210878443370420188050079296961588354717569901177367135749962447447224416420675294481931830396470678197938068495726792098492301861867848615495349033316737274460428156601729995582227093984927573684202948081480326602431090471715657360243449939490449
 ```
 
 This number may be compared to the prior number of components induced by
@@ -58,7 +138,7 @@ plot_prior_number_of_components(50, 0.4)
 #> Computing the prior probability on the number of clusters for the Stable process
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> \#\# How to
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- --> \#\# How to
 fit a dataset
 
 We illustrate the package by estimating the distribution of the
@@ -75,7 +155,7 @@ str(acidity)
 hist(acidity)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 library(BNPdensity)
@@ -89,7 +169,7 @@ fit = MixNRMI1(acidity, Nit = 3000)
 #> MCMC iteration 3000 of 3000 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  98.980   0.082  99.081
+#>  92.597   0.064  92.679
 ```
 
 `MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide
@@ -98,22 +178,28 @@ common S3 methods.
 ``` r
 print(fit)
 #> Fit of a semiparametric normal mixture model on 155 data points.
-#> The MCMC algorithm was run for 1500 iterations with 10 % discarded for burn-in.
+#> The MCMC algorithm was run for 3000 iterations with 10 % discarded for burn-in.
 ```
 
 ``` r
 plot(fit)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 summary(fit)
-#> Density estimation using a Normalized stable process with stability parameter Gamma = 0.4
+#> Density estimation using a Normalized stable process,
+#> with stability parameter Gamma = 0.4
+#> 
 #> A semiparametric normal mixture model was used.
+#> 
 #> There were 155 data points.
-#> The MCMC algorithm was run for 1500 iterations with 10% discarded for burn-in.
-#> To obtain information on the estimated number of clusters, please use summary(object, number_of_clusters = TRUE).
+#> 
+#> The MCMC algorithm was run for 3000 iterations with 10% discarded for burn-in.
+#> 
+#> To obtain information on the estimated number of clusters,
+#>  please use summary(object, number_of_clusters = TRUE).
 ```
 
 ## How to use the convergence diagnostics
@@ -136,27 +222,32 @@ the semi-parametric model, the value of the common scale parameter.
 ``` r
 library(BNPdensity)
 library(coda)
+#> 
+#> Attaching package: 'coda'
+#> The following object is masked from 'package:BNPdensity':
+#> 
+#>     traceplot
 data(acidity)
 fitlist = multMixNRMI1(acidity, Nit = 5000)
 mcmc_list = as.mcmc(fitlist)
 coda::traceplot(mcmc_list)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-11-4.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-16-2.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-16-3.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-16-4.png)<!-- -->
 
 ``` r
 coda::gelman.diag(mcmc_list)
 #> Potential scale reduction factors:
 #> 
 #>                 Point est. Upper C.I.
-#> ncomp                 1.06       1.17
-#> Sigma                 1.14       1.37
-#> Latent_variable       1.06       1.14
-#> log_likelihood        1.09       1.26
+#> ncomp                 1.02       1.07
+#> Sigma                 1.05       1.12
+#> Latent_variable       1.02       1.05
+#> log_likelihood        1.02       1.06
 #> 
 #> Multivariate psrf
 #> 
-#> 1.12
+#> 1.04
 ```
 
 ## How to use the Goodness of fit plots
@@ -172,12 +263,12 @@ fit = MixNRMI1(acidity, extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  40.746   0.035  40.783
+#>  30.777   0.044  30.823
 GOFplots(fit)
 #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ### Censored data
 
@@ -190,11 +281,11 @@ fit = MixNRMI1cens(salinity$left,salinity$right, extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  61.339   0.013  61.358
+#>  62.142   0.060  62.226
 GOFplots(fit)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ## Posterior analysis of the clustering structure
 
@@ -246,9 +337,9 @@ out <- MixNRMI2(acidity,  extras = TRUE)
 #> MCMC iteration 1500 of 1500 
 #>  >>> Total processing time (sec.):
 #>    user  system elapsed 
-#>  22.760   0.044  22.804
+#>  22.301   0.032  22.334
 clustering = compute_optimal_clustering(out)
 plot_clustering_and_CDF(out, clustering)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->

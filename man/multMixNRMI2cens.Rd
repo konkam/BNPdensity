@@ -4,12 +4,32 @@
 \alias{multMixNRMI2cens}
 \title{Multiple chains of MixNRMI2cens}
 \usage{
-multMixNRMI2cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
-  Alpha = 1, Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1,
-  distr.pz0 = 2, mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4,
-  kappa = 2, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-  Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
-  nchains = 4, parallel = TRUE, ncores = parallel::detectCores())
+multMixNRMI2cens(
+  xleft,
+  xright,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = "normal",
+  distr.py0 = "normal",
+  distr.pz0 = "gamma",
+  mu.pz0 = 3,
+  sigma.pz0 = sqrt(10),
+  delta = 4,
+  kappa = 2,
+  Delta = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE,
+  nchains = 4,
+  parallel = TRUE,
+  ncores = parallel::detectCores()
+)
 }
 \arguments{
 \item{xleft}{Numeric vector. Lower limit of interval censoring. For exact
@@ -20,21 +40,19 @@ data the same as xleft.}
 
 \item{probs}{Numeric vector. Desired quantiles of the density estimates.}
 
-\item{Alpha}{Numeric constant. Total mass of the centering measure. See
+\item{Alpha}{Numeric constant. Total mass of the centering measure.  See
 details.}
 
 \item{Kappa}{Numeric positive constant. See details.}
 
-\item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
+\item{Gama}{Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
+details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.py0}{Integer number identifying the centering measure for
-locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.py0}{The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{Integer number identifying the centering measure for
-scales: 2 = Gamma. For more options use MixNRMI2cens.}
+\item{distr.pz0}{The distribution name for the centering measure for scales.  Allowed names are "gamma", "lognormal", "half-Cauchy", "half-normal", "half-student", "uniform" and "truncated normal", or their common abbreviations "norm", "exp", "lnorm", "halfcauchy", "halfnorm", "halft" and "unif", or an integer number identifying the centering measure for scales: 2 = Gamma, 5 = Lognormal, 6 = Half Cauchy, 7 = Half Normal, 8 = Half Student-t, 9 = Uniform, 10 = Truncated Normal.}
 
 \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for
 scales.}
@@ -42,14 +60,8 @@ scales.}
 \item{sigma.pz0}{Numeric constant. Prior standard deviation of the centering
 measure for scales.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the scales.}
-
 \item{kappa}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the location parameters.}
-
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -60,10 +72,10 @@ density estimate.}
 
 \item{Nit}{Integer constant. Number of MCMC iterations.}
 
-\item{Pbi}{Numeric constant. Burn-in period proportion of Nit.}
+\item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
 
-\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See
-details.}
+\item{epsilon}{Numeric constant. Extension to the evaluation grid range.
+See details.}
 
 \item{printtime}{Logical. If TRUE, prints out the execution time.}
 

@@ -1,3 +1,38 @@
+Compute_log_likelihood_given_params <- function(fit_, it_retained, parallel, ncores) {
+  if (is_censored(fit_$data)) {
+    censor_code <- censor_code_rl(fit_$data$left, fit_$data$right)
+    censor_code_filters <- lapply(0:3, FUN = function(x) censor_code == x)
+    names(censor_code_filters) <- 0:3
+
+    dpred <- function(iter) {
+      log(dmixcens(
+        xlefts = fit_$data$left,
+        xrights = fit_$data$right,
+        c_code_filters = censor_code_filters,
+        locations = fit_$means[[iter]],
+        scales = fit_$sigmas[[iter]],
+        weights = fit_$weights[[iter]],
+        distr.k = fit_$distr.k
+      ))
+    }
+  }
+  else {
+    dpred <- function(iter) {
+      log(dmix(fit_$data,
+        locations = fit_$means[[iter]],
+        scales = fit_$sigmas[[iter]],
+        weights = fit_$weights[[iter]],
+        distr.k = fit_$distr.k
+      ))
+    }
+  }
+  unlist(parallel::mclapply(
+    X = it_retained,
+    FUN = function(it) sum(dpred(it)),
+    mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
+  ))
+}
+
 Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE, ncores = parallel::detectCores()) {
   # number of iterations * number of parameters
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
@@ -12,48 +47,13 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE,
   Nit <- length(fitlist[[1]]$means)
   it_retained <- compute_thinning_grid(Nit, thinning_to = thinning_to)
 
-  Compute_log_likelihood_given_params <- function(fit_) {
-    if (is_censored(fit_$data)) {
-      censor_code <- censor_code_rl(fit_$data$left, fit_$data$right)
-      censor_code_filters <- lapply(0:3, FUN = function(x) censor_code == x)
-      names(censor_code_filters) <- 0:3
-
-      dpred <- function(iter) {
-        log(dmixcens(
-          xlefts = fit_$data$left,
-          xrights = fit_$data$right,
-          c_code_filters = censor_code_filters,
-          locations = fit_$means[[iter]],
-          scales = fit_$sigmas[[iter]],
-          weights = fit_$weights[[iter]],
-          distr.k = fit_$distr.k
-        ))
-      }
-    }
-    else {
-      dpred <- function(iter) {
-        log(dmix(fit_$data,
-          locations = fit_$means[[iter]],
-          scales = fit_$sigmas[[iter]],
-          weights = fit_$weights[[iter]],
-          distr.k = fit_$distr.k
-        ))
-      }
-    }
-    unlist(parallel::mclapply(
-      X = it_retained,
-      FUN = function(it) sum(dpred(it)),
-      mc.cores = ifelse(test = parallel, yes = ncores, no = 1)
-    ))
-  }
-
   if (is_semiparametric(fitlist[[1]])) {
     lapply(X = fitlist, function(fit_i) {
       cbind(
         ncomp = fit_i$R[it_retained],
         Sigma = fit_i$S[it_retained],
         Latent_variable = fit_i$U[it_retained],
-        log_likelihood = Compute_log_likelihood_given_params(fit_i)
+        log_likelihood = Compute_log_likelihood_given_params(fit_i, it_retained, parallel, ncores)
       )
     })
   }
@@ -62,7 +62,7 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE,
       cbind(
         ncomp = fit_i$R[it_retained],
         Latent_variable = fit_i$U[it_retained],
-        log_likelihood = Compute_log_likelihood_given_params(fit_i)
+        log_likelihood = Compute_log_likelihood_given_params(fit_i, it_retained, parallel, ncores)
       )
     })
   }

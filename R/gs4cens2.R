@@ -37,7 +37,7 @@
 #' }
 gs4cens2 <-
   function(ystar, xleft, xright, censor_code, idx, distr.k, sigma.k,
-             distr.p0, mu.p0, sigma.p0) {
+           distr.p0, mu.p0, sigma.p0) {
     r <- length(ystar)
     nstar <- as.numeric(table(idx))
     for (j in seq(r)) {

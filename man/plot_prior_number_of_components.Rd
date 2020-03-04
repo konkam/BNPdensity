@@ -5,8 +5,13 @@
 \title{This plots the prior distribution on the number of components for the stable
 process. The Dirichlet process is provided for comparison.}
 \usage{
-plot_prior_number_of_components(n, Gama, Alpha = 1, grid = NULL,
-  silence = TRUE)
+plot_prior_number_of_components(
+  n,
+  Gama,
+  Alpha = 1,
+  grid = NULL,
+  silence = TRUE
+)
 }
 \arguments{
 \item{n}{Number of data points}

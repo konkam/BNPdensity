@@ -26,7 +26,7 @@
 #' }
 rfyzstar <-
   function(v, v2, z, z2, x, distr.k, distr.py0, mu.py0, sigma.py0,
-             distr.pz0, mu.pz0, sigma.pz0) {
+           distr.pz0, mu.pz0, sigma.pz0) {
     alpha <- p0(v, distr = distr.py0, mu = mu.py0, sigma = sigma.py0) / p0(v2,
       distr = distr.py0, mu = mu.py0, sigma = sigma.py0
     ) *

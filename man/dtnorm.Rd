@@ -4,8 +4,7 @@
 \alias{dtnorm}
 \title{Density truncated normal}
 \usage{
-dtnorm(x, mean = 0, sd = 1, lower = -Inf, upper = Inf,
-  log = FALSE)
+dtnorm(x, mean = 0, sd = 1, lower = -Inf, upper = Inf, log = FALSE)
 }
 \description{
 Computes the density.

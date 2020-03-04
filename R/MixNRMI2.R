@@ -33,21 +33,19 @@
 #' @param Kappa Numeric positive constant. See details.
 #' @param Gama Numeric constant. \eqn{0 \leq Gama \leq 1}{0 <= Gama <=1}.  See
 #' details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
+#' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
+#' @param distr.py0 The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
+#' @param distr.pz0 he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 #' scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
 #' scales.
 #' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
 #' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_S Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the scales.
 #' @param kappa Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
+#' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the latent U.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
@@ -117,15 +115,7 @@
 #' # Fitting the model under default specifications
 #' out <- MixNRMI2(x)
 #' # Plotting density estimate + 95% credible interval
-#' attach(out)
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
-#' detach()
+#' plot(out)
 #' }
 #'
 #' ### Example 2
@@ -134,8 +124,8 @@
 #' # data(enzyme)
 #' # x <- enzyme
 #' #  Enzyme2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#' #                          distr.k = 2, distr.py0 = 2,
-#' #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
+#' #                          distr.k = "gamma", distr.py0 = "gamma",
+#' #                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1, Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -145,13 +135,7 @@
 #' data(Enzyme2.out)
 #' attach(Enzyme2.out)
 #' # Plotting density estimate + 95% credible interval
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
+#' plot(Enzyme2.out)
 #' # Plotting number of clusters
 #' par(mfrow = c(2, 1))
 #' plot(R, type = "l", main = "Trace of R")
@@ -174,8 +158,8 @@
 #' # data(galaxy)
 #' # x <- galaxy
 #' #  Galaxy2.out <- MixNRMI2(x, Alpha = 1, Kappa = 0.015, Gama = 0.5,
-#' #                          distr.k = 1, distr.py0 = 2,
-#' #                          distr.pz0 = 2, mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
+#' #                          distr.k = "normal", distr.py0 = "gamma",
+#' #                          distr.pz0 = "gamma", mu.pz0 = 1, sigma.pz0 = 1,  Meps=0.005,
 #' #                          Nit = 5000, Pbi = 0.2)
 #' # The output of this run is already loaded in the package
 #' # To show results run the following
@@ -185,13 +169,7 @@
 #' data(Galaxy2.out)
 #' attach(Galaxy2.out)
 #' # Plotting density estimate + 95% credible interval
-#' m <- ncol(qx)
-#' ymax <- max(qx[, m])
-#' par(mfrow = c(1, 1))
-#' hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-#' lines(xx, qx[, 1], lwd = 2)
-#' lines(xx, qx[, 2], lty = 3, col = 4)
-#' lines(xx, qx[, m], lty = 3, col = 4)
+#' plot(Galaxy2.out)
 #' # Plotting number of clusters
 #' par(mfrow = c(2, 1))
 #' plot(R, type = "l", main = "Trace of R")
@@ -210,16 +188,19 @@
 #' @export MixNRMI2
 MixNRMI2 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-             Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
-             sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
-             Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-             extras = TRUE) {
+           Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
+           sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
+           Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
+           extras = TRUE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
     if (is.null(distr.py0)) {
       stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
     }
+    distr.k <- process_dist_name(distr.k)
+    distr.py0 <- process_dist_name(distr.py0)
+    distr.pz0 <- process_dist_name(distr.pz0)
     tInit <- proc.time()
     n <- length(x)
     y <- x
@@ -260,7 +241,7 @@ MixNRMI2 <-
       if (Gama != 0) {
         u <- gs3(u,
           n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = Delta
+          gama = Gama, delta = delta_U
         )
       }
       JiC <- MvInv(
@@ -270,7 +251,7 @@ MixNRMI2 <-
       Nm <- length(JiC)
       TauyC <- rk(Nm, distr = distr.py0, mu = mu.py0, sigma = sigma.py0)
       TauzC <- rk(Nm, distr = distr.pz0, mu = mu.pz0, sigma = sigma.pz0)
-      tt <- gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta,
+      tt <- gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta_S,
         kappa,
         distr.k = distr.k, distr.py0 = distr.py0,
         mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0,
@@ -416,4 +397,21 @@ summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
   summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
+}
+
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
+#'
+#' @param object A fit obtained through from the function MixNRMI2/MixNRMI2cens
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- MixNRMI2(acidity, Nit = 50)
+#' cpo(out)
+cpo.NRMI2 <- function(object, ...) {
+  return(object$cpo)
 }

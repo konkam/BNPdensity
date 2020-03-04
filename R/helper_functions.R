@@ -15,7 +15,7 @@ is_semiparametric <- function(fit) {
   return(!is.null(fit$S))
 }
 
-convert_nan_to_0 = function(vec){
+convert_nan_to_0 <- function(vec) {
   ifelse(is.nan(vec), yes = 0, no = vec)
 }
 
@@ -134,3 +134,15 @@ compute_thinning_grid <- function(Nit, thinning_to = 10) {
 add <- function(x, y) {
   x + y
 }
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
+#'
+#' @param object A fit obtained through one of the NRMI functions
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+cpo <- function(object, ...) {
+  UseMethod("cpo")
+}
+cpo.default <- function(object, ...) "Unknown class"

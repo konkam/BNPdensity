@@ -25,7 +25,7 @@
 #' }
 fcondXA2cens2 <-
   function(xleft, xright, censor_code_filters, distr, Tauy, Tauz,
-             J) {
+           J) {
     pJ <- J / sum(J)
     K <- matrix(NA, nrow = length(Tauy), ncol = length(xleft))
     for (i in seq(Tauy)) {

@@ -37,8 +37,8 @@ function(q, distr = NULL, mu = NULL, sigma = NULL) {
       1) * (1 - mu))
     if (any(c(a, b) <= 0)) {
       stop(paste(
-        "\\nNegative Beta parameters:\\n a =", a,
-        ";\\t b =", b
+        "\nNegative Beta parameters:\n a =", a,
+        ";\t b =", b
       ))
     }
     pk <- pbeta(q, shape1 = a, shape2 = b)

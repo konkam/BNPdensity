@@ -1,35 +1,6 @@
 #' Multiple chains of MixNRMI1
 #'
-#' @param x Numeric vector. Data set to which the density is fitted.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
-#' @param asigma Numeric positive constant. Shape parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, weights and
-#' Js (the jump sizes).
+#' @inheritParams MixNRMI1
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
@@ -43,7 +14,7 @@
 #' multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' @export multMixNRMI1
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-                         Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
+                         Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
                          delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                          Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
@@ -70,40 +41,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 #' Multiple chains of MixNRMI2
 #'
-#' @param x Numeric vector. Data set to which the density is fitted.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
-#' scales: 2 = Gamma. For more options use MixNRMI2cens.
-#' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
-#' scales.
-#' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
-#' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the scales.
-#' @param kappa Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
-#' weights and Js.
+#' @inheritParams MixNRMI2
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism
 #' @param ncores Number of cores for the parallel run. Defaults to parallel::detectCores(), i.e. the maximum number of cores detected by R on your system.
@@ -117,7 +55,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' multMixNRMI2(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' @export multMixNRMI2
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-                         Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2, mu.pz0 = 3,
+                         Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
                          sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2, Meps = 0.01,
                          Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                          nchains = 4, parallel = FALSE, ncores = parallel::detectCores()) {
@@ -144,39 +82,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 
 #' Multiple chains of MixNRMI1cens
 #'
-#' @param xleft Numeric vector. Lower limit of interval censoring. For exact
-#' data the same as xright
-#' @param xright Numeric vector. Upper limit of interval censoring. For exact
-#' data the same as xleft.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.p0 Integer number identifying the centering measure: 1 =
-#' Normal; 2 = Gamma; 3 = Beta.
-#' @param asigma Numeric positive constant. Shape parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param bsigma Numeric positive constant. Rate parameter of the gamma prior
-#' on the standard deviation of the mixture kernel distr.k.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling sigma.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, weights and
-#' Js (the jump sizes).
+#' @inheritParams MixNRMI1cens
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on
 #' UNIX-like systems as it rests on Fork parallelism
@@ -192,7 +98,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' multMixNRMI1cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
 #' @export multMixNRMI1cens
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-                             Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
+                             Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
                              delta = 3, Delta = 2, Meps = 0.01, Nx = 150, Nit = 1500,
                              Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
                              nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
@@ -218,43 +124,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 
 #' Multiple chains of MixNRMI2cens
 #'
-#' @param xleft Numeric vector. Lower limit of interval censoring. For exact
-#' data the same as xright
-#' @param xright Numeric vector. Upper limit of interval censoring. For exact
-#' data the same as xleft.
-#' @param probs Numeric vector. Desired quantiles of the density estimates.
-#' @param Alpha Numeric constant. Total mass of the centering measure. See
-#' details.
-#' @param Kappa Numeric positive constant. See details.
-#' @param Gama Numeric constant. 0 <= Gama <= 1. See details.
-#' @param distr.k Integer number identifying the mixture kernel: 1 = Normal; 2
-#' = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
-#' @param distr.py0 Integer number identifying the centering measure for
-#' locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 Integer number identifying the centering measure for
-#' scales: 2 = Gamma. For more options use MixNRMI2cens.
-#' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
-#' scales.
-#' @param sigma.pz0 Numeric constant. Prior standard deviation of the centering
-#' measure for scales.
-#' @param delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the scales.
-#' @param kappa Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the location parameters.
-#' @param Delta Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
-#' @param Meps Numeric constant. Relative error of the jump sizes in the
-#' continuous component of the process. Smaller values imply larger number of
-#' jumps.
-#' @param Nx Integer constant. Number of grid points for the evaluation of the
-#' density estimate.
-#' @param Nit Integer constant. Number of MCMC iterations.
-#' @param Pbi Numeric constant. Burn-in period proportion of Nit.
-#' @param epsilon Numeric constant. Extension to the evaluation grid range. See
-#' details.
-#' @param printtime Logical. If TRUE, prints out the execution time.
-#' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
-#' weights and Js.
+#' @inheritParams MixNRMI2cens
 #' @param nchains The number of chains to run.
 #' @param parallel Whether to run the chains in parallel. Only works on
 #' UNIX-like systems as it rests on Fork parallelism
@@ -273,7 +143,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #'
 #' @export multMixNRMI2cens
 multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-                             Kappa = 0, Gama = 0.4, distr.k = 1, distr.py0 = 1, distr.pz0 = 2,
+                             Kappa = 0, Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma",
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta = 4, kappa = 2, Delta = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
                              printtime = TRUE, extras = TRUE,
@@ -309,7 +179,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' @export
 #' @examples
 #' data(acidity)
-#' out = multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+#' out <- multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' coda::as.mcmc(out, ncores = 2)
 as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000, ncores = parallel::detectCores()) {
   res <- coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to, ncores = ncores), coda::mcmc))
@@ -330,9 +200,11 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000, ncores = parallel::det
 #' @export
 #' @examples
 #'
-#' \donttest{data(salinity)
+#' \donttest{
+#' data(salinity)
 #' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' plot(fit)}
+#' plot(fit)
+#' }
 plot.multNRMI <- function(x, ...) {
   # This assumes that chains have the same length and can be given equal weight when combining
   res <- x[[1]]
@@ -353,9 +225,11 @@ plot.multNRMI <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#' \donttest{data(salinity)
+#' \donttest{
+#' data(salinity)
 #' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' print(out)}
+#' print(out)
+#' }
 print.multNRMI <- function(x, ...) {
   print(x[[1]])
   writeLines(paste(length(x), "independent MCMC chains were run in parallel"))
@@ -371,9 +245,11 @@ print.multNRMI <- function(x, ...) {
 #' @export
 #'
 #' @examples
-#' \donttest{data(salinity)
+#' \donttest{
+#' data(salinity)
 #' out <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
-#' summary(out)}
+#' summary(out)
+#' }
 summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object[[1]]$distr.k))
   NRMI_comment <- paste("Density estimation using a", comment_on_NRMI_type(object[[1]]$NRMI_params))
@@ -391,4 +267,26 @@ summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
     clustering_comment <- "To obtain information on the estimated number of clusters, please use summary(object, number_of_clusters = TRUE)."
   }
   writeLines(paste(NRMI_comment, "\n", kernel_comment, "\n", data_comment, "\n", MCMC_comment, "\n", clustering_comment, sep = ""))
+}
+
+
+#' Extract the Conditional Predictive Ordinates (CPOs) from a list of fitted objects
+#'
+#' This function assumes that all chains have the same size. To allow for different chain sizes, care should be paid to proper weighting.
+#'
+#' @param object A fit obtained through from the functions MixNRMI1/MixNRMI1cens
+#' @param ...
+#'
+#' @return A vector of Conditional Predictive Ordinates (CPOs)
+#' @export
+#'
+#' @examples
+#' data(acidity)
+#' out <- multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
+#' cpo(out)
+cpo.multNRMI <- function(object, ...) {
+  nchains <- length(object)
+  inv_cpos_by_chain <- lapply(object, function(x) 1 / x$cpo)
+  inv_cpos <- 1 / nchains * Reduce(add, inv_cpos_by_chain)
+  return(1 / inv_cpos)
 }

@@ -4,8 +4,15 @@
 \alias{qtnorm}
 \title{Quantile function truncated normal}
 \usage{
-qtnorm(p, mean = 0, sd = 1, lower = -Inf, upper = Inf,
-  lower.tail = TRUE, log.p = FALSE)
+qtnorm(
+  p,
+  mean = 0,
+  sd = 1,
+  lower = -Inf,
+  upper = Inf,
+  lower.tail = TRUE,
+  log.p = FALSE
+)
 }
 \description{
 Computes the quantiles.

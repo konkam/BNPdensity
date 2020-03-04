@@ -4,8 +4,7 @@
 \alias{dkcens2}
 \title{Density of the chosen kernel}
 \usage{
-dkcens2(xleft, xright, c_code_filters, distr = NULL, mu = NULL,
-  sigma = NULL)
+dkcens2(xleft, xright, c_code_filters, distr = NULL, mu = NULL, sigma = NULL)
 }
 \description{
 Computes likelihood contribution for censored data.

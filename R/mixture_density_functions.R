@@ -1,37 +1,37 @@
 pmix_vec_loop <-
   function(qs,
-             locations_list,
-             scales_list,
-             weights_list,
-             distr.k) {
+           locations_list,
+           scales_list,
+           weights_list,
+           distr.k) {
     mean_over_list(qs, locations_list, scales_list, weights_list, distr.k, pmix)
   }
 
 dmix_vec_loop <-
   function(xs,
-             locations_list,
-             scales_list,
-             weights_list,
-             distr.k) {
+           locations_list,
+           scales_list,
+           weights_list,
+           distr.k) {
     mean_over_list(xs, locations_list, scales_list, weights_list, distr.k, dmix)
   }
 
 qmix_vec_loop <-
   function(ps,
-             locations_list,
-             scales_list,
-             weights_list,
-             distr.k) {
+           locations_list,
+           scales_list,
+           weights_list,
+           distr.k) {
     mean_over_list(ps, locations_list, scales_list, weights_list, distr.k, qmix)
   }
 
 mean_over_list <-
   function(xs,
-             locations_list,
-             scales_list,
-             weights_list,
-             distr.k,
-             mixdistfun) {
+           locations_list,
+           scales_list,
+           weights_list,
+           distr.k,
+           mixdistfun) {
     res <- 0.0 * xs
     nit <- length(locations_list)
     for (it in 1:nit) {
@@ -49,11 +49,11 @@ mean_over_list <-
 
 mixdistfun <-
   function(xs,
-             locations,
-             scales,
-             weights,
-             distr.k,
-             distfun) {
+           locations,
+           scales,
+           weights,
+           distr.k,
+           distfun) {
     res <- 0.0 * xs
     for (cmp in seq_along(locations)) {
       res <-
@@ -75,13 +75,13 @@ pmix <- function(qs, locations, scales, weights, distr.k) {
 
 mixdistfun_cens <-
   function(xlefts,
-             xrights,
-             c_code_filters,
-             locations,
-             scales,
-             weights,
-             distr.k,
-             distfun) {
+           xrights,
+           c_code_filters,
+           locations,
+           scales,
+           weights,
+           distr.k,
+           distfun) {
     res <- 0.0 * xlefts
     for (cmp in seq_along(locations)) {
       res <-

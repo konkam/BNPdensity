@@ -48,7 +48,7 @@
 #' }
 ptnorm <-
   function(q, mean = 0, sd = 1, lower = -Inf, upper = Inf, lower.tail = TRUE,
-             log.p = FALSE) {
+           log.p = FALSE) {
     ret <- numeric(length(q))
     if (lower.tail) {
       ret[q < lower] <- 0

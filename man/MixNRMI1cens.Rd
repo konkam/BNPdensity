@@ -4,11 +4,27 @@
 \alias{MixNRMI1cens}
 \title{Normalized Random Measures Mixture of Type I for censored data}
 \usage{
-MixNRMI1cens(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1,
-  Kappa = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1, asigma = 0.5,
-  bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01, Nx = 150,
-  Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-  extras = TRUE)
+MixNRMI1cens(
+  xleft,
+  xright,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = "normal",
+  distr.p0 = "normal",
+  asigma = 0.5,
+  bsigma = 0.5,
+  delta_S = 3,
+  delta_U = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE
+)
 }
 \arguments{
 \item{xleft}{Numeric vector. Lower limit of interval censoring. For exact
@@ -27,11 +43,9 @@ details.}
 \item{Gama}{Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
 1}.  See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.p0}{Integer number identifying the centering measure: 1 =
-Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.p0}{The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
 \item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
@@ -39,10 +53,10 @@ on the standard deviation of the mixture kernel \code{distr.k}.}
 \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
 on the standard deviation of the mixture kernel \code{distr.k}.}
 
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_S}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling sigma.}
 
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
+\item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
 variation coefficient for sampling the latent U.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
@@ -138,15 +152,7 @@ x <- acidity
 # Fitting the model under default specifications
 out <- MixNRMI1cens(x, x)
 # Plotting density estimate + 95\% credible interval
-attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-hist(x, probability = TRUE, breaks = 20, col = grey(.9), ylim = c(0, ymax))
-lines(xx, qx[, 1], lwd = 2)
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
-detach()
+plot(out)
 }
 
 \dontrun{
@@ -157,12 +163,7 @@ data(salinity)
 out <- MixNRMI1cens(xleft = salinity$left, xright = salinity$right, Nit = 5000)
 # Plotting density estimate + 95\% credible interval
 attach(out)
-m <- ncol(qx)
-ymax <- max(qx[, m])
-par(mfrow = c(1, 1))
-plot(xx, qx$"q0.5", lwd = 2, type = "l", ylab = "Density", xlab = "Data")
-lines(xx, qx[, 2], lty = 3, col = 4)
-lines(xx, qx[, m], lty = 3, col = 4)
+plot(out)
 # Plotting number of clusters
 par(mfrow = c(2, 1))
 plot(R, type = "l", main = "Trace of R")

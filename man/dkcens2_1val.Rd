@@ -4,8 +4,7 @@
 \alias{dkcens2_1val}
 \title{Density evaluation once}
 \usage{
-dkcens2_1val(xleft, xright, c_code, distr = NULL, mu = NULL,
-  sigma = NULL)
+dkcens2_1val(xleft, xright, c_code, distr = NULL, mu = NULL, sigma = NULL)
 }
 \description{
 Computes the likelihood contribution for one data point in the case of

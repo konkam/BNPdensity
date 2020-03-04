@@ -5,8 +5,18 @@
 \title{Conditional posterior distribution of the distinct Ystar in the case of
 censoring}
 \usage{
-rfystarcens2(v, v2, xleft, xright, censor_code, distr.k, sigma.k, distr.p0,
-  mu.p0, sigma.p0)
+rfystarcens2(
+  v,
+  v2,
+  xleft,
+  xright,
+  censor_code,
+  distr.k,
+  sigma.k,
+  distr.p0,
+  mu.p0,
+  sigma.p0
+)
 }
 \description{
 This function evaluates the ratio of conditional posterior distributions of

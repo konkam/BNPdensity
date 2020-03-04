@@ -30,10 +30,12 @@ function(xleft, xright, censor_code_filters, distr, Tauy, Tauz,
     print(K, Tauy, Tauz, J)
   }
   pK <- prop.table(K, margin = 2)
-  j <- apply(pK, 2, function(x) sample(length(Tauy),
+  j <- apply(pK, 2, function(x) {
+    sample(length(Tauy),
       size = 1,
       prob = x
-    ))
+    )
+  })
   return(matrix(c(y = Tauy[j], z = Tauz[j]),
     nrow = length(xleft),
     ncol = 2

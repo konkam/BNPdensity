@@ -4,12 +4,30 @@
 \alias{multMixNRMI1cens}
 \title{Multiple chains of MixNRMI1cens}
 \usage{
-multMixNRMI1cens(xleft, xright, probs = c(0.025, 0.5, 0.975),
-  Alpha = 1, Kappa = 0, Gama = 0.4, distr.k = 1, distr.p0 = 1,
-  asigma = 0.5, bsigma = 0.5, delta = 3, Delta = 2, Meps = 0.01,
-  Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
-  printtime = TRUE, extras = TRUE, nchains = 4, parallel = TRUE,
-  ncores = parallel::detectCores())
+multMixNRMI1cens(
+  xleft,
+  xright,
+  probs = c(0.025, 0.5, 0.975),
+  Alpha = 1,
+  Kappa = 0,
+  Gama = 0.4,
+  distr.k = "normal",
+  distr.p0 = "normal",
+  asigma = 0.5,
+  bsigma = 0.5,
+  delta = 3,
+  Delta = 2,
+  Meps = 0.01,
+  Nx = 150,
+  Nit = 1500,
+  Pbi = 0.1,
+  epsilon = NULL,
+  printtime = TRUE,
+  extras = TRUE,
+  nchains = 4,
+  parallel = TRUE,
+  ncores = parallel::detectCores()
+)
 }
 \arguments{
 \item{xleft}{Numeric vector. Lower limit of interval censoring. For exact
@@ -25,25 +43,18 @@ details.}
 
 \item{Kappa}{Numeric positive constant. See details.}
 
-\item{Gama}{Numeric constant. 0 <= Gama <= 1. See details.}
+\item{Gama}{Numeric constant. \eqn{0\leq \texttt{Gama} \leq 1}{0 <= Gama <=
+1}.  See details.}
 
-\item{distr.k}{Integer number identifying the mixture kernel: 1 = Normal; 2
-= Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
+\item{distr.k}{The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.}
 
-\item{distr.p0}{Integer number identifying the centering measure: 1 =
-Normal; 2 = Gamma; 3 = Beta.}
+\item{distr.p0}{The distribution name for the centering measure. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
 \item{asigma}{Numeric positive constant. Shape parameter of the gamma prior
-on the standard deviation of the mixture kernel distr.k.}
+on the standard deviation of the mixture kernel \code{distr.k}.}
 
 \item{bsigma}{Numeric positive constant. Rate parameter of the gamma prior
-on the standard deviation of the mixture kernel distr.k.}
-
-\item{delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling sigma.}
-
-\item{Delta}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
+on the standard deviation of the mixture kernel \code{distr.k}.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -56,13 +67,13 @@ density estimate.}
 
 \item{Pbi}{Numeric constant. Burn-in period proportion of Nit.}
 
-\item{epsilon}{Numeric constant. Extension to the evaluation grid range. See
-details.}
+\item{epsilon}{Numeric constant. Extension to the evaluation grid range.
+See details.}
 
 \item{printtime}{Logical. If TRUE, prints out the execution time.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
-Js (the jump sizes).}
+Js.}
 
 \item{nchains}{The number of chains to run.}
 
