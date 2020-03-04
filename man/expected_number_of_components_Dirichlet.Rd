@@ -25,7 +25,7 @@ to n. If greater than n, it is fixed to n.}
 A real value which approximates the expected number of components
 
 Reference: P. De Blasi, S. Favaro, A. Lijoi, R. H. Mena, I. Prünster, and M.
-Ruggiero, “Are gibbs-type priors the most natural generalization of the
+Ruggiero, “Are Gibbs-type priors the most natural generalization of the
 Dirichlet process?,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no.
 2, pp. 212–229, 2015.
 }

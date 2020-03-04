@@ -1,7 +1,7 @@
 #' Kernel density function
 #'
 #' This functions evaluates a density at a certain data point.  There are 4
-#' density options (1 (normal), 2 (gamma), 3 (beta), 4 (exponential), 5 (lognormal), 6 (half-Cauchy), 7 (half-normal), 8 (half-student), 9 (uniform) and 10 (truncated normal)). All densities are parametrized in terms of mean and standard
+#' density options (1 (normal), 2 (gamma), 3 (beta), 4 (exponential), 5 (lognormal), 6 (half-Cauchy), 7 (half-normal), 8 (half-student), 9 (uniform) and 10 (truncated normal)). All densities are parameterized in terms of mean and standard
 #' deviation.
 #'
 #' For internal use.

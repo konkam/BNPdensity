@@ -23,6 +23,6 @@ represented, while interval censored data points are represented at the
 middle of the censoring interval.
 }
 \description{
-This is a function to visualise the clustering induced by the BNP model. The
+This is a function to visualize the clustering induced by the BNP model. The
 data points are plotted with a color reflecting their cluster.
 }
