@@ -11,27 +11,9 @@ Computes the density.
 }
 \details{
 For internal use
+
+## The function is currently defined as
+function(x, df, mean, sd) {
+  dt((x - mean) / sd, df, ncp = 0) / sd
 }
-\keyword{##}
-\keyword{-}
-\keyword{/}
-\keyword{0)}
-\keyword{=}
-\keyword{The}
-\keyword{as}
-\keyword{currently}
-\keyword{defined}
-\keyword{df,}
-\keyword{dt((x}
-\keyword{function}
-\keyword{function(x,}
-\keyword{internal}
-\keyword{is}
-\keyword{mean)}
-\keyword{mean,}
-\keyword{ncp}
-\keyword{sd}
-\keyword{sd)}
-\keyword{sd,}
-\keyword{{}
-\keyword{}}
+}

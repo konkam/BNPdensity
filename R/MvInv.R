@@ -1,11 +1,9 @@
 #' Invert jump heights function
 #'
 #' Determines the jump heights of an increasing additive process by inverting
-#' the M(v) function.
+#' the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
 #'
 #' For internal use.
-#'
-#' @keywords internal
 #'
 #' ## The function has been optimised, but is morally defined as
 #' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
