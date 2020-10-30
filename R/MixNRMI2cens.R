@@ -102,15 +102,15 @@
 #' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
 #' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
-#' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
+#' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
 #'
-#' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
+#' 2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
 #'
-#' 3.- Kon Kam King, G., Arbel, J. and Prüenster, I. (2016). Species
+#' 3.- Kon Kam King, G., Arbel, J. and Prünster, I. (2016). Species
 #' Sensitivity Distribution revisited: a Bayesian nonparametric approach. In
 #' preparation.
 #' @keywords distribution models nonparametrics

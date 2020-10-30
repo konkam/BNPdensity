@@ -5,7 +5,6 @@
 #' For internal use
 #'
 #' @keywords internal
-#' @examples
 #'
 #' ## The function is currently defined as
 #' function(x, df, mean, sd) {

@@ -231,11 +231,11 @@ print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 detach()
 }
 \references{
-1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
+1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster,
 I. (2013). Modeling with Normalized Random Measure Mixture Models.
 Statistical Science. Vol. 28, No. 3, 313-334.
 
-2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
+2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 normalized random measure with independent increments. Scand. J. Statist 36,
 76-97.
 }
@@ -244,7 +244,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
-Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
+Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prünster, I.
 }
 \keyword{distribution}
 \keyword{models}

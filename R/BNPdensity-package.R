@@ -51,16 +51,16 @@ NULL
 #' @name BNPdensity-package
 #' @aliases BNPdensity-package BNPdensity
 #' @docType package
-#' @author Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I.;
+#' @author Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster, I.;
 #' Contributor: Guillaume Kon Kam King.; Maintainer: Ernesto Barrios <ebarrios
 #' at itam.mx>
 #' @seealso \code{\link{MixNRMI1}}, \code{\link{MixNRMI2}},
 #' \code{\link{MixNRMI1cens}}, \code{\link{MixNRMI2cens}}
-#' @references Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster, I.
+#' @references Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster, I.
 #' (2013). Modeling with Normalized Random Measure Mixture Models. Statistical
 #' Science. Vol. 28, No. 3, 313-334.
 #'
-#' Kon Kam King, G., Arbel, J. and Prüenster, I. (2016). Species Sensitivity
+#' Kon Kam King, G., Arbel, J. and Prünster, I. (2016). Species Sensitivity
 #' Distribution revisited: a Bayesian nonparametric approach. In preparation.
 #' @keywords package
 #' @examples

@@ -13,21 +13,80 @@ the M(v) function.
 \details{
 For internal use.
 }
-\examples{
-
-## The function is currently defined as
-function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
-  n <- length(w)
-  v <- rep(NA, n)
-  x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
-  f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-    beta) * x)
-  dx <- diff(x)
-  h <- (f[-1] + f[-N]) / 2
-  Mv <- rep(0, N)
-  for (i in seq(N - 1, 1)) Mv[i] <- Mv[i + 1] + dx[i] * h[i]
-  for (j in seq(n)) v[j] <- x[which.min(Mv > w[j])]
-  return(v)
-}
-}
+\keyword{##}
+\keyword{(f[-1]}
+\keyword{(i}
+\keyword{(j}
+\keyword{*}
+\keyword{+}
+\keyword{-}
+\keyword{-log(seq(from}
+\keyword{/}
+\keyword{0.5,}
+\keyword{1}
+\keyword{1))}
+\keyword{1,}
+\keyword{1]}
+\keyword{2}
+\keyword{2,}
+\keyword{3001)}
+\keyword{<-}
+\keyword{=}
+\keyword{>}
+\keyword{Mv}
+\keyword{Mv[i}
+\keyword{Mv[i]}
+\keyword{N}
+\keyword{N)}
+\keyword{N))}
+\keyword{The}
+\keyword{alpha}
+\keyword{as}
+\keyword{been}
+\keyword{beta}
+\keyword{beta)}
+\keyword{but}
+\keyword{defined}
+\keyword{diff(x)}
+\keyword{dx}
+\keyword{dx[i]}
+\keyword{exp(-(u}
+\keyword{exp(-10),}
+\keyword{exp(-1e-05),}
+\keyword{f}
+\keyword{f[-N])}
+\keyword{for}
+\keyword{function}
+\keyword{function(eps,}
+\keyword{gama}
+\keyword{gama)}
+\keyword{gama))}
+\keyword{gamma(1}
+\keyword{h}
+\keyword{h[i]}
+\keyword{has}
+\keyword{in}
 \keyword{internal}
+\keyword{is}
+\keyword{length}
+\keyword{length(w)}
+\keyword{morally}
+\keyword{n}
+\keyword{n)}
+\keyword{optimised,}
+\keyword{rep(0,}
+\keyword{rep(NA,}
+\keyword{return(v)}
+\keyword{seq(N}
+\keyword{seq(n))}
+\keyword{to}
+\keyword{u}
+\keyword{v}
+\keyword{v[j]}
+\keyword{w[j])]}
+\keyword{x}
+\keyword{x)}
+\keyword{x[which.min(Mv}
+\keyword{x^(-(1}
+\keyword{{}
+\keyword{}}

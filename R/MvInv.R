@@ -6,9 +6,8 @@
 #' For internal use.
 #'
 #' @keywords internal
-#' @examples
 #'
-#' ## The function is currently defined as
+#' ## The function has been optimised, but is morally defined as
 #' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
 #'   n <- length(w)
 #'   v <- rep(NA, n)
