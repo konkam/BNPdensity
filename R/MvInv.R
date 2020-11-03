@@ -5,8 +5,9 @@
 #'
 #' For internal use.
 #'
-#' ## The function has been optimised, but is morally defined as
-#' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
+#' ## The function has been optimised, but is morally defined as:
+#'
+#' \code{function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
 #'   n <- length(w)
 #'   v <- rep(NA, n)
 #'   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
@@ -18,7 +19,7 @@
 #'   for (i in seq(N - 1, 1)) Mv[i] <- Mv[i + 1] + dx[i] * h[i]
 #'   for (j in seq(n)) v[j] <- x[which.min(Mv > w[j])]
 #'   return(v)
-#' }
+#' }}
 MvInv <-
   function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) # eps no longer required
   {
