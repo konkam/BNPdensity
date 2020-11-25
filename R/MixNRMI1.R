@@ -302,6 +302,7 @@ MixNRMI1 <-
       means <- means[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
+      delta_Us = delta_Us[-biseq]
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
@@ -318,7 +319,7 @@ MixNRMI1 <-
       res$means <- means
       res$weights <- weights
       res$Js <- Js
-      res$delta_Us <- delta_Us %>% unique()
+      res$delta_Us <- unique(delta_Us)
     }
     return(structure(res, class = "NRMI1"))
   }
