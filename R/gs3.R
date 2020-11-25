@@ -53,13 +53,13 @@ gs3_adaptive <- function(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FA
   batch_size <- 100
   if (adapt && (iter %% batch_size == 0)) {
     acc_rate <- length(unique(U[(iter - batch_size + 1):iter])) / batch_size
-    logincrement = min(0.5, 2 / sqrt(iter))
+    logincrement <- min(0.5, 2 / sqrt(iter))
     # increment = min(0.5, 5 / sqrt(iter))
     if (acc_rate < 0.44) {
-      delta_i <- delta*exp(logincrement)
+      delta_i <- delta * exp(logincrement)
     }
     else {
-      delta_i <- delta*exp(-logincrement)
+      delta_i <- delta * exp(-logincrement)
     }
   }
   else {

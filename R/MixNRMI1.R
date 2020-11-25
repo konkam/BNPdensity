@@ -243,9 +243,9 @@ MixNRMI1 <-
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
       if (Gama != 0) {
-        u_delta_U = gs3_adaptive(u, n = n, r = r, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+        u_delta_U <- gs3_adaptive(u, n = n, r = r, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
         u <- u_delta_U$u_prime
-        delta_U = u_delta_U$delta
+        delta_U <- u_delta_U$delta
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -284,7 +284,7 @@ MixNRMI1 <-
         means[[j]] <- Tau
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
-        delta_Us[j] = delta_U
+        delta_Us[j] <- delta_U
       }
     }
     tt <- comp1(y)
@@ -302,7 +302,7 @@ MixNRMI1 <-
       means <- means[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
-      delta_Us = delta_Us[-biseq]
+      delta_Us <- delta_Us[-biseq]
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
