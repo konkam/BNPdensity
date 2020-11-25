@@ -15,7 +15,7 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: yes
 ByteCompile: yes
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Depends: R(>= 3.3.0)
 Maintainer: Guillaume Kon Kam King <guillaume.konkamking.work@gmail.com>
 Imports:

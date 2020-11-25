@@ -196,7 +196,7 @@ MixNRMI1 <-
   function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
            Gama = 0.4, distr.k = "normal", distr.p0 = 1, asigma = 0.5, bsigma = 0.5,
            delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-           Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE) {
+           Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE, adaptive = FALSE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
@@ -228,6 +228,7 @@ MixNRMI1 <-
       means <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
+      delta_Us <- seq(Nit)
     }
     mu.p0 <- mean(x)
     sigma.p0 <- sd(x)
@@ -242,10 +243,9 @@ MixNRMI1 <-
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
       if (Gama != 0) {
-        u <- gs3(u,
-          n = n, r = r, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = delta_U
-        )
+        u_delta_U = gs3_adaptive(u, n = n, r = r, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+        u <- u_delta_U$u_prime
+        delta_U = u_delta_U$delta
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -284,6 +284,7 @@ MixNRMI1 <-
         means[[j]] <- Tau
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
+        delta_Us[j] = delta_U
       }
     }
     tt <- comp1(y)
@@ -317,6 +318,7 @@ MixNRMI1 <-
       res$means <- means
       res$weights <- weights
       res$Js <- Js
+      res$delta_Us <- delta_Us %>% unique()
     }
     return(structure(res, class = "NRMI1"))
   }
