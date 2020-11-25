@@ -4,8 +4,10 @@
 \name{galaxy}
 \alias{galaxy}
 \title{Galaxy Data Set}
-\format{A data frame with 82 observations on the following variable:
-\describe{ \item{list("velocity")}{A numeric vector.} }}
+\format{
+A data frame with 82 observations on the following variable:
+\describe{ \item{list("velocity")}{A numeric vector.} }
+}
 \description{
 Velocities of 82 galaxies diverging from our own galaxy.
 }

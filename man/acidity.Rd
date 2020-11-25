@@ -4,7 +4,9 @@
 \name{acidity}
 \alias{acidity}
 \title{Acidity Index Dataset}
-\format{A real vector with 155 observations.}
+\format{
+A real vector with 155 observations.
+}
 \description{
 Concerns an acidity index measured in a sample of 155 lakes in north-central
 Wisconsin.
