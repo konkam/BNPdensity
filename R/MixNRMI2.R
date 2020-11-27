@@ -191,7 +191,7 @@ MixNRMI2 <-
            Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
            sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
            Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-           extras = TRUE) {
+           extras = TRUE, adaptive = FALSE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
@@ -224,6 +224,7 @@ MixNRMI2 <-
       sigmas <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
+      delta_Us <- seq(Nit)
     }
     mu.py0 <- mean(x)
     sigma.py0 <- sd(x)
@@ -239,10 +240,9 @@ MixNRMI2 <-
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
       if (Gama != 0) {
-        u <- gs3(u,
-          n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = delta_U
-        )
+        u_delta_U <- gs3_adaptive(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+        u <- u_delta_U$u_prime
+        delta_U <- u_delta_U$delta
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -282,6 +282,7 @@ MixNRMI2 <-
         sigmas[[j]] <- Tauz
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
+        delta_Us[j] <- delta_U
       }
     }
     tt <- comp2(y, z)
@@ -299,6 +300,7 @@ MixNRMI2 <-
       sigmas <- sigmas[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
+      delta_Us <- delta_Us[-biseq]
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
@@ -316,6 +318,7 @@ MixNRMI2 <-
       res$sigmas <- sigmas
       res$weights <- weights
       res$Js <- Js
+      res$delta_Us <- unique(delta_Us)
     }
     return(structure(res, class = "NRMI2"))
   }
