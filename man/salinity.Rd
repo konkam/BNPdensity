@@ -4,11 +4,13 @@
 \name{salinity}
 \alias{salinity}
 \title{Salinity tolerance}
-\format{A data frame with 108 observations on the following two variables:
+\format{
+A data frame with 108 observations on the following two variables:
 \describe{
 \item{left}{A numeric vector.}
 \item{right}{A
-numeric vector.} }}
+numeric vector.} }
+}
 \source{
 \code{fitdistrplus} R-package
 }

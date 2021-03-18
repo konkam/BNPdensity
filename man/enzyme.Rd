@@ -4,8 +4,10 @@
 \name{enzyme}
 \alias{enzyme}
 \title{Enzyme Dataset}
-\format{A data frame with 244 observations on the following variable:
-\describe{ \item{list("enzyme")}{A numeric vector.} }}
+\format{
+A data frame with 244 observations on the following variable:
+\describe{ \item{list("enzyme")}{A numeric vector.} }
+}
 \description{
 Concerns the distribution of enzymatic activity in the blood, for an enzyme
 involved in the metabolism of carcinogenetic substances, among a group of
