@@ -7,12 +7,12 @@
 #'
 #' @param eps Dummy argument kept for consistency with past versions of the functions
 #' @param u Real number. The value of the latent variable at the current step.
-#' @param alpha Numeric constant. Total mass of the centering measure. See
+#' @param alpha Numeric constant. Total mass of the centering measure.
 #' @param beta Numeric positive constant.
 #' @param gama Numeric constant. Discount parameter of the NRMI process.
-#' @param N Number of steps in the discretisation scheme for the grid inversion
+#' @param N Number of steps in the discretization scheme for the grid inversion.
 #'
-#' ## The function is currently defined as
+#' ## The function has been optimised but it is morally defined as:
 #' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
 #'   n <- length(w)
 #'   v <- rep(NA, n)
