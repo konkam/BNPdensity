@@ -6,17 +6,23 @@
 \usage{
 dt_(x, df, mean, sd)
 }
+\arguments{
+\item{x}{Numeric vector. Data set to which the density is evaluated.}
+
+\item{df}{Numeric constant. Degrees of freedom (> 0, maybe non-integer)}
+
+\item{mean}{Numeric constant. Location parameter.}
+
+\item{sd}{Positive numeric constant. Scale parameter.
+
+## The function is currently defined as
+function(x, df, mean, sd) {
+  dt((x - mean) / sd, df, ncp = 0) / sd
+}}
+}
 \description{
 Computes the density.
 }
 \details{
 For internal use
 }
-\examples{
-
-## The function is currently defined as
-function(x, df, mean, sd) {
-  dt((x - mean) / sd, df, ncp = 0) / sd
-}
-}
-\keyword{internal}
