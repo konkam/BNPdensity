@@ -11,7 +11,7 @@ MvInv(eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001)
 
 \item{u}{Real number. The value of the latent variable at the current step.}
 
-\item{alpha}{Numeric constant. Total mass of the centering measure. See}
+\item{alpha}{Numeric constant. Total mass of the centering measure.}
 
 \item{beta}{Numeric positive constant.}
 
