@@ -157,7 +157,6 @@ epsilon} to \code{max(x) + epsilon}. By default \code{epsilon=sd(x)/4}.
 }
 
 \examples{
-
 \dontrun{
 ### Example 1
 # Data

@@ -199,7 +199,6 @@ as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000, ncores = parallel::det
 #' Includes a histogram if the data is non censored.
 #' @export
 #' @examples
-#'
 #' \donttest{
 #' data(salinity)
 #' fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)

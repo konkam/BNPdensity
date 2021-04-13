@@ -32,4 +32,6 @@ Suggests:
     gmp,
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    BNPmix
+VignetteBuilder: knitr
