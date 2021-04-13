@@ -4,12 +4,19 @@
 \alias{summarytext}
 \title{Common text for the summary S3 methods}
 \usage{
-summarytext(fit, kernel_comment, number_of_clusters = FALSE)
+summarytext(
+  fit,
+  kernel_comment,
+  BNP_process_comment,
+  number_of_clusters = FALSE
+)
 }
 \arguments{
-\item{fit}{NRMIx object}
+\item{fit}{NRMIx or PYx object}
 
 \item{kernel_comment}{Text specific to the parametric and nonparametric nature of the model}
+
+\item{BNP_process_comment}{Text specific to the nonparametric process, NRMI or Pitman-Yor}
 
 \item{number_of_clusters}{Flag to decide whether to compute the optimal clustering}
 }

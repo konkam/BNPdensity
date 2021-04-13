@@ -396,7 +396,8 @@ print.NRMI2 <- function(x, ...) {
 summary.NRMI2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
   kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
-  summarytext(object, kernel_comment, number_of_clusters = number_of_clusters)
+  NRMI_comment <- paste("Density estimation using a", comment_on_NRMI_type(object$NRMI_params))
+  summarytext(object, kernel_comment, NRMI_comment, number_of_clusters = number_of_clusters)
 }
 
 

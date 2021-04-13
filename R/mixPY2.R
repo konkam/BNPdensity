@@ -1,4 +1,4 @@
-#' Pitman-Yor process mixture  of Type I
+#' Pitman-Yor process mixture  of Type II
 #'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
@@ -25,10 +25,10 @@
 #' data(acidity)
 #' x <- acidity
 #' # Fitting the model under default specifications
-#' out <- MixPY1(x)
+#' out <- MixPY2(x)
 #' # Plotting density estimate + 95% credible interval
 #' plot(out)
-MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigma = 2, bsigma = 1/var(x), Nx = 100, Nit = 1500, Pbi = 0.5, epsilon = NULL, printtime = TRUE, extras = TRUE) {
+MixPY2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigma = 2, bsigma = 1/var(x), Nx = 100, Nit = 1500, Pbi = 0.5, epsilon = NULL, printtime = TRUE, extras = TRUE) {
   if (!requireNamespace("BNPmix", quietly = TRUE)) {
     stop("Package \"BNPmix\" is needed for this function to work. Please install it.",
       call. = FALSE
@@ -36,6 +36,7 @@ MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
   }
 
   nburn <- floor(Pbi * Nit)
+  # Niter <- Nit - nburn
   if (is.null(epsilon)) {
     epsilon <- sd(x) / 4
   }
@@ -43,7 +44,7 @@ MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
 
   restmp <- BNPmix::PYdensity(
     y = x,
-    mcmc = list(niter = Nit, nburn = nburn, model = "L", print_message = printtime),
+    mcmc = list(niter = Nit, nburn = nburn, model = "LS", print_message = printtime),
     prior = list(strength = Alpha, discount = Gama, a0 = asigma, b0 = 1/bsigma),
     output = list(grid = xx, out_param = TRUE, out_type = "FULL")
   )
@@ -58,20 +59,22 @@ MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
   qx <- cbind(mean = apply(restmp$density, 2, mean), qx)
 
   res <- list(
-    xx = xx, qx = qx, R = unlist(lapply(X = Allocs, FUN = function(x) length(unique(x)))), S = sqrt(restmp$sigma2),
+    xx = xx, qx = qx, R = unlist(lapply(X = Allocs, FUN = function(x) length(unique(x)))),
     distr.k = 1, Allocs = Allocs, data = x, Nit = Nit, Pbi = Pbi,
     PY_params = list("Alpha" = Alpha, "Gamma" = Gama)
   )
   if (extras) {
     res$means <- lapply(restmp$mean, FUN = function(x) x[, 1])
     res$weights <- lapply(restmp$probs, FUN = function(x) x[, 1])
+    res$sigmas <- lapply(restmp$sigma2, FUN = function(x) sqrt(x[, 1]))
   }
-  return(structure(res, class = "PY1"))
+  return(structure(res, class = "PY2"))
 }
+
 
 #' Plot the density estimate and the 95\% credible interval
 #'
-#' @param x A fitted object of class PY1
+#' @param x A fitted object of class PY2
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A graph with the density estimate, the 95\% credible interval and a
@@ -80,15 +83,15 @@ MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
 #'
 #' @examples
 #' data(acidity)
-#' out <- MixPY1(acidity, Nit = 50)
+#' out <- MixPY2(acidity, Nit = 50)
 #' plot(out)
-plot.PY1 <- function(x, ...) {
+plot.PY2 <- function(x, ...) {
   plotfit_noncensored(x)
 }
 
-#' S3 method for class 'PY1'
+#' S3 method for class 'PY2'
 #'
-#' @param x A fitted object of class PY1
+#' @param x A fitted object of class PY2
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
 #' @return A visualization of the important information about the object
@@ -99,16 +102,16 @@ plot.PY1 <- function(x, ...) {
 #' ## Example for non censored data
 #'
 #' data(acidity)
-#' out <- MixPY1(acidity, Nit = 50)
+#' out <- MixPY2(acidity, Nit = 50)
 #' print(out)
-print.PY1 <- function(x, ...) {
+print.PY2 <- function(x, ...) {
   kernel_name <- tolower(give_kernel_name(x$distr.k))
-  writeLines(paste("Fit of a semiparametric", kernel_name, "mixture model on", length(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
+  writeLines(paste("Fit of a nonparametric", kernel_name, "mixture model on", length(x$data), "data points.\nThe MCMC algorithm was run for", x$Nit, "iterations with", 100 * x$Pbi, "% discarded for burn-in."))
 }
 
-#' S3 method for class 'PY1'
+#' S3 method for class 'PY2'
 #'
-#' @param object A fitted object of class PY1
+#' @param object A fitted object of class PY2
 #' @param number_of_clusters Whether to compute the optimal number of clusters, which can be a time-consuming operation (see \code{\link{compute_optimal_clustering}})
 #' @param ... Further arguments to be passed to generic function, ignored at the moment
 #'
@@ -120,11 +123,11 @@ print.PY1 <- function(x, ...) {
 #' ## Example for non censored data
 #'
 #' data(acidity)
-#' out <- MixPY1(acidity, Nit = 50)
+#' out <- MixPY2(acidity, Nit = 50)
 #' summary(out)
-summary.PY1 <- function(object, number_of_clusters = FALSE, ...) {
+summary.PY2 <- function(object, number_of_clusters = FALSE, ...) {
   kernel_name <- tolower(give_kernel_name(object$distr.k))
-  kernel_comment <- paste("A semiparametric", kernel_name, "mixture model was used.")
+  kernel_comment <- paste("A nonparametric", kernel_name, "mixture model was used.")
   PY_comment <- paste("Density estimation using a Pitman-Yor process, \nwith total mass parameter Alpha =", object$PY_params$Alpha, "and discount parameter Gamma =", object$PY_params$Gamma)
   summarytext(fit = object, kernel_comment = kernel_comment, BNP_process_comment = PY_comment, number_of_clusters = number_of_clusters)
 }
