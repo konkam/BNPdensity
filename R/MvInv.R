@@ -6,7 +6,6 @@
 #' For internal use.
 #'
 #' @keywords internal
-#' @examples
 #'
 #' ## The function is currently defined as
 #' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
