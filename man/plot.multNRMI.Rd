@@ -20,7 +20,6 @@ The density estimate is the mean posterior density computed on the data
 points.
 }
 \examples{
-
 \donttest{
 data(salinity)
 fit <- multMixNRMI2cens(salinity$left, salinity$right, parallel = TRUE, Nit = 10, ncores = 2)
