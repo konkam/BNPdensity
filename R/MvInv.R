@@ -24,7 +24,7 @@
 #'   for (i in seq(N - 1, 1)) Mv[i] <- Mv[i + 1] + dx[i] * h[i]
 #'   for (j in seq(n)) v[j] <- x[which.min(Mv > w[j])]
 #'   return(v)
-#' }}
+#' }
 MvInv <-
   function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) # eps no longer required
   {
