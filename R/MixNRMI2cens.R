@@ -115,7 +115,6 @@
 #' preparation.
 #' @keywords distribution models nonparametrics
 #' @examples
-#'
 #' \dontrun{
 #' ### Example 1
 #' # Data

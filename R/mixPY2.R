@@ -28,7 +28,7 @@
 #' out <- MixPY2(x)
 #' # Plotting density estimate + 95% credible interval
 #' plot(out)
-MixPY2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigma = 2, bsigma = 1/var(x), Nx = 100, Nit = 1500, Pbi = 0.5, epsilon = NULL, printtime = TRUE, extras = TRUE) {
+MixPY2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigma = 2, bsigma = 1 / var(x), Nx = 100, Nit = 1500, Pbi = 0.5, epsilon = NULL, printtime = TRUE, extras = TRUE) {
   if (!requireNamespace("BNPmix", quietly = TRUE)) {
     stop("Package \"BNPmix\" is needed for this function to work. Please install it.",
       call. = FALSE
@@ -45,7 +45,7 @@ MixPY2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
   restmp <- BNPmix::PYdensity(
     y = x,
     mcmc = list(niter = Nit, nburn = nburn, model = "LS", print_message = printtime),
-    prior = list(strength = Alpha, discount = Gama, a0 = asigma, b0 = 1/bsigma),
+    prior = list(strength = Alpha, discount = Gama, a0 = asigma, b0 = 1 / bsigma),
     output = list(grid = xx, out_param = TRUE, out_type = "FULL")
   )
 
