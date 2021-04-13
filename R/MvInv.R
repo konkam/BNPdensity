@@ -3,9 +3,17 @@
 #' Determines the jump heights of an increasing additive process by inverting
 #' the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
 #' For internal use.
-#' ## The function has been optimised, but is morally defined as:
 #'
-#' \code{function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
+#' @param eps Dummy argument kept for consistency with past versions of the functions
+#' @param u Real number. The value of the latent variable at the current step.
+#' @param alpha Numeric constant. Total mass of the centering measure. See
+#' @param beta Numeric positive constant.
+#' @param gama Numeric constant. Discount parameter of the NRMI process.
+#' @param N Number of steps in the discretisation scheme for the grid inversion
+#'
+#'
+#' ## The function has been optimised, but is morally defined as:
+#' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
 #'   n <- length(w)
 #'   v <- rep(NA, n)
 #'   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
