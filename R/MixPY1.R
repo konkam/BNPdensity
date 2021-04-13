@@ -1,5 +1,7 @@
 #' Pitman-Yor process mixture  of Type I
 #'
+#' This function calls the PYdensity function from package BNPmix, to allow fitting a Pitman-Yor process mixture to the data.
+#'
 #' @param x Numeric vector. Data set to which the density is fitted.
 #' @param probs Numeric vector. Desired quantiles of the density estimates.
 #' @param Alpha  Numeric constant. Total mass of the centering measure. See
@@ -17,7 +19,29 @@
 #' See details.
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means and weights
-#' @return
+#' @return The function returns a MixPY1 object. It is based on a list with the following components:
+#' \item{xx}{Numeric vector. Evaluation grid.}
+#' \item{qx}{Numeric array. Matrix
+#' of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
+#' (length(probs)+1)} with the posterior mean and the desired quantiles input
+#' in \code{probs}.}
+#' \item{R}{Numeric vector of
+#' \code{length(Nit*(1-Pbi))} with the number of mixtures components
+#' (clusters).}
+#' \item{S}{Numeric vector of \code{length(Nit*(1-Pbi))} with the
+#' values of common standard deviation sigma.}
+#' \item{Allocs}{List of \code{length(Nit*(1-Pbi))} with the clustering
+#' allocations.}
+#' \item{means}{List of \code{length(Nit*(1-Pbi))} with the
+#' cluster means (locations). Only if extras = TRUE.}
+#' \item{weights}{List of
+#' \code{length(Nit*(1-Pbi))} with the mixture weights. Only if extras = TRUE.}
+#' \item{Nit}{Integer constant. Number of MCMC iterations.}
+#' \item{Pbi}{Numeric constant. Burn-in period proportion of \code{Nit}.}
+#' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture. Always 1, since the Pitman-Yor process is only written to work with Gaussian kernels.}
+#' \item{data}{Data used for the fit}
+#' \item{PY_params}{A named list with the parameters of the Pitman-Yor process}
+#'
 #' @export
 #'
 #' @examples

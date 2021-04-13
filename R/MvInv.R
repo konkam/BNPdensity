@@ -2,8 +2,8 @@
 #'
 #' Determines the jump heights of an increasing additive process by inverting
 #' the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
-#'
 #' For internal use.
+#' @keywords internal
 #'
 #' ## The function has been optimised, but is morally defined as:
 #'
