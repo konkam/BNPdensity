@@ -47,3 +47,26 @@ gs3 <-
     u <- ifelse(runif(1) <= p, ustar, ut)
     return(u)
   }
+
+
+gs3_adaptive <- function(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FALSE) {
+  target_acc_rate <- 0.44
+  batch_size <- 100
+  if (adapt && (iter %% batch_size == 0)) {
+    acc_rate <- length(unique(U[(iter - batch_size + 1):iter])) / batch_size
+    logincrement <- 2 * min(0.25, 1 / sqrt(iter))
+    # increment = min(0.5, 5 / sqrt(iter))
+    if (acc_rate < 0.44) {
+      delta_i <- delta * exp(logincrement)
+    }
+    else {
+      delta_i <- delta * exp(-logincrement)
+    }
+  }
+  else {
+    delta_i <- delta
+  }
+  # print(delta_i)
+  u_prime <- gs3(ut, n, r, alpha, beta, gama, delta_i)
+  return(list(u_prime = u_prime, delta = delta_i))
+}
