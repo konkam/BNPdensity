@@ -1,0 +1,931 @@
+---
+title: An exploration of adaptive MCMC for simulating the conditional density of the
+  latent variable in BNPdensity
+output:
+  html_document: 
+    toc: yes
+    number_sections: yes
+    theme: united
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+# knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(BNPdensity)
+library(tidyverse)
+library(LaplacesDemon)
+library(parallel)
+```
+
+# Introduction
+
+We implement the simple strategy proposed in Roberts, Gareth O., and Jeffrey S. Rosenthal. 2009. "Examples of Adaptive MCMC." Journal of Computational and Graphical Statistics 18 (2): 349--67. <https://doi.org/10.1198/jcgs.2009.06134>.
+
+The idea is that is that a tuning parameter of the proposal distribution may be adapted to target a desired acceptance rate.
+
+The tuning should satisfy two conditions:
+
+-   *Diminishing adaptation*, i.e. the difference between two consecutive adapted kernels must go 0:
+
+$$
+\begin{equation}
+\lim _{n \rightarrow \infty} \sup _{x \in \mathcal{X}}\left\|P_{\Gamma_{n+1}}(x, \cdot)-P_{\Gamma_{n}}(x, \cdot)\right\|=0 \quad \text { in probability }
+\end{equation}
+$$
+
+-   *Bounded convergence*, a condition which seems to relate to the conservation of geometric ergodicity of the adaptive Markov chain:
+
+$$
+\left\{M_{\epsilon}\left(X_{n}, \Gamma_{n}\right)\right\}_{n=0}^{\infty} \text { is bounded inprobability, } \epsilon>0
+$$
+
+where $M_{\epsilon}(x, \gamma)=\inf \{n \geq \left.1:\left\|P_{\gamma}^{n}(x, \cdot)-\pi(\cdot)\right\| \leq \epsilon\right\}$ is the convergence time of the kernel $P_{\gamma}$ when beginning in state $x \in \mathcal{X}$.
+
+The second condition is not easy to prove, it can be shown to hold if the first condition holds and if the target is log-concave, but our conditional distribution is not log-concave:
+
+$$
+\begin{equation}
+f_{U \mid \mathbf{Y}}(u) \propto u^{n-1}(u+\kappa)^{r \gamma-n} \exp \left\{-\frac{a}{\gamma}(u+\kappa)^{\gamma}\right\}
+\end{equation}
+$$
+
+# A simple adaptive scheme.
+
+Let's assume that we have a proposal kernel $P_\delta$ with a parameter $\sigma$ influencing the acceptance rate. This could be the standard deviation for a normal kernel, in which case increasing $\sigma$ decreases the acceptance rate and vice versa.
+
+Roberts and Rosenthal propose to work with batches of size 100, and every 100 iterations to compute the acceptance rate in the batch. For a 1-D parameter, the optimal acceptance rate for a normal proposal kernel and a normal posterior is 0.44
+
+The adaptation rule they suggest is:
+
+-   if the acceptance rate is below 0.44, decrease $\sigma$ by using $\sigma' = \sigma \exp\left(-\min(0.01, \frac{1}{\sqrt{n}})\right)$
+-   if the acceptance rate is above 0.44, increase $\sigma$ by using $\sigma' = \sigma \exp\left(\min(0.01, \frac{1}{\sqrt{n}})\right)$
+
+where $n$ is the iteration number.
+
+We do not have a normal proposal kernel nor a normal posterior, but we can adapt this method to our case where the proposal is:
+
+$$
+\begin{equation}
+u^{\prime} \sim \operatorname{ga}\left(\delta, \delta / u^{[t]}\right)
+\end{equation}
+$$
+
+with mean $u^{[t]}$ and standard deviation $\frac{u^{[t]}}{\sqrt{\delta}}$.
+
+The adaptation rule should become:
+
+-   if the acceptance rate is below 0.44, decrease the proposal kernel scale parameter by increasing $\delta$, using $\delta' = \delta \exp\left(2\min(0.01, \frac{1}{\sqrt{n}})\right)$\
+-   if the acceptance rate is above 0.44, increase the proposal kernel scale parameter by decreasing $\delta$ by using $\delta' = \delta \exp\left(-\min(0.01, \frac{1}{2\sqrt{n}})\right)$
+
+where the factor 2 is here to obtain jumps of comparable size given the dependence of the standard deviation of the proposal on $\delta$.
+
+# Study on sampling directly from the conditional density
+
+We write a simple adaptive MCMC algorithm to sample from
+
+$$
+\begin{equation}
+f_{U \mid \mathbf{Y}}(u) \propto u^{n-1}(u+\kappa)^{r \gamma-n} \exp \left\{-\frac{a}{\gamma}(u+\kappa)^{\gamma}\right\}
+\end{equation}
+$$ using the Gamma proposal as above.
+
+## First example
+
+The following figure shows the evolution of the acceptance rate and of the tuning parameter as a function of the batch number:
+
+```{r}
+out_adaptive <- adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 100, r = 10, gamma = 0.5, kappa = 1.2, a = 1., delta = 2, debug = T)
+```
+
+### Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+tibble(acc_rate = out_adaptive$acc_rates, delta = out_adaptive$deltas[2:length(out_adaptive$deltas)]) %>%
+  mutate(batch_number = seq_along(acc_rate)) %>%
+  gather(variable, value, -batch_number) %>%
+  ggplot(aes(x = batch_number, y = value)) +
+  theme_bw() +
+  facet_wrap(~variable, scales = "free_y") +
+  geom_line() +
+  ylab("") +
+  xlab("Batch number")
+```
+
+We can see that the $\delta$ tuning parameter seems indeed to adapt until it reaches a value around 1.2, then stabilizes.
+
+```{r, include=FALSE}
+
+square <- function(x) x^2
+
+average_sq_dist <- function(vec) {
+  vec %>%
+    diff() %>%
+    square() %>%
+    mean()
+}
+```
+
+```{r, include=FALSE}
+remove_first_fith <- function(vec) {
+  n <- length(vec)
+  start <- round(n / 5)
+  return(vec[start:n])
+}
+```
+
+```{r, include=FALSE}
+out <- non_adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 100, r = 10, gamma = 0.5, kappa = 1.2, a = 1., delta = 2)
+```
+
+```{r, include=FALSE}
+thin_df_to <- function(df, final_size) {
+  n <- nrow(df)
+  step <- floor(n / final_size)
+  df %>%
+    mutate(it = 1:n) %>%
+    filter(it %% step == 0) %>%
+    select(-it) %>%
+    return()
+}
+```
+
+### Traceplot for U
+
+The following figure shows a traceplot of the chains for an adaptive and a non adaptive MCMC sampler.
+
+```{r, echo=FALSE}
+plotsize <- 2000
+
+tibble(adaptive_mcmc = out_adaptive$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  thin_df_to(plotsize) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = iteration, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  ylab("U") +
+  xlab("Iteration number") +
+  scale_color_discrete(name = "")
+```
+
+The following figure shows a density plot of the chains for an adaptive and a non adaptive MCMC sampler. Note the very large number of iterations.
+
+### Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = value, y = ..density.., colour = variable)) +
+  theme_bw() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+### Performance metrics
+
+The chain of the adaptive sampler seems to be moving a little more, but the samples have a similar density. The following table provides diagnostics for the performance of the MCMC sampler:
+
+-   the acceptance rate is computed on the whole chain, removing the first 1/5 as warm-up/burn-in
+-   the ACT is the auto-correlation time, the lower the better
+-   the Average square distance between moves describes the size of the steps taken by the chain, the larger the better
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive", "Fixed"),
+  `Acceptance rate` = c(out_adaptive$res %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)), out %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x))),
+  ACT = c(out_adaptive$res %>% remove_first_fith() %>% IAT(), out %>% remove_first_fith() %>% IAT()),
+  `Average square distance` = c(out_adaptive$res %>% remove_first_fith() %>% average_sq_dist(), out %>% remove_first_fith() %>% average_sq_dist()),
+  ESS = c(out_adaptive$res %>% remove_first_fith() %>% ESS(), out %>% remove_first_fith() %>% ESS())
+) %>%
+  knitr::kable()
+```
+
+The adaptive algorithm seems to provide a moderate performance improvement.
+
+### *Optimal*/*Adapted* $\delta$ as a function of $r$
+
+```{r, echo=FALSE}
+rs = seq(1, 60, by = 1)
+```
+
+```{r, eval=FALSE, echo=FALSE}
+final_deltas = mclapply(X = rs, FUN = function(r) adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 100, r = r, gamma = 0.5, kappa = 1.2, a = 1., delta = 2, debug = T)$deltas %>% last(), mc.preschedule = T, mc.cores = 7) %>% unlist
+saveRDS(final_deltas, file = "final_deltas_paramset_1.rds")
+```
+
+```{r, echo=FALSE}
+final_deltas = readRDS("final_deltas_paramset_1.rds")
+tibble(r = rs, adapted_delta = final_deltas) %>% 
+  ggplot(aes(x=r, y = adapted_delta)) + 
+  theme_bw() + 
+  geom_point() + 
+  ylab("Adapted Delta")
+```
+
+## Second example, other parameters
+
+```{r}
+out_adaptive <- adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 200, r = 15, gamma = 0.75, kappa = 12., a = 1., delta = 2, debug = T)
+```
+
+### Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+tibble(acc_rate = out_adaptive$acc_rates, delta = out_adaptive$deltas[2:length(out_adaptive$deltas)]) %>%
+  mutate(batch_number = seq_along(acc_rate)) %>%
+  gather(variable, value, -batch_number) %>%
+  ggplot(aes(x = batch_number, y = value)) +
+  theme_bw() +
+  facet_wrap(~variable, scales = "free_y") +
+  geom_line()
+```
+
+**Remark:** note how the *optimal* parameter seems to differ from the previous set of parameters.
+
+```{r, include=FALSE}
+out <- non_adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 200, r = 15, gamma = 0.75, kappa = 12., a = 1., delta = 2)
+```
+
+### Traceplot for U
+
+```{r, echo=FALSE}
+plotsize <- 2000
+
+tibble(adaptive_mcmc = out_adaptive$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  thin_df_to(plotsize) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = iteration, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  ylab("U") +
+  xlab("Iteration number") +
+  scale_color_discrete(name = "")
+```
+
+### Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = value, y = ..density.., colour = variable)) +
+  theme_bw() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+### Performance metrics
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive", "Fixed"),
+  `Acceptance rate` = c(out_adaptive$res %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)), out %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x))),
+  ACT = c(out_adaptive$res %>% remove_first_fith() %>% IAT(), out %>% remove_first_fith() %>% IAT()),
+  `Average square distance` = c(out_adaptive$res %>% remove_first_fith() %>% average_sq_dist(), out %>% remove_first_fith() %>% average_sq_dist()),
+  ESS = c(out_adaptive$res %>% remove_first_fith() %>% ESS(), out %>% remove_first_fith() %>% ESS())
+) %>%
+  knitr::kable()
+```
+
+Same broad comments, we seem to see a relatively modest improvement.
+
+### *Optimal*/*Adapted* $\delta$ as a function of $r$
+
+```{r, echo=FALSE}
+rs = seq(1, 60, by = 1)
+```
+
+```{r, eval=FALSE}
+final_deltas = mclapply(X = rs, FUN = function(r) adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 100, r = r, gamma = 0.75, kappa = 12., a = 1., delta = 2, debug = T)$deltas %>% last(), mc.preschedule = T, mc.cores = 7) %>% unlist
+saveRDS(final_deltas, file = "final_deltas_paramset_2.rds")
+```
+
+```{r, echo=FALSE}
+final_deltas = readRDS("final_deltas_paramset_2.rds")
+tibble(r = rs, adapted_delta = final_deltas) %>% 
+  ggplot(aes(x=r, y = adapted_delta)) + 
+  theme_bw() + 
+  geom_point() + 
+  ylab("Adapted Delta")
+```
+
+## Log transformation parameter set 1
+
+We also want to try to get samples from a random variable defined on $\mathbb{R}$. This would allow us to:
+
+-   use gaussian symmetric proposals\
+-   be closer to the theoretically supported normal-normal setting, where the optimal acceptance rate is 0.44
+
+We consider a log-transformed variable, using the identity, if $U \sim f_U$:
+
+$$
+\begin{align}
+V =& log(U) \\
+f_V(x)= & e^xf_U(e^x)
+\end{align}
+$$
+
+```{r}
+out_adaptive_log <- adaptive_mcmc_sampler_log(n_iter = 2^17, logu0 = log(1.2), n = 100, r = 10, gamma = 0.5, kappa = 1.2, a = 1., delta = 2, debug = T)
+```
+
+### Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+tibble(acc_rate = out_adaptive_log$acc_rates, delta = out_adaptive_log$deltas[2:length(out_adaptive_log$deltas)]) %>%
+  mutate(batch_number = seq_along(acc_rate)) %>%
+  gather(variable, value, -batch_number) %>%
+  ggplot(aes(x = batch_number, y = value)) +
+  theme_bw() +
+  facet_wrap(~variable, scales = "free_y") +
+  geom_line() +
+  ylab("") +
+  xlab("Batch number")
+```
+
+The following figure shows a traceplot of the chains for an adaptive and a non adaptive MCMC sampler.
+
+```{r, include=FALSE}
+out <- non_adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 100, r = 10, gamma = 0.5, kappa = 1.2, a = 1., delta = 2)
+```
+
+```{r, echo=FALSE}
+plotsize <- 2000
+
+tibble(adaptive_mcmc = out_adaptive_log$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  thin_df_to(plotsize) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = iteration, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  ylab("U") +
+  xlab("Iteration number") +
+  scale_color_discrete(name = "")
+```
+
+The following figure shows a density plot of the chains for an adaptive and a non adaptive MCMC sampler. Note the very large number of iterations.
+
+### Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive_log$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = value, y = ..density.., colour = variable)) +
+  theme_bw() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+### Performance metrics
+
+The chain of the adaptive sampler seems to be moving a little more, but the samples have a similar density. The following table provides diagnostics for the performance of the MCMC sampler:
+
+-   the acceptance rate is computed on the whole chain, removing the first 1/5 as warm-up/burn-in
+-   the ACT is the auto-correlation time, the lower the better
+-   the Average square distance between moves describes the size of the steps taken by the chain, the larger the better
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive log", "Fixed"),
+  `Acceptance rate` = c(out_adaptive_log$res %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)), out %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x))),
+  ACT = c(out_adaptive_log$res %>% remove_first_fith() %>% IAT(), out %>% remove_first_fith() %>% IAT()),
+  `Average square distance` = c(out_adaptive_log$res %>% remove_first_fith() %>% average_sq_dist(), out %>% remove_first_fith() %>% average_sq_dist()),
+  ESS = c(out_adaptive_log$res %>% remove_first_fith() %>% ESS(), out %>% remove_first_fith() %>% ESS())
+) %>%
+  knitr::kable()
+```
+
+The adaptive algorithm seems to provide a moderate performance improvement.
+
+### *Optimal*/*Adapted* $\delta$ as a function of $r$
+
+```{r, echo=FALSE}
+rs = seq(1, 60, by = 1)
+```
+
+```{r, eval=FALSE, echo=FALSE}
+final_deltas = mclapply(X = rs, FUN = function(r) adaptive_mcmc_sampler_log(n_iter = 2^17, logu0 = log(1.2), n = 100, r = r, gamma = 0.5, kappa = 1.2, a = 1., delta = 2, debug = T)$deltas %>% last(), mc.preschedule = T, mc.cores = 7) %>% unlist
+saveRDS(final_deltas, file = "final_deltas_log_paramset_1.rds")
+```
+
+```{r, echo=FALSE}
+final_deltas = readRDS("final_deltas_log_paramset_1.rds")
+tibble(r = rs, adapted_delta = final_deltas) %>% 
+  ggplot(aes(x=r, y = adapted_delta)) + 
+  theme_bw() + 
+  geom_point() + 
+  ylab("Adapted Delta")
+```
+
+## Log transformation parameter set 2
+
+```{r}
+out_adaptive_log <- adaptive_mcmc_sampler_log(n_iter = 2^17, logu0 = log(1.2), n = 200, r = 15, gamma = 0.75, kappa = 12., a = 1., delta = 2, debug = T)
+```
+
+### Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+tibble(acc_rate = out_adaptive_log$acc_rates, delta = out_adaptive_log$deltas[2:length(out_adaptive_log$deltas)]) %>%
+  mutate(batch_number = seq_along(acc_rate)) %>%
+  gather(variable, value, -batch_number) %>%
+  ggplot(aes(x = batch_number, y = value)) +
+  theme_bw() +
+  facet_wrap(~variable, scales = "free_y") +
+  geom_line() +
+  ylab("") +
+  xlab("Batch number")
+```
+
+```{r, include=FALSE}
+out <- non_adaptive_mcmc_sampler(n_iter = 2^17, u0 = 1.2, n = 200, r = 15, gamma = 0.75, kappa = 12., a = 1., delta = 2)
+```
+
+The following figure shows a traceplot of the chains for an adaptive and a non adaptive MCMC sampler.
+
+```{r, echo=FALSE}
+plotsize <- 2000
+
+tibble(adaptive_mcmc = out_adaptive_log$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  thin_df_to(plotsize) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = iteration, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  ylab("U") +
+  xlab("Iteration number") +
+  scale_color_discrete(name = "")
+```
+
+The following figure shows a density plot of the chains for an adaptive and a non adaptive MCMC sampler. Note the very large number of iterations.
+
+### Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive_log$res, vanilla_mcmc = out) %>%
+  mutate(iteration = seq_along(adaptive_mcmc)) %>%
+  gather(variable, value, -iteration) %>%
+  ggplot(aes(x = value, y = ..density.., colour = variable)) +
+  theme_bw() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+### Performance metrics
+
+The chain of the adaptive sampler seems to be moving a little more, but the samples have a similar density. The following table provides diagnostics for the performance of the MCMC sampler:
+
+-   the acceptance rate is computed on the whole chain, removing the first 1/5 as warm-up/burn-in
+-   the ACT is the auto-correlation time, the lower the better
+-   the Average square distance between moves describes the size of the steps taken by the chain, the larger the better
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive log", "Fixed"),
+  `Acceptance rate` = c(out_adaptive_log$res %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)), out %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x))),
+  ACT = c(out_adaptive_log$res %>% remove_first_fith() %>% IAT(), out %>% remove_first_fith() %>% IAT()),
+  `Average square distance` = c(out_adaptive_log$res %>% remove_first_fith() %>% average_sq_dist(), out %>% remove_first_fith() %>% average_sq_dist()),
+  ESS = c(out_adaptive_log$res %>% remove_first_fith() %>% ESS(), out %>% remove_first_fith() %>% ESS())
+) %>%
+  knitr::kable()
+```
+
+The adaptive algorithm seems to provide a moderate performance improvement.
+
+### *Optimal*/*Adapted* $\delta$ as a function of $r$
+
+```{r, echo=FALSE}
+rs = seq(1, 60, by = 1)
+```
+
+```{r, eval=FALSE, echo=FALSE}
+final_deltas = mclapply(X = rs, FUN = function(r) adaptive_mcmc_sampler_log(n_iter = 2^17, logu0 = log(1.2), n = 200, r = 15, gamma = 0.75, kappa = 12., a = 1., delta = 2, debug = T)$deltas %>% last(), mc.preschedule = T, mc.cores = 7) %>% unlist
+saveRDS(final_deltas, file = "final_deltas_log_paramset_2.rds")
+```
+
+```{r, echo=FALSE}
+final_deltas = readRDS("final_deltas_log_paramset_2.rds")
+tibble(r = rs, adapted_delta = final_deltas) %>% 
+  ggplot(aes(x=r, y = adapted_delta)) + 
+  theme_bw() + 
+  geom_point() + 
+  ylab("Adapted Delta")
+```
+
+# Adaptive algorithm for the semiparametric model `MixNRMI1`
+
+We insert an adaptive MCMC step inside the semi-parametric BNP model function, `MixNRMI1`, which assumes a common variance for all the clusters.
+
+```{r, eval=FALSE}
+out_adaptive <- MixNRMI1(acidity, adaptive = TRUE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4)
+out <- MixNRMI1(acidity, adaptive = FALSE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4, delta_U = 2)
+out_adaptive_log <- MixNRMI1bis(acidity, adaptive = TRUE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4)
+saveRDS(out_adaptive, file = "acidity_semiparametric_adaptive_mcmc.rds")
+saveRDS(out_adaptive_log, file = "acidity_semiparametric_adaptive_log_mcmc.rds")
+saveRDS(out, file = "acidity_semiparametric_vanilla_mcmc.rds")
+```
+
+```{r, echo=FALSE}
+out_adaptive = readRDS("acidity_semiparametric_adaptive_mcmc.rds")
+out_adaptive_log = readRDS("acidity_semiparametric_adaptive_log_mcmc.rds")
+out = readRDS("acidity_semiparametric_vanilla_mcmc.rds")
+```
+
+## Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+
+compute_acc_rate <- function(smp, batch_size = 100) {
+  n_iter <- length(smp)
+  n_batch <- floor(n_iter / batch_size)
+  res <- rep(NA, n_batch)
+  for (batch_index in 1:n_batch) {
+    res[batch_index] <- length(unique(smp[((batch_index - 1) * batch_size + 1):(batch_index * batch_size)])) / batch_size
+  }
+  return(res)
+}
+
+tibble(adaptive_mcmc = out_adaptive$delta_Us,
+       adaptive_mcmc_log = out_adaptive_log$delta_Us) %>%
+  mutate(
+    vanilla_mcmc = 2,
+    batch_number = adaptive_mcmc %>% seq_along()
+  ) %>%
+  gather(algo, value, -batch_number) %>%
+  mutate(param = "delta") %>%
+  bind_rows(
+    tibble(
+      adaptive_mcmc = compute_acc_rate(out_adaptive$U),
+      adaptive_mcmc_log = compute_acc_rate(out_adaptive_log$U),
+      vanilla_mcmc = compute_acc_rate(out$U)
+    ) %>%
+      mutate(batch_number = adaptive_mcmc %>% seq_along()) %>%
+      gather(algo, value, -batch_number) %>%
+      mutate(param = "acc_rate")
+  ) %>%
+  ggplot(aes(x = batch_number, y = value, colour = algo)) +
+  facet_wrap(~param, scales = "free") +
+  theme_bw() +
+  geom_line() +
+  xlab("Batch number/Iteration number") +
+  scale_colour_discrete(name = "") +
+  ylab("")
+```
+
+## Traceplot for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$U, 
+       adaptive_mcmc_log = out_adaptive_log$U, 
+       vanilla_mcmc = out$U) %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, u, -iter) %>%
+  ggplot(aes(x = iter, y = u, colour = algo)) +
+  theme_classic() +
+  geom_line() +
+  ylab("U") +
+  scale_colour_discrete(name = "") +
+  xlab("Iteration")
+```
+
+## Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$U, 
+       adaptive_mcmc_log = out_adaptive_log$U, 
+       vanilla_mcmc = out$U)  %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, u, -iter) %>%
+  ggplot(aes(x = u, y = ..density.., colour = algo)) +
+  theme_classic() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+## Traceplot of R
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$R, 
+       adaptive_mcmc_log = out_adaptive_log$R, 
+       vanilla_mcmc = out$R) %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, R, -iter) %>%
+  ggplot(aes(x = iter, y = R, colour = algo)) +
+  theme_classic() +
+  geom_line() +
+  ylab("R") +
+  scale_colour_discrete(name = "") +
+  xlab("Iteration")
+```
+
+## Performance metrics
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive", "Adaptive log", "Fixed"),
+  `Acceptance rate` = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% (function(x) length(unique(x)) / length(x))) %>% Reduce(c,.),
+  ACT = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% IAT()) %>% Reduce(c,.),
+  `Average square distance` = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% average_sq_dist) %>% Reduce(c,.),
+    ESS = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% ESS) %>% Reduce(c,.)
+) %>%
+  knitr::kable()
+```
+
+## Posterior BNP density estimate for the Acidity dataset
+
+```{r, echo=FALSE}
+tibble(
+  adaptive_mcmc = out_adaptive$qx$q0.5,
+  adaptive_mcmc_log = out_adaptive_log$qx$q0.5,
+  vanilla_mcmc = out$qx$q0.5,
+  x = out_adaptive$xx
+) %>%
+  gather(variable, value, -x) %>%
+  ggplot(aes(x = x, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  geom_line(
+    data = tibble(
+      adaptive_mcmc = out_adaptive$qx$q0.025,
+      adaptive_mcmc_log = out_adaptive_log$qx$q0.025,
+      vanilla_mcmc = out$qx$q0.025,
+      x = out_adaptive$xx
+    ) %>%
+      gather(variable, value, -x) %>% mutate(type = "infCI") %>%
+      bind_rows(tibble(
+        adaptive_mcmc = out_adaptive$qx$q0.975,
+        adaptive_mcmc_log = out_adaptive_log$qx$q0.975,
+        vanilla_mcmc = out$qx$q0.975,
+        x = out_adaptive$xx
+      ) %>%
+        gather(variable, value, -x) %>% mutate(type = "supCI")),
+    aes(group = interaction(type, variable)), linetype = "dashed"
+  ) +
+  ylab("") +
+  xlab("Data") +
+  scale_colour_discrete(name = "")
+```
+
+## Posterior distribution for the number of clusters, the common variance and the latent variable U
+
+```{r, echo=FALSE}
+c("R", "S", "U") %>% 
+(function(parnames){
+  out[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'vanilla_mcmc') %>% 
+  bind_rows(out_adaptive[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc'),
+  out_adaptive_log[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc_log'))
+}) %>% 
+  gather(variable, value, -type) %>% 
+  ggplot(aes(x = value, y = ..density.., colour = type)) +
+    theme_minimal() + 
+    facet_wrap(~variable, scales = "free") + 
+    geom_density() + 
+    scale_color_discrete(name='')
+```
+
+## Metrics for all parameters
+
+```{r}
+c("R", "S", "U") %>% 
+(function(parnames){
+  out[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'vanilla_mcmc') %>% 
+  bind_rows(out_adaptive[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc'),
+  out_adaptive_log[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc_log'))
+}) %>% 
+  gather(param, value, -type) %>% 
+  group_by(param, type) %>% 
+  summarise(`Acceptance rate` = value %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)),
+            ACT = value %>% remove_first_fith() %>% IAT,
+            ESS = value %>% remove_first_fith() %>% ESS,
+            `Average square distance` = value %>% remove_first_fith() %>% average_sq_dist()) %>% 
+  mutate(`Acceptance rate` = ifelse(param == "U", 
+                                    yes = `Acceptance rate`, 
+                                    no = NA))
+  knitr::kable()
+
+```
+
+# Adaptive algorithm for the fully nonparametric model `MixNRMI2`
+
+We insert an adaptive MCMC step inside the semi-parametric BNP model function, `MixNRMI1`
+
+```{r, eval=FALSE}
+out_adaptive <- MixNRMI2(acidity, adaptive = TRUE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4)
+out <- MixNRMI2(acidity, adaptive = FALSE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4)
+out_adaptive_log <- MixNRMI2bis(acidity, adaptive = TRUE, Nit = 20000, Pbi = 0, Alpha = 1,  Kappa = 0, Gama = 0.4)
+saveRDS(out_adaptive, file = "acidity_nonparametric_adaptive_mcmc.rds")
+saveRDS(out_adaptive_log, file = "acidity_nonparametric_adaptive_log_mcmc.rds")
+saveRDS(out, file = "acidity_nonparametric_vanilla_mcmc.rds")
+```
+
+```{r, echo=FALSE}
+out_adaptive = readRDS("acidity_nonparametric_adaptive_mcmc.rds")
+out_adaptive_log = readRDS("acidity_nonparametric_adaptive_log_mcmc.rds")
+out = readRDS("acidity_nonparametric_vanilla_mcmc.rds")
+```
+
+## Evolution of the acceptance rate and of the tuning parameter
+
+```{r, echo=FALSE}
+
+tibble(adaptive_mcmc = out_adaptive$delta_Us,
+       adaptive_mcmc_log = out_adaptive_log$delta_Us) %>%
+  mutate(
+    vanilla_mcmc = 2,
+    batch_number = adaptive_mcmc %>% seq_along()
+  ) %>%
+  gather(algo, value, -batch_number) %>%
+  mutate(param = "delta") %>%
+  bind_rows(
+    tibble(
+      adaptive_mcmc = compute_acc_rate(out_adaptive$U),
+      adaptive_mcmc_log = compute_acc_rate(out_adaptive_log$U),
+      vanilla_mcmc = compute_acc_rate(out$U)
+    ) %>%
+      mutate(batch_number = adaptive_mcmc %>% seq_along()) %>%
+      gather(algo, value, -batch_number) %>%
+      mutate(param = "acc_rate")
+  ) %>%
+  ggplot(aes(x = batch_number, y = value, colour = algo)) +
+  facet_wrap(~param, scales = "free") +
+  theme_bw() +
+  geom_line() +
+  xlab("Batch number/Iteration number") +
+  scale_colour_discrete(name = "") +
+  ylab("")
+```
+
+## Traceplot for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$U, 
+       adaptive_mcmc_log = out_adaptive_log$U, 
+       vanilla_mcmc = out$U) %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, u, -iter) %>%
+  ggplot(aes(x = iter, y = u, colour = algo)) +
+  theme_classic() +
+  geom_line() +
+  ylab("U") +
+  scale_colour_discrete(name = "") +
+  xlab("Iteration")
+```
+
+## Density estimate for U
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$U, 
+       adaptive_mcmc_log = out_adaptive_log$U, 
+       vanilla_mcmc = out$U)  %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, u, -iter) %>%
+  ggplot(aes(x = u, y = ..density.., colour = algo)) +
+  theme_classic() +
+  geom_density() +
+  ylab("") +
+  xlab("U") +
+  scale_colour_discrete(name = "")
+```
+
+## Traceplot of R
+
+```{r, echo=FALSE}
+tibble(adaptive_mcmc = out_adaptive$R, 
+       adaptive_mcmc_log = out_adaptive_log$R, 
+       vanilla_mcmc = out$R) %>%
+  mutate(iter = seq_along(adaptive_mcmc)) %>%
+  gather(algo, R, -iter) %>%
+  ggplot(aes(x = iter, y = R, colour = algo)) +
+  theme_classic() +
+  geom_line() +
+  ylab("R") +
+  scale_colour_discrete(name = "") +
+  xlab("Iteration")
+```
+
+## Performance metrics
+
+```{r, echo=FALSE}
+tibble(
+  Algorithm = c("Adaptive", "Adaptive log", "Fixed"),
+  `Acceptance rate` = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% (function(x) length(unique(x)) / length(x))) %>% Reduce(c,.),
+  ACT = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% IAT()) %>% Reduce(c,.),
+  `Average square distance` = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% average_sq_dist) %>% Reduce(c,.),
+    ESS = lapply(list(out_adaptive$U, out_adaptive_log$U, out$U), function(x) remove_first_fith(x) %>% ESS) %>% Reduce(c,.)
+) %>%
+  knitr::kable()
+```
+
+## Posterior BNP density estimate for the Acidity dataset
+
+```{r, echo=FALSE}
+tibble(
+  adaptive_mcmc = out_adaptive$qx$q0.5,
+  adaptive_mcmc_log = out_adaptive_log$qx$q0.5,
+  vanilla_mcmc = out$qx$q0.5,
+  x = out_adaptive$xx
+) %>%
+  gather(variable, value, -x) %>%
+  ggplot(aes(x = x, y = value, colour = variable)) +
+  theme_bw() +
+  geom_line() +
+  geom_line(
+    data = tibble(
+      adaptive_mcmc = out_adaptive$qx$q0.025,
+      adaptive_mcmc_log = out_adaptive_log$qx$q0.025,
+      vanilla_mcmc = out$qx$q0.025,
+      x = out_adaptive$xx
+    ) %>%
+      gather(variable, value, -x) %>% mutate(type = "infCI") %>%
+      bind_rows(tibble(
+        adaptive_mcmc = out_adaptive$qx$q0.975,
+        adaptive_mcmc_log = out_adaptive_log$qx$q0.975,
+        vanilla_mcmc = out$qx$q0.975,
+        x = out_adaptive$xx
+      ) %>%
+        gather(variable, value, -x) %>% mutate(type = "supCI")),
+    aes(group = interaction(type, variable)), linetype = "dashed"
+  ) +
+  ylab("") +
+  xlab("Data") +
+  scale_colour_discrete(name = "")
+```
+
+## Posterior distribution for the number of clusters and the latent variable U
+
+```{r, echo=FALSE}
+c("R", "U") %>% 
+(function(parnames){
+  out[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'vanilla_mcmc') %>% 
+  bind_rows(out_adaptive[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc'),
+  out_adaptive_log[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc_log'))
+}) %>% 
+  gather(variable, value, -type) %>% 
+  ggplot(aes(x = value, y = ..density.., colour = type)) +
+    theme_minimal() + 
+    facet_wrap(~variable, scales = "free") + 
+    geom_density(bw = 0.5)
+```
+
+## Metrics for all parameters
+
+```{r}
+c("R", "U") %>% 
+(function(parnames){
+  out[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'vanilla_mcmc') %>% 
+  bind_rows(out_adaptive[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc'),
+  out_adaptive_log[parnames] %>% 
+  as_tibble %>% 
+  mutate(type = 'adaptive_mcmc_log'))
+}) %>% 
+  gather(param, value, -type) %>% 
+  group_by(param, type) %>% 
+  summarise(`Acceptance rate` = value %>% remove_first_fith() %>% (function(x) length(unique(x)) / length(x)),
+            ACT = value %>% remove_first_fith() %>% IAT,
+            ESS = value %>% remove_first_fith() %>% ESS,
+            `Average square distance` = value %>% remove_first_fith() %>% average_sq_dist()) %>% 
+  mutate(`Acceptance rate` = ifelse(param =="R", NA, `Acceptance rate`)) %>% 
+  knitr::kable()
+
+```
