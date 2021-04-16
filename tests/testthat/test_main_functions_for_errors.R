@@ -1,6 +1,9 @@
 test_that("MixNRMI1 runs ok", {
   expect_output(str(MixNRMI1(rnorm(20), Nit = 50, extras = TRUE)), "List")
 })
+test_that("MixNRMI1 runs ok", {
+  expect_output(str(MixNRMI1bis(rnorm(20), Nit = 50, extras = TRUE)), "List")
+})
 test_that("MixNRMI2 runs ok", {
   expect_output(str(MixNRMI2(rnorm(20), Nit = 50, extras = TRUE)), "List")
 })
