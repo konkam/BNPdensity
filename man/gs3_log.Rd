@@ -4,12 +4,26 @@
 \alias{gs3_log}
 \title{Conditional posterior distribution of latent logU}
 \usage{
-gs3_log(logut, n, r, alpha, beta, gama, delta)
+gs3_log(logut, n, r, alpha, kappa, gama, delta)
+}
+\arguments{
+\item{logut}{Real, log of the latent variable U at the current iteration.}
+
+\item{n}{Integer, number of data points.}
+
+\item{r}{Integer, number of clusters.}
+
+\item{alpha}{Positive real. Total mass of the centering measure.}
+
+\item{kappa}{Positive real. A parameter of the NRMI process.}
+
+\item{gama}{Real. \eqn{0\leq \texttt{gama} \leq 1}{0 <= gama <=
+1}.  See details.}
+
+\item{delta}{Scale of the Metropolis-Hastings proposal distribution}
 }
 \description{
 This function simulates from the conditional posterior distribution of a log transformation of the
 latent U.
 }
-\details{
-@keywords internal
-}
+\keyword{internal}

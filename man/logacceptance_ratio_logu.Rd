@@ -6,9 +6,22 @@
 \usage{
 logacceptance_ratio_logu(logu, logu_prime, n, r, gamma, kappa, a, delta)
 }
+\arguments{
+\item{logu}{Real, log of the latent variable U at the current iteration.}
+
+\item{logu_prime}{Real, log of the new proposed latent variable U.}
+
+\item{n}{Integer, number of data points.}
+
+\item{r}{Integer, number of clusters.}
+
+\item{kappa}{Positive real. A parameter of the NRMI process.}
+
+\item{a}{Positive real. Total mass of the centering measure.}
+
+\item{delta}{Scale of the Metropolis-Hastings proposal distribution}
+}
 \description{
 This function computes the Metropolis-Hastings ratio to decide whether to accept or reject a new value for logU.
 }
-\details{
-@keywords internal
-}
+\keyword{internal}

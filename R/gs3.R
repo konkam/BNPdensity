@@ -9,15 +9,15 @@
 #' @examples
 #'
 #' ## The function is currently defined as
-#' function(ut, n = 200, r = 20, alpha = 1, beta = 1, gama = 1 / 2,
+#' function(ut, n = 200, r = 20, alpha = 1, kappa = 1, gama = 1 / 2,
 #'          delta = 2) {
 #'   w <- ut
 #'   ratio <- NaN
 #'   while (is.nan(ratio)) {
 #'     v <- ustar <- rgamma(1, shape = delta, rate = delta / ut)
 #'     vw <- v / w
-#'     vb <- v + beta
-#'     wb <- w + beta
+#'     vb <- v + kappa
+#'     wb <- w + kappa
 #'     A <- vw^(n - 2 * delta)
 #'     B <- (vb / wb)^(r * gama - n)
 #'     D <- vb^gama - wb^gama
@@ -29,14 +29,14 @@
 #'   return(u)
 #' }
 gs3 <-
-  function(ut, n, r, alpha, beta, gama, delta) {
+  function(ut, n, r, alpha, kappa, gama, delta) {
     w <- ut
     ratio <- NaN
     while (is.nan(ratio)) {
       v <- ustar <- rgamma(1, shape = delta, rate = delta / ut)
       vw <- v / w
-      vb <- v + beta
-      wb <- w + beta
+      vb <- v + kappa
+      wb <- w + kappa
       A <- vw^(n - 2 * delta)
       B <- (vb / wb)^(r * gama - n)
       D <- vb^gama - wb^gama
@@ -76,7 +76,8 @@ logdprop_logu <- function(logu_prime, logu, delta) {
 #'
 #' This function makes a proposal for a new value of logU
 #'
-#'  @keywords internal
+#' @inheritParams logacceptance_ratio_logu
+#' @keywords internal
 #'
 rprop_logu <- function(logu, delta) {
   rnorm(n = 1, mean = logu, sd = delta)
@@ -86,7 +87,12 @@ rprop_logu <- function(logu, delta) {
 #'
 #' This function computes the Metropolis-Hastings ratio to decide whether to accept or reject a new value for logU.
 #'
-#'  @keywords internal
+#' @param logu Real, log of the latent variable U at the current iteration.
+#' @param logu_prime Real, log of the new proposed latent variable U.
+#' @param a Positive real. Total mass of the centering measure.
+#' @inheritParams gs3_log
+#'
+#' @keywords internal
 #'
 logacceptance_ratio_logu <- function(logu, logu_prime, n, r, gamma, kappa, a, delta) {
   log_ratio <- logf_logu_cond_y(logu_prime, n, r, gamma, kappa, a) - logf_logu_cond_y(logu, n, r, gamma, kappa, a) + logdprop_logu(logu, logu_prime, delta) - logdprop_logu(logu_prime, logu, delta)
@@ -98,12 +104,22 @@ logacceptance_ratio_logu <- function(logu, logu_prime, n, r, gamma, kappa, a, de
 #' This function simulates from the conditional posterior distribution of a log transformation of the
 #' latent U.
 #'
-#'  @keywords internal
+#' @param logut Real, log of the latent variable U at the current iteration.
+#' @param n Integer, number of data points.
+#' @param r Integer, number of clusters.
+#' @param alpha Positive real. Total mass of the centering measure.
+#' @param kappa Positive real. A parameter of the NRMI process.
+#' @param gama Real. \eqn{0\leq \texttt{gama} \leq 1}{0 <= gama <=
+#' 1}.  See details.
+#'
+#' @param delta Scale of the Metropolis-Hastings proposal distribution
+#'
+#' @keywords internal
 #'
 gs3_log <-
-  function(logut, n, r, alpha, beta, gama, delta) {
+  function(logut, n, r, alpha, kappa, gama, delta) {
     logu_prime <- rprop_logu(logu = logut, delta = delta)
-    logq1 <- logacceptance_ratio_logu(logu = logut, logu_prime = logu_prime, n = n, r = r, gamma = gama, kappa = beta, a = alpha, delta = delta)
+    logq1 <- logacceptance_ratio_logu(logu = logut, logu_prime = logu_prime, n = n, r = r, gamma = gama, kappa = kappa, a = alpha, delta = delta)
     if (log(runif(n = 1)) < logq1) {
       return(logu_prime)
     }
@@ -120,7 +136,7 @@ gs3_log <-
 #'
 #' @keywords internal
 #'
-gs3_adaptive3 <- function(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FALSE) {
+gs3_adaptive3 <- function(ut, n, r, alpha, kappa, gama, delta, U, iter, adapt = FALSE) {
   target_acc_rate <- 0.44
   batch_size <- 100
   if (adapt && (iter %% batch_size == 0)) {
@@ -137,6 +153,6 @@ gs3_adaptive3 <- function(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = F
   else {
     delta_i <- delta
   }
-  logu_prime <- gs3_log(logut = log(ut), n = n, r = r, alpha = alpha, beta = beta, gama = gama, delta = delta_i)
+  logu_prime <- gs3_log(logut = log(ut), n = n, r = r, alpha = alpha, kappa = kappa, gama = gama, delta = delta_i)
   return(list(u_prime = exp(logu_prime), delta = delta_i))
 }
