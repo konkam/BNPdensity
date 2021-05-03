@@ -9,3 +9,4 @@ logdprop_logu(logu_prime, logu, delta)
 \description{
 Contribution of the proposal kernel logdensity to the Metropolis-Hastings ratio
 }
+\keyword{internal}
