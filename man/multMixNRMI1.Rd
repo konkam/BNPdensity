@@ -77,6 +77,8 @@ See details.}
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
 Js.}
 
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
+
 \item{nchains}{The number of chains to run.}
 
 \item{parallel}{Whether to run the chains in parallel. Only works on UNIX-like systems as it rests on Fork parallelism}

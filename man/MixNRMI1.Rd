@@ -73,6 +73,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
 Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 }
 \value{
 The function returns a MixNRMI1 object. It is based on a list with the following components:

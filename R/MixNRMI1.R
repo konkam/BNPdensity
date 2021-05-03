@@ -57,6 +57,8 @@
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means, weights and
 #' Js.
+#' @param adaptive Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).
+#'
 #' @return The function returns a MixNRMI1 object. It is based on a list with the following components:
 #' \item{xx}{Numeric vector. Evaluation grid.}
 #' \item{qx}{Numeric array. Matrix
