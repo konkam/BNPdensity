@@ -46,7 +46,7 @@
 #' @param kappa Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the location parameters.
 #' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
+#' variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
 #' jumps.
@@ -59,6 +59,8 @@
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
 #' weights and Js.
+#' @param adaptive Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).
+#'
 #' @return The function returns a list with the following components:
 #' \item{xx}{Numeric vector. Evaluation grid.}
 #' \item{qx}{Numeric array. Matrix
@@ -85,6 +87,8 @@
 #' \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
 #' if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
 #' continuous component of the unnormalized process.}
+#' \item{delta_Us}{List of
+#' \code{length(Nit*(1-Pbi))} with the sequence of adapted delta_U used in the MH step for the latent variable U.}
 #' \item{Nx}{Integer
 #' constant. Number of grid points for the evaluation of the density estimate.}
 #' \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -190,7 +194,7 @@ MixNRMI2 <-
            Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
            sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
            Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-           extras = TRUE) {
+           extras = TRUE, adaptive = FALSE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
@@ -218,11 +222,17 @@ MixNRMI2 <-
     U <- seq(Nit)
     Nmt <- seq(Nit)
     Allocs <- vector(mode = "list", length = Nit)
+    if (adaptive){
+      optimal_delta <- rep(NA, n)
+    }
     if (extras) {
       means <- vector(mode = "list", length = Nit)
       sigmas <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
+      if (adaptive){
+        delta_Us <- seq(Nit)
+      }
     }
     mu.py0 <- mean(x)
     sigma.py0 <- sd(x)
@@ -237,11 +247,22 @@ MixNRMI2 <-
       rstar <- tt$rstar
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
+      # if (is.na(optimal_delta[rstar])) {
+      #   optimal_delta[rstar] <- compute_optimal_delta_given_r(r = rstar, gamma = Gama, kappa = Kappa, a = Alpha, n = n)
+      # }
       if (Gama != 0) {
-        u <- gs3(u,
-          n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = delta_U
-        )
+        if (adaptive){
+          tmp = gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+          u = tmp$u_prime
+          delta_U = tmp$delta
+        }
+        else {
+          u <- gs3(u,
+                   n = n, r = rstar, alpha = Alpha, beta = Kappa,
+                   gama = Gama, delta = delta_U
+          )
+        }
+
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -281,6 +302,9 @@ MixNRMI2 <-
         sigmas[[j]] <- Tauz
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
+        if (adaptive){
+          delta_Us[j] <- delta_U
+        }
       }
     }
     tt <- comp2(y, z)
@@ -298,6 +322,9 @@ MixNRMI2 <-
       sigmas <- sigmas[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
+      if (adaptive){
+        delta_Us <- delta_Us[-biseq]
+      }
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
@@ -315,160 +342,13 @@ MixNRMI2 <-
       res$sigmas <- sigmas
       res$weights <- weights
       res$Js <- Js
+      if (adaptive){
+        res$delta_Us <- delta_Us
+      }
     }
     return(structure(res, class = "NRMI2"))
   }
 
-MixNRMI2bis <-
-  function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-           Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
-           sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
-           Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-           extras = TRUE, adaptive = FALSE) {
-    if (is.null(distr.k)) {
-      stop("Argument distr.k is NULL. Should be provided. See help for details.")
-    }
-    if (is.null(distr.py0)) {
-      stop("Argument distr.py0 is NULL. Should be provided. See help for details.")
-    }
-    distr.k <- process_dist_name(distr.k)
-    distr.py0 <- process_dist_name(distr.py0)
-    distr.pz0 <- process_dist_name(distr.pz0)
-    tInit <- proc.time()
-    n <- length(x)
-    y <- x
-    xsort <- sort(x)
-    y[seq(n / 2)] <- mean(xsort[seq(n / 2)])
-    y[-seq(n / 2)] <- mean(xsort[-seq(n / 2)])
-    z <- rep(1, n)
-    u <- 1
-    if (is.null(epsilon)) {
-      epsilon <- sd(x) / 4
-    }
-    xx <- seq(min(x) - epsilon, max(x) + epsilon, length = Nx)
-    Fxx <- matrix(NA, nrow = Nx, ncol = Nit)
-    fx <- matrix(NA, nrow = n, ncol = Nit)
-    R <- seq(Nit)
-    U <- seq(Nit)
-    Nmt <- seq(Nit)
-    Allocs <- vector(mode = "list", length = Nit)
-    if (!adaptive) {
-      optimal_delta <- rep(delta_U, n)
-    }
-    else {
-      optimal_delta <- rep(NA, n)
-    }
-    if (extras) {
-      means <- vector(mode = "list", length = Nit)
-      sigmas <- vector(mode = "list", length = Nit)
-      weights <- vector(mode = "list", length = Nit)
-      Js <- vector(mode = "list", length = Nit)
-      delta_Us <- seq(Nit)
-    }
-    mu.py0 <- mean(x)
-    sigma.py0 <- sd(x)
-    for (j in seq(Nit)) {
-      if (floor(j / 500) == ceiling(j / 500)) {
-        cat("MCMC iteration", j, "of", Nit, "\n")
-      }
-      tt <- comp2(y, z)
-      ystar <- tt$ystar
-      zstar <- tt$zstar
-      nstar <- tt$nstar
-      rstar <- tt$rstar
-      idx <- tt$idx
-      Allocs[[max(1, j - 1)]] <- idx
-      # if (is.na(optimal_delta[rstar])) {
-      #   optimal_delta[rstar] <- compute_optimal_delta_given_r(r = rstar, gamma = Gama, kappa = Kappa, a = Alpha, n = n)
-      # }
-      if (Gama != 0) {
-        # u_delta_U <- gs3_adaptive2(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
-        # u <- u_delta_U$u_prime
-        # delta_U <- u_delta_U$delta
-        # u <- gs3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = optimal_delta[rstar])
-        # delta_U <- optimal_delta[rstar]
-        tmp = gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
-        u = tmp$u_prime
-        delta_U = tmp$delta
-      }
-      JiC <- MvInv(
-        eps = Meps, u = u, alpha = Alpha, beta = Kappa,
-        gama = Gama, N = 50001
-      )
-      Nm <- length(JiC)
-      TauyC <- rk(Nm, distr = distr.py0, mu = mu.py0, sigma = sigma.py0)
-      TauzC <- rk(Nm, distr = distr.pz0, mu = mu.pz0, sigma = sigma.pz0)
-      tt <- gsYZstar(ystar, zstar, nstar, rstar, idx, x, delta_S,
-                     kappa,
-                     distr.k = distr.k, distr.py0 = distr.py0,
-                     mu.py0 = mu.py0, sigma.py0 = sigma.py0, distr.pz0 = distr.pz0,
-                     mu.pz0 = mu.pz0, sigma.pz0 = sigma.pz0
-      )
-      ystar <- tt$ystar
-      zstar <- tt$zstar
-      tt <- gsHP(ystar, rstar, distr.py0)
-      mu.py0 <- tt$mu.py0
-      sigma.py0 <- tt$sigma.py0
-      Jstar <- rgamma(rstar, nstar - Gama, Kappa + u)
-      Tauy <- c(TauyC, ystar)
-      Tauz <- c(TauzC, zstar)
-      J <- c(JiC, Jstar)
-      tt <- fcondYZXA(x, distr = distr.k, Tauy, Tauz, J)
-      y <- tt[, 1]
-      z <- tt[, 2]
-      Fxx[, j] <- fcondXA2(xx,
-                           distr = distr.k, Tauy, Tauz,
-                           J
-      )
-      fx[, j] <- fcondXA2(x, distr = distr.k, Tauy, Tauz, J)
-      R[j] <- rstar
-      U[j] <- u
-      Nmt[j] <- Nm
-      if (extras) {
-        means[[j]] <- Tauy
-        sigmas[[j]] <- Tauz
-        weights[[j]] <- J / sum(J)
-        Js[[j]] <- J
-        delta_Us[j] <- delta_U
-      }
-    }
-    tt <- comp2(y, z)
-    Allocs[[Nit]] <- tt$idx
-    biseq <- seq(floor(Pbi * Nit))
-    Fxx <- Fxx[, -biseq]
-    qx <- as.data.frame(t(apply(Fxx, 1, quantile, probs = probs)))
-    names(qx) <- paste("q", probs, sep = "")
-    qx <- cbind(mean = apply(Fxx, 1, mean), qx)
-    R <- R[-biseq]
-    U <- U[-biseq]
-    Allocs <- Allocs[-biseq]
-    if (extras) {
-      means <- means[-biseq]
-      sigmas <- sigmas[-biseq]
-      weights <- weights[-biseq]
-      Js <- Js[-biseq]
-      delta_Us <- delta_Us[-biseq]
-    }
-    cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
-    if (printtime) {
-      cat(" >>> Total processing time (sec.):\n")
-      print(procTime <- proc.time() - tInit)
-    }
-    res <- list(
-      xx = xx, qx = qx, cpo = cpo, R = R, U = U,
-      Allocs = Allocs, Nm = Nmt, Nx = Nx, Nit = Nit, Pbi = Pbi,
-      procTime = procTime, distr.k = distr.k, data = x,
-      NRMI_params = list("Alpha" = Alpha, "Kappa" = Kappa, "Gamma" = Gama)
-    )
-    if (extras) {
-      res$means <- means
-      res$sigmas <- sigmas
-      res$weights <- weights
-      res$Js <- Js
-      res$delta_Us <- delta_Us
-    }
-    return(structure(res, class = "NRMI2"))
-  }
 
 #' Plot the density estimate and the 95\% credible interval
 #'
