@@ -7,17 +7,17 @@
 #' @param eps Dummy argument kept for consistency with past versions of the functions
 #' @param u Real number. The value of the latent variable at the current step.
 #' @param alpha Numeric constant. Total mass of the centering measure.
-#' @param beta Numeric positive constant.
+#' @param kappa Numeric positive constant.
 #' @param gama Numeric constant. Discount parameter of the NRMI process.
 #' @param N Number of steps in the discretization scheme for the grid inversion.
 #'
 #' ## The function has been optimised but it is morally defined as:
-#' function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
+#' function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) {
 #'   n <- length(w)
 #'   v <- rep(NA, n)
 #'   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
 #'   f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-#'     beta) * x)
+#'     kappa) * x)
 #'   dx <- diff(x)
 #'   h <- (f[-1] + f[-N]) / 2
 #'   Mv <- rep(0, N)
@@ -26,18 +26,18 @@
 #'   return(v)
 #' }
 MvInv <-
-  function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) # eps no longer required
+  function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) # eps no longer required
   {
     x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
     f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-      beta) * x)
+      kappa) * x)
     dx <- diff(x)
     h <- (f[-1] + f[-N]) / 2
     Mv <- c(rev(cumsum(rev(dx[-N] * h[-N]))), 0)
 
     M <- ceiling(thresholdGG(
       alpha = alpha,
-      kappa = beta + u,
+      kappa = kappa + u,
       gama = gama
     )) # upper bound defined via the grid
     M <- max(10, M) # We wish to make sure we at least use a few jumps

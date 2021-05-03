@@ -4,7 +4,7 @@
 \alias{gs3}
 \title{Conditional posterior distribution of latent U}
 \usage{
-gs3(ut, n, r, alpha, beta, gama, delta)
+gs3(ut, n, r, alpha, kappa, gama, delta)
 }
 \description{
 This function simulates from the conditional posterior distribution of the
@@ -16,15 +16,15 @@ For internal use.
 \examples{
 
 ## The function is currently defined as
-function(ut, n = 200, r = 20, alpha = 1, beta = 1, gama = 1 / 2,
+function(ut, n = 200, r = 20, alpha = 1, kappa = 1, gama = 1 / 2,
          delta = 2) {
   w <- ut
   ratio <- NaN
   while (is.nan(ratio)) {
     v <- ustar <- rgamma(1, shape = delta, rate = delta / ut)
     vw <- v / w
-    vb <- v + beta
-    wb <- w + beta
+    vb <- v + kappa
+    wb <- w + kappa
     A <- vw^(n - 2 * delta)
     B <- (vb / wb)^(r * gama - n)
     D <- vb^gama - wb^gama

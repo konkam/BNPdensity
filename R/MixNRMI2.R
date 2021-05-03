@@ -255,19 +255,19 @@ MixNRMI2 <-
       # }
       if (Gama != 0) {
         if (adaptive) {
-          tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+          tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, kappa = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
           u <- tmp$u_prime
           delta_U <- tmp$delta
         }
         else {
           u <- gs3(u,
-            n = n, r = rstar, alpha = Alpha, beta = Kappa,
+            n = n, r = rstar, alpha = Alpha, kappa = Kappa,
             gama = Gama, delta = delta_U
           )
         }
       }
       JiC <- MvInv(
-        eps = Meps, u = u, alpha = Alpha, beta = Kappa,
+        eps = Meps, u = u, alpha = Alpha, kappa = Kappa,
         gama = Gama, N = 50001
       )
       Nm <- length(JiC)

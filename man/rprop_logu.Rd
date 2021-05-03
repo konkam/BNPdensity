@@ -6,9 +6,12 @@
 \usage{
 rprop_logu(logu, delta)
 }
+\arguments{
+\item{logu}{Real, log of the latent variable U at the current iteration.}
+
+\item{delta}{Scale of the Metropolis-Hastings proposal distribution}
+}
 \description{
 This function makes a proposal for a new value of logU
 }
-\details{
-@keywords internal
-}
+\keyword{internal}

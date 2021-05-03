@@ -4,7 +4,7 @@
 \alias{gs3_adaptive3}
 \title{Conditional posterior distribution of latent U}
 \usage{
-gs3_adaptive3(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FALSE)
+gs3_adaptive3(ut, n, r, alpha, kappa, gama, delta, U, iter, adapt = FALSE)
 }
 \description{
 This function simulates from the conditional posterior distribution of the

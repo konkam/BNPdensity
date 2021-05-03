@@ -4,7 +4,7 @@
 \alias{MvInv}
 \title{Invert jump heights function}
 \usage{
-MvInv(eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001)
+MvInv(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1/2, N = 3001)
 }
 \arguments{
 \item{eps}{Dummy argument kept for consistency with past versions of the functions}
@@ -13,19 +13,19 @@ MvInv(eps, u = 0.5, alpha = 1, beta = 1, gama = 1/2, N = 3001)
 
 \item{alpha}{Numeric constant. Total mass of the centering measure.}
 
-\item{beta}{Numeric positive constant.}
+\item{kappa}{Numeric positive constant.}
 
 \item{gama}{Numeric constant. Discount parameter of the NRMI process.}
 
 \item{N}{Number of steps in the discretization scheme for the grid inversion.
 
 ## The function has been optimised but it is morally defined as:
-function(eps, u = 0.5, alpha = 1, beta = 1, gama = 1 / 2, N = 3001) {
+function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) {
   n <- length(w)
   v <- rep(NA, n)
   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
   f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-    beta) * x)
+    kappa) * x)
   dx <- diff(x)
   h <- (f[-1] + f[-N]) / 2
   Mv <- rep(0, N)
