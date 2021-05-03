@@ -47,3 +47,80 @@ gs3 <-
     u <- ifelse(runif(1) <= p, ustar, ut)
     return(u)
   }
+
+#' Target logdensity of U given the data
+#'
+logf_u_cond_y <- function(u, n, r, gamma, kappa, a) {
+  (n - 1) * log(u) + (r * gamma - n) * log(u + kappa) - a / gamma * (u + kappa)^gamma
+}
+
+#' Contribution of the target logdensity of logU to the Metropolis-Hastings ratio
+#'
+logf_logu_cond_y <- function(logu, n, r, gamma, kappa, a) {
+  logu + logf_u_cond_y(u = exp(logu), n = n, r = r, gamma = gamma, kappa = kappa, a = a)
+}
+
+#' Contribution of the proposal kernel logdensity to the Metropolis-Hastings ratio
+#'
+logdprop_logu <- function(logu_prime, logu, delta) {
+  dnorm(x = logu_prime, mean = logu, sd = delta, log = T)
+}
+
+#' Proposal distribution for logU
+#'
+#' This function makes a proposal for a new value of logU
+rprop_logu <- function(logu, delta) {
+  rnorm(n = 1, mean = logu, sd = delta)
+}
+
+#' Metropolis-Hastings ratio for the conditional of logU
+#'
+#' This function computes the Metropolis-Hastings ratio to decide whether to accept or reject a new value for logU.
+logacceptance_ratio_logu <- function(logu, logu_prime, n, r, gamma, kappa, a, delta) {
+  log_ratio <- logf_logu_cond_y(logu_prime, n, r, gamma, kappa, a) - logf_logu_cond_y(logu, n, r, gamma, kappa, a) + logdprop_logu(logu, logu_prime, delta) - logdprop_logu(logu_prime, logu, delta)
+  return(min(0, log_ratio))
+}
+
+#' Conditional posterior distribution of latent logU
+#'
+#' This function simulates from the conditional posterior distribution of a log transformation of the
+#' latent U.
+gs3_log <-
+  function(logut, n, r, alpha, beta, gama, delta) {
+    logu_prime <- rprop_logu(logu = logut, delta = delta)
+    logq1 <- logacceptance_ratio_logu(logu = logut, logu_prime = logu_prime, n = n, r = r, gamma = gama, kappa = beta, a = alpha, delta = delta)
+    if (log(runif(n = 1)) < logq1) {
+      return(logu_prime)
+    }
+    else {
+      return(logut)
+    }
+  }
+
+
+#' Conditional posterior distribution of latent U
+#'
+#' This function simulates from the conditional posterior distribution of the
+#' latent U, with an adaptive proposal
+#'
+#'
+gs3_adaptive3 <- function(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FALSE) {
+  target_acc_rate <- 0.44
+  batch_size <- 100
+  if (adapt && (iter %% batch_size == 0)) {
+    acc_rate <- length(unique(U[(iter - batch_size + 1):iter])) / batch_size
+    logincrement <- 2 * min(0.25, 1 / sqrt(iter))
+    # increment = min(0.5, 5 / sqrt(iter))
+    if (acc_rate < 0.44) {
+      delta_i <- delta * exp(-logincrement)
+    }
+    else {
+      delta_i <- delta * exp(+logincrement)
+    }
+  }
+  else {
+    delta_i <- delta
+  }
+  logu_prime <- gs3_log(logut = log(ut), n = n, r = r, alpha = alpha, beta = beta, gama = gama, delta = delta_i)
+  return(list(u_prime = exp(logu_prime), delta = delta_i))
+}

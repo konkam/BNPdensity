@@ -22,7 +22,8 @@ MixNRMI1(
   Pbi = 0.1,
   epsilon = NULL,
   printtime = TRUE,
-  extras = TRUE
+  extras = TRUE,
+  adaptive = FALSE
 )
 }
 \arguments{
@@ -72,6 +73,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
 Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 }
 \value{
 The function returns a MixNRMI1 object. It is based on a list with the following components:
@@ -239,7 +242,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
-Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prünster, I.
+Barrios, E., Kon Kam King, G., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 }
 \keyword{distribution}
 \keyword{models}

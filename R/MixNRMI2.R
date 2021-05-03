@@ -35,7 +35,7 @@
 #' details.
 #' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
 #' @param distr.py0 The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
+#' @param distr.pz0 The distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 #' scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
 #' scales.
@@ -46,7 +46,7 @@
 #' @param kappa Numeric positive constant. Metropolis-Hastings proposal
 #' variation coefficient for sampling the location parameters.
 #' @param delta_U Numeric positive constant. Metropolis-Hastings proposal
-#' variation coefficient for sampling the latent U.
+#' variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.
 #' @param Meps Numeric constant. Relative error of the jump sizes in the
 #' continuous component of the process. Smaller values imply larger number of
 #' jumps.
@@ -59,6 +59,8 @@
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means, sigmas,
 #' weights and Js.
+#' @param adaptive Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).
+#'
 #' @return The function returns a list with the following components:
 #' \item{xx}{Numeric vector. Evaluation grid.}
 #' \item{qx}{Numeric array. Matrix
@@ -83,8 +85,11 @@
 #' mixture weights. Only if extras = TRUE.}
 #' \item{Js}{List of
 #' \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
-#' if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
+#' if extras = TRUE.}
+#' \item{Nm}{Integer constant. Number of jumps of the
 #' continuous component of the unnormalized process.}
+#' \item{delta_Us}{List of
+#' \code{length(Nit*(1-Pbi))} with the sequence of adapted delta_U used in the MH step for the latent variable U.}
 #' \item{Nx}{Integer
 #' constant. Number of grid points for the evaluation of the density estimate.}
 #' \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -94,7 +99,7 @@
 #' \item{data}{Data used for the fit}
 #' \item{NRMI_params}{A named list with the parameters of the NRMI process}
 #' @section Warning : The function is computing intensive. Be patient.
-#' @author Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prünster, I.
+#' @author Barrios, Kon Kam King, G., E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
 #' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster,
@@ -104,6 +109,8 @@
 #' 2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
+#'
+#' 3.- Arbel, J., Kon Kam King, G.,  Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I. (2021). BNPdensity: a package for Bayesian Nonparametric density estimation using Normalised Random Measures with Independent Increments.. Australian and New Zealand Journal of Statistics, to appear
 #' @keywords distribution models nonparametrics
 #' @examples
 #' \dontrun{
@@ -190,7 +197,7 @@ MixNRMI2 <-
            Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
            sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
            Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-           extras = TRUE) {
+           extras = TRUE, adaptive = FALSE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
@@ -218,11 +225,17 @@ MixNRMI2 <-
     U <- seq(Nit)
     Nmt <- seq(Nit)
     Allocs <- vector(mode = "list", length = Nit)
+    if (adaptive) {
+      optimal_delta <- rep(NA, n)
+    }
     if (extras) {
       means <- vector(mode = "list", length = Nit)
       sigmas <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
+      if (adaptive) {
+        delta_Us <- seq(Nit)
+      }
     }
     mu.py0 <- mean(x)
     sigma.py0 <- sd(x)
@@ -237,11 +250,21 @@ MixNRMI2 <-
       rstar <- tt$rstar
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
+      # if (is.na(optimal_delta[rstar])) {
+      #   optimal_delta[rstar] <- compute_optimal_delta_given_r(r = rstar, gamma = Gama, kappa = Kappa, a = Alpha, n = n)
+      # }
       if (Gama != 0) {
-        u <- gs3(u,
-          n = n, r = rstar, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = delta_U
-        )
+        if (adaptive) {
+          tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+          u <- tmp$u_prime
+          delta_U <- tmp$delta
+        }
+        else {
+          u <- gs3(u,
+            n = n, r = rstar, alpha = Alpha, beta = Kappa,
+            gama = Gama, delta = delta_U
+          )
+        }
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -281,6 +304,9 @@ MixNRMI2 <-
         sigmas[[j]] <- Tauz
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
+        if (adaptive) {
+          delta_Us[j] <- delta_U
+        }
       }
     }
     tt <- comp2(y, z)
@@ -298,6 +324,9 @@ MixNRMI2 <-
       sigmas <- sigmas[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
+      if (adaptive) {
+        delta_Us <- delta_Us[-biseq]
+      }
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
@@ -315,10 +344,12 @@ MixNRMI2 <-
       res$sigmas <- sigmas
       res$weights <- weights
       res$Js <- Js
+      if (adaptive) {
+        res$delta_Us <- delta_Us
+      }
     }
     return(structure(res, class = "NRMI2"))
   }
-
 
 
 #' Plot the density estimate and the 95\% credible interval

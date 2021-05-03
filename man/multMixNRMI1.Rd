@@ -23,6 +23,7 @@ multMixNRMI1(
   epsilon = NULL,
   printtime = TRUE,
   extras = TRUE,
+  adaptive = FALSE,
   nchains = 4,
   parallel = TRUE,
   ncores = parallel::detectCores()
@@ -75,6 +76,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
 Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 
 \item{nchains}{The number of chains to run.}
 

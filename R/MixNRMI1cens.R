@@ -63,6 +63,8 @@
 #' @param printtime Logical. If TRUE, prints out the execution time.
 #' @param extras Logical. If TRUE, gives additional objects: means, weights and
 #' Js.
+#' @param adaptive Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).
+#'
 #' @return The function returns a list with the following components:
 #' \item{xx}{Numeric vector. Evaluation grid.} \item{qx}{Numeric array. Matrix
 #' of dimension \eqn{\texttt{Nx} \times (\texttt{length(probs)} + 1)}{Nx x
@@ -88,6 +90,9 @@
 #' \item{distr.k}{Integer corresponding to the kernel chosen for the mixture}
 #' \item{data}{Data used for the fit}
 #' \item{NRMI_params}{A named list with the parameters of the NRMI process}
+#' @param adaptive Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).
+
+#'
 #' @section Warning : The function is computing intensive. Be patient.
 #' @author Barrios, E., Kon Kam King, G. and Nieto-Barajas, L.E.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
@@ -139,7 +144,7 @@ MixNRMI1cens <-
            Kappa = 0, Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5,
            bsigma = 0.5, delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150,
            Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE,
-           extras = TRUE) {
+           extras = TRUE, adaptive = FALSE) {
     if (is.null(distr.k)) {
       stop("Argument distr.k is NULL. Should be provided. See help for details.")
     }
@@ -176,10 +181,16 @@ MixNRMI1cens <-
     U <- seq(Nit)
     Nmt <- seq(Nit)
     Allocs <- vector(mode = "list", length = Nit)
+    if (adaptive) {
+      optimal_delta <- rep(NA, n)
+    }
     if (extras) {
       means <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
+      if (adaptive) {
+        delta_Us <- seq(Nit)
+      }
     }
     mu.p0 <- mean(xpoint)
     sigma.p0 <- sd(xpoint)
@@ -191,13 +202,23 @@ MixNRMI1cens <-
       ystar <- tt$ystar
       nstar <- tt$nstar
       r <- tt$r
+      # if (is.na(optimal_delta[r])) {
+      #   optimal_delta[r] <- compute_optimal_delta_given_r(r = r, gamma = Gama, kappa = Kappa, a = Alpha, n = n)
+      # }
       idx <- tt$idx
       Allocs[[max(1, j - 1)]] <- idx
       if (Gama != 0) {
-        u <- gs3(u,
-          n = n, r = r, alpha = Alpha, beta = Kappa,
-          gama = Gama, delta = delta_U
-        )
+        if (adaptive) {
+          tmp <- gs3_adaptive3(u, n = n, r = r, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+          u <- tmp$u_prime
+          delta_U <- tmp$delta
+        }
+        else {
+          u <- gs3(u,
+            n = n, r = r, alpha = Alpha, beta = Kappa,
+            gama = Gama, delta = delta_U
+          )
+        }
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -243,6 +264,9 @@ MixNRMI1cens <-
         means[[j]] <- Tau
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
+        if (adaptive) {
+          delta_Us[j] <- delta_U
+        }
       }
     }
     tt <- comp1(y)
@@ -260,6 +284,9 @@ MixNRMI1cens <-
       means <- means[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
+      if (adaptive) {
+        delta_Us <- delta_Us[-biseq]
+      }
     }
     cpo <- 1 / apply(1 / fx[, -biseq], 1, mean)
     if (printtime) {
@@ -276,6 +303,9 @@ MixNRMI1cens <-
       res$means <- means
       res$weights <- weights
       res$Js <- Js
+      if (adaptive) {
+        res$delta_Us <- delta_Us
+      }
     }
     return(structure(res, class = "NRMI1"))
   }

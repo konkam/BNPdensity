@@ -24,7 +24,8 @@ MixNRMI2(
   Pbi = 0.1,
   epsilon = NULL,
   printtime = TRUE,
-  extras = TRUE
+  extras = TRUE,
+  adaptive = FALSE
 )
 }
 \arguments{
@@ -44,7 +45,7 @@ details.}
 
 \item{distr.py0}{The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
+\item{distr.pz0}{The distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.}
 
 \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for
@@ -60,7 +61,7 @@ variation coefficient for sampling the scales.}
 variation coefficient for sampling the location parameters.}
 
 \item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
+variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -80,6 +81,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, sigmas,
 weights and Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 }
 \value{
 The function returns a list with the following components:
@@ -106,8 +109,11 @@ extras = TRUE.}
 mixture weights. Only if extras = TRUE.}
 \item{Js}{List of
 \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
-if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
+if extras = TRUE.}
+\item{Nm}{Integer constant. Number of jumps of the
 continuous component of the unnormalized process.}
+\item{delta_Us}{List of
+\code{length(Nit*(1-Pbi))} with the sequence of adapted delta_U used in the MH step for the latent variable U.}
 \item{Nx}{Integer
 constant. Number of grid points for the evaluation of the density estimate.}
 \item{Nit}{Integer constant. Number of MCMC iterations.}
@@ -237,13 +243,15 @@ Statistical Science. Vol. 28, No. 3, 313-334.
 2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 normalized random measure with independent increments. Scand. J. Statist 36,
 76-97.
+
+3.- Arbel, J., Kon Kam King, G.,  Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I. (2021). BNPdensity: a package for Bayesian Nonparametric density estimation using Normalised Random Measures with Independent Increments.. Australian and New Zealand Journal of Statistics, to appear
 }
 \seealso{
 \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
 \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
-Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prünster, I.
+Barrios, Kon Kam King, G., E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 }
 \keyword{distribution}
 \keyword{models}

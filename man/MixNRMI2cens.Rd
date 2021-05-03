@@ -25,7 +25,8 @@ MixNRMI2cens(
   Pbi = 0.1,
   epsilon = NULL,
   printtime = TRUE,
-  extras = TRUE
+  extras = TRUE,
+  adaptive = FALSE
 )
 }
 \arguments{
@@ -64,7 +65,7 @@ variation coefficient for sampling the scales.}
 variation coefficient for sampling the location parameters.}
 
 \item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
+variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -84,6 +85,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, sigmas,
 weights and Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 }
 \value{
 The function returns a list with the following components:
@@ -113,6 +116,8 @@ mixture weights. Only if extras = TRUE.}
 if extras = TRUE.}
 \item{Nm}{Integer constant. Number of jumps of the
 continuous component of the unnormalized process.}
+\item{delta_Us}{List of
+\code{length(Nit*(1-Pbi))} with the sequence of adapted delta_U used in the MH step for the latent variable U.}
 \item{Nx}{Integer
 constant. Number of grid points for the evaluation of the density estimate.}
 \item{Nit}{Integer constant. Number of MCMC iterations.}
