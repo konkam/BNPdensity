@@ -23,6 +23,7 @@ multMixNRMI1(
   epsilon = NULL,
   printtime = TRUE,
   extras = TRUE,
+  adaptive = FALSE,
   nchains = 4,
   parallel = TRUE,
   ncores = parallel::detectCores()

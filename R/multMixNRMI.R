@@ -16,7 +16,7 @@
 multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                          Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
                          delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
+                         Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE, adaptive = FALSE,
                          nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
   res <- parallel::mclapply(
@@ -26,7 +26,7 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
         delta_S, delta_U, Meps, Nx, Nit, Pbi,
-        epsilon, printtime, extras
+        epsilon, printtime, extras, adaptive
       )
     },
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
@@ -55,9 +55,10 @@ multMixNRMI1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 #' multMixNRMI2(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' @export multMixNRMI2
 multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
-                         Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma", mu.pz0 = 3,
-                         sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2, Meps = 0.01,
-                         Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
+                         Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma",
+                         mu.pz0 = 3, sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2,
+                         Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
+                         printtime = TRUE, extras = TRUE, adaptive = FALSE,
                          nchains = 4, parallel = FALSE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
@@ -68,7 +69,8 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
         x, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
         sigma.pz0, delta_S, kappa, delta_U, Meps,
-        Nx, Nit, Pbi, epsilon, printtime, extras
+        Nx, Nit, Pbi, epsilon, printtime, extras,
+        adaptive
       )
     },
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
@@ -100,7 +102,7 @@ multMixNRMI2 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
 multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha = 1, Kappa = 0,
                              Gama = 0.4, distr.k = "normal", distr.p0 = "normal", asigma = 0.5, bsigma = 0.5,
                              delta_S = 3, delta_U = 2, Meps = 0.01, Nx = 150, Nit = 1500,
-                             Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE,
+                             Pbi = 0.1, epsilon = NULL, printtime = TRUE, extras = TRUE, adaptive = FALSE,
                              nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
@@ -111,7 +113,7 @@ multMixNRMI1cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.p0, asigma, bsigma,
         delta_S, delta_U, Meps, Nx, Nit, Pbi,
-        epsilon, printtime, extras
+        epsilon, printtime, extras, adaptive
       )
     },
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),
@@ -146,7 +148,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
                              Kappa = 0, Gama = 0.4, distr.k = "normal", distr.py0 = "normal", distr.pz0 = "gamma",
                              mu.pz0 = 3, sigma.pz0 = sqrt(10), delta_S = 4, kappa = 2, delta_U = 2,
                              Meps = 0.01, Nx = 150, Nit = 1500, Pbi = 0.1, epsilon = NULL,
-                             printtime = TRUE, extras = TRUE,
+                             printtime = TRUE, extras = TRUE, adaptive = FALSE,
                              nchains = 4, parallel = TRUE, ncores = parallel::detectCores()) {
   if (Sys.info()[["sysname"]] == "Windows") parallel <- FALSE
 
@@ -157,7 +159,7 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
         xleft, xright, probs, Alpha, Kappa,
         Gama, distr.k, distr.py0, distr.pz0, mu.pz0,
         sigma.pz0, delta_S, kappa, delta_U, Meps,
-        Nx, Nit, Pbi, epsilon, printtime, extras
+        Nx, Nit, Pbi, epsilon, printtime, extras, adaptive
       )
     },
     mc.cores = ifelse(test = parallel, yes = ncores, no = 1),

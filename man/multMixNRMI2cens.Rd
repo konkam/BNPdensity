@@ -26,6 +26,7 @@ multMixNRMI2cens(
   epsilon = NULL,
   printtime = TRUE,
   extras = TRUE,
+  adaptive = FALSE,
   nchains = 4,
   parallel = TRUE,
   ncores = parallel::detectCores()
@@ -67,7 +68,7 @@ variation coefficient for sampling the scales.}
 variation coefficient for sampling the location parameters.}
 
 \item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
+variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -87,6 +88,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, sigmas,
 weights and Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 
 \item{nchains}{The number of chains to run.}
 

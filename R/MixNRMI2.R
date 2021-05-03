@@ -35,7 +35,7 @@
 #' details.
 #' @param distr.k The distribution name for the kernel. Allowed names are "normal", "gamma", "beta", "double exponential", "lognormal" or their common abbreviations "norm", "exp", or an integer number identifying the mixture kernel: 1 = Normal; 2 = Gamma; 3 = Beta; 4 = Double Exponential; 5 = Lognormal.
 #' @param distr.py0 The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.
-#' @param distr.pz0 he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
+#' @param distr.pz0 The distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 #' scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.
 #' @param mu.pz0 Numeric constant. Prior mean of the centering measure for
 #' scales.
@@ -85,7 +85,8 @@
 #' mixture weights. Only if extras = TRUE.}
 #' \item{Js}{List of
 #' \code{length(Nit*(1-Pbi))} with the unnormalized weights (jump sizes). Only
-#' if extras = TRUE.} \item{Nm}{Integer constant. Number of jumps of the
+#' if extras = TRUE.}
+#' \item{Nm}{Integer constant. Number of jumps of the
 #' continuous component of the unnormalized process.}
 #' \item{delta_Us}{List of
 #' \code{length(Nit*(1-Pbi))} with the sequence of adapted delta_U used in the MH step for the latent variable U.}
@@ -98,7 +99,7 @@
 #' \item{data}{Data used for the fit}
 #' \item{NRMI_params}{A named list with the parameters of the NRMI process}
 #' @section Warning : The function is computing intensive. Be patient.
-#' @author Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
+#' @author Barrios, Kon Kam King, G., E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
 #' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 #' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
@@ -108,6 +109,8 @@
 #' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
+#'
+#' 3.- Arbel, J., Kon Kam King, G.,  Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I. (2021). BNPdensity: a package for Bayesian Nonparametric density estimation using Normalised Random Measures with Independent Increments.. Australian and New Zealand Journal of Statistics, to appear
 #' @keywords distribution models nonparametrics
 #' @examples
 #' \dontrun{
@@ -222,7 +225,7 @@ MixNRMI2 <-
     U <- seq(Nit)
     Nmt <- seq(Nit)
     Allocs <- vector(mode = "list", length = Nit)
-    if (adaptive){
+    if (adaptive) {
       optimal_delta <- rep(NA, n)
     }
     if (extras) {
@@ -230,7 +233,7 @@ MixNRMI2 <-
       sigmas <- vector(mode = "list", length = Nit)
       weights <- vector(mode = "list", length = Nit)
       Js <- vector(mode = "list", length = Nit)
-      if (adaptive){
+      if (adaptive) {
         delta_Us <- seq(Nit)
       }
     }
@@ -251,18 +254,17 @@ MixNRMI2 <-
       #   optimal_delta[rstar] <- compute_optimal_delta_given_r(r = rstar, gamma = Gama, kappa = Kappa, a = Alpha, n = n)
       # }
       if (Gama != 0) {
-        if (adaptive){
-          tmp = gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
-          u = tmp$u_prime
-          delta_U = tmp$delta
+        if (adaptive) {
+          tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, beta = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
+          u <- tmp$u_prime
+          delta_U <- tmp$delta
         }
         else {
           u <- gs3(u,
-                   n = n, r = rstar, alpha = Alpha, beta = Kappa,
-                   gama = Gama, delta = delta_U
+            n = n, r = rstar, alpha = Alpha, beta = Kappa,
+            gama = Gama, delta = delta_U
           )
         }
-
       }
       JiC <- MvInv(
         eps = Meps, u = u, alpha = Alpha, beta = Kappa,
@@ -302,7 +304,7 @@ MixNRMI2 <-
         sigmas[[j]] <- Tauz
         weights[[j]] <- J / sum(J)
         Js[[j]] <- J
-        if (adaptive){
+        if (adaptive) {
           delta_Us[j] <- delta_U
         }
       }
@@ -322,7 +324,7 @@ MixNRMI2 <-
       sigmas <- sigmas[-biseq]
       weights <- weights[-biseq]
       Js <- Js[-biseq]
-      if (adaptive){
+      if (adaptive) {
         delta_Us <- delta_Us[-biseq]
       }
     }
@@ -342,7 +344,7 @@ MixNRMI2 <-
       res$sigmas <- sigmas
       res$weights <- weights
       res$Js <- Js
-      if (adaptive){
+      if (adaptive) {
         res$delta_Us <- delta_Us
       }
     }

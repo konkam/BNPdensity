@@ -22,7 +22,8 @@ MixNRMI1(
   Pbi = 0.1,
   epsilon = NULL,
   printtime = TRUE,
-  extras = TRUE
+  extras = TRUE,
+  adaptive = FALSE
 )
 }
 \arguments{
@@ -246,7 +247,7 @@ normalized random measure with independent increments. Scand. J. Statist 36,
 \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
 }
 \author{
-Barrios, E., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
+Barrios, E., Kon Kam King, G., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 }
 \keyword{distribution}
 \keyword{models}

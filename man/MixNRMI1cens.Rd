@@ -23,7 +23,8 @@ MixNRMI1cens(
   Pbi = 0.1,
   epsilon = NULL,
   printtime = TRUE,
-  extras = TRUE
+  extras = TRUE,
+  adaptive = FALSE
 )
 }
 \arguments{
@@ -77,6 +78,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, weights and
 Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 }
 \value{
 The function returns a list with the following components:

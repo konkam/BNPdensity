@@ -25,6 +25,7 @@ multMixNRMI2(
   epsilon = NULL,
   printtime = TRUE,
   extras = TRUE,
+  adaptive = FALSE,
   nchains = 4,
   parallel = FALSE,
   ncores = parallel::detectCores()
@@ -47,7 +48,7 @@ details.}
 
 \item{distr.py0}{The distribution name for the centering measure for locations. Allowed names are "normal", "gamma", "beta", or their common abbreviations "norm", "exp", or an integer number identifying the centering measure for locations: 1 = Normal; 2 = Gamma; 3 = Beta.}
 
-\item{distr.pz0}{he distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
+\item{distr.pz0}{The distribution name for the centering measure for scales.  Allowed names are "gamma", or an integer number identifying the centering measure for
 scales: 2 = Gamma. For more options use \code{\link{MixNRMI2cens}}.}
 
 \item{mu.pz0}{Numeric constant. Prior mean of the centering measure for
@@ -63,7 +64,7 @@ variation coefficient for sampling the scales.}
 variation coefficient for sampling the location parameters.}
 
 \item{delta_U}{Numeric positive constant. Metropolis-Hastings proposal
-variation coefficient for sampling the latent U.}
+variation coefficient for sampling the latent U. If `adaptive=TRUE`, `delta_U`is the starting value for the adaptation.}
 
 \item{Meps}{Numeric constant. Relative error of the jump sizes in the
 continuous component of the process. Smaller values imply larger number of
@@ -83,6 +84,8 @@ See details.}
 
 \item{extras}{Logical. If TRUE, gives additional objects: means, sigmas,
 weights and Js.}
+
+\item{adaptive}{Logical. If TRUE, uses an adaptive MCMC strategy to sample the latent U (adaptive delta_U).}
 
 \item{nchains}{The number of chains to run.}
 
