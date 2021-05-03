@@ -9,3 +9,4 @@ logf_u_cond_y(u, n, r, gamma, kappa, a)
 \description{
 Target logdensity of U given the data
 }
+\keyword{internal}

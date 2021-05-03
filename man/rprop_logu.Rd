@@ -9,3 +9,6 @@ rprop_logu(logu, delta)
 \description{
 This function makes a proposal for a new value of logU
 }
+\details{
+@keywords internal
+}

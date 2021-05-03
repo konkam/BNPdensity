@@ -10,3 +10,6 @@ gs3_log(logut, n, r, alpha, beta, gama, delta)
 This function simulates from the conditional posterior distribution of a log transformation of the
 latent U.
 }
+\details{
+@keywords internal
+}

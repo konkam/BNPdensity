@@ -9,3 +9,6 @@ logacceptance_ratio_logu(logu, logu_prime, n, r, gamma, kappa, a, delta)
 \description{
 This function computes the Metropolis-Hastings ratio to decide whether to accept or reject a new value for logU.
 }
+\details{
+@keywords internal
+}

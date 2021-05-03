@@ -9,3 +9,4 @@ logf_logu_cond_y(logu, n, r, gamma, kappa, a)
 \description{
 Contribution of the target logdensity of logU to the Metropolis-Hastings ratio
 }
+\keyword{internal}

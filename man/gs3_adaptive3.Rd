@@ -10,3 +10,4 @@ gs3_adaptive3(ut, n, r, alpha, beta, gama, delta, U, iter, adapt = FALSE)
 This function simulates from the conditional posterior distribution of the
 latent U, with an adaptive proposal
 }
+\keyword{internal}
