@@ -17,7 +17,7 @@
 #' @export compute_optimal_clustering
 compute_optimal_clustering <- function(fit, loss_type = "VI") {
   if (!requireNamespace("GreedyEPL", quietly = TRUE)) {
-    stop("Package GreedyEPL is needed for this function to work. Please install it.",
+    stop("Package GreedyEPL is needed for this function to work. Please install it. You may do so using install.packages('https://cran.r-project.org/src/contrib/Archive/GreedyEPL/GreedyEPL_1.0.tar.gz', repos = NULL)",
       call. = FALSE
     )
   }
