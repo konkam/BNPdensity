@@ -6,6 +6,11 @@
 Bayesian nonparametric density estimation modeling mixtures by a
 Ferguson-Klass type algorithm for posterior normalized random measures.
 
+The package and the methodology are described in these two publications:
+
+- Arbel, J., Kon Kam King, G., Lijoi, A., Nieto-Barajas, L. and Prünster, I. (2021), BNPdensity: Bayesian nonparametric mixture modelling in R. Aust. N. Z. J. Stat., 63: 542-564. https://doi.org/10.1111/anzs.12342 
+-  Ernesto Barrios. Antonio Lijoi. Luis E. Nieto-Barajas. Igor Prünster. "Modeling with Normalized Random Measure Mixture Models." Statist. Sci. 28 (3) 313-334, August 2013. https://doi.org/10.1214/13-STS416  
+
 ## Installation
 
 You can install BNPdensity from github with:
