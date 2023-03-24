@@ -1,5 +1,5 @@
 ## Test environments
-* local ubuntu 20.04 install, R 4.0.5
+* local ubuntu 20.04 install, R 4.2.2
 * Debian Linux, R-devel, GCC ASAN/UBSAN
 * Fedora Linux, R-devel, clang, gfortran
 * win-builder (devel and release)
@@ -8,7 +8,7 @@
 * check_rhub()
 
 ## R CMD check results
-There were no ERRORs, or WARNINGs. There was one NOTE, because an optional dependency on package GreedyEPL was recently removed from CRAN. I am contacting the maintainer to see if the package could be put back online, but as it is an optional dependency, it should not prevent the release of BNPdensity. 
+There were no ERRORs, or WARNINGs, or Notes.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
