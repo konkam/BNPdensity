@@ -78,8 +78,7 @@ function(ystar, zstar, nstar, rstar, idx, xleft, xright, censor_code,
       q2 <- min(1, f.ratio * k.ratio)
       if (is.na(q2)) {
         flag <- 1
-      }
-      else {
+      } else {
         flag <- 0
         if (runif(1) <= q2) {
           ystar[j] <- y2star

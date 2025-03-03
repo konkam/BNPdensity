@@ -161,10 +161,12 @@ plot(out)
 set.seed(150520)
 data(enzyme)
 x <- enzyme
-Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-                         distr.k = "gamma", distr.p0 = "gamma",
-                         asigma = 1, bsigma = 1, Meps=0.005,
-                         Nit = 5000, Pbi = 0.2)
+Enzyme1.out <- MixNRMI1(x,
+  Alpha = 1, Kappa = 0.007, Gama = 0.5,
+  distr.k = "gamma", distr.p0 = "gamma",
+  asigma = 1, bsigma = 1, Meps = 0.005,
+  Nit = 5000, Pbi = 0.2
+)
 attach(Enzyme1.out)
 # Plotting density estimate + 95\% credible interval
 plot(Enzyme1.out)

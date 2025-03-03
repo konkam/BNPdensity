@@ -1,3 +1,18 @@
+#' Calculate the Logarithm of the Vnk weights for the Pitman-Yor model
+#'
+#' This function computes the logarithm of the Vnk weights for the Pitman-Yor model
+#' for given values of `n`, `k`, `Alpha`, and `Gama`.
+#'
+#' @param n An integer representing the total number of observations.
+#' @param k An integer representing the number of clusters.
+#' @param Alpha A numeric value for the concentration parameter.
+#' @param Gama A numeric value for the discount parameter.
+#'
+#' @return A numeric value representing the logarithm of the NRMI for the specified parameters.
+#'
+#' @examples
+#' log_Vnk_PY(7, 6, 0.5, 0.01)
+#' log_Vnk_PY(6, 5, 0.5, 0.001)
 log_Vnk_PY <- function(n, k, Alpha, Gama) {
   if (k == 1) {
     lognum <- 0
@@ -6,10 +21,6 @@ log_Vnk_PY <- function(n, k, Alpha, Gama) {
   }
   return(lognum - sum(log(Alpha + 1 + 0:(n - 2))))
 }
-
-
-# log_Vnk_PY(7, 6, 0.5, 0.01)
-# log_Vnk_PY(6, 5, 0.5, 0.001)
 
 # Pochhammer = function(x, n){
 #   x_mpfr = as.bigq(x)

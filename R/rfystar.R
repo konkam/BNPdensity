@@ -27,7 +27,7 @@ rfystar <-
       distr = distr.p0, mu = mu.p0, sigma = sigma.p0
     )
     Prod <- 1
-    for (i in seq(length(x))) {
+    for (i in seq_along(x)) {
       fac <- dk(x[i], distr = distr.k, mu = v, sigma = sigma.k) / dk(x[i],
         distr = distr.k, mu = v2, sigma = sigma.k
       )

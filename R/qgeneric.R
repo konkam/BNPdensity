@@ -110,7 +110,7 @@ qgeneric <-
         (do.call(pdist, args) - p)
       }
       ptmp <- numeric(length(p[ind]))
-      for (i in 1:length(p[ind])) {
+      for (i in seq_along(p[ind])) {
         interval <- c(-1, 1)
         while (h(interval[1]) * h(interval[2]) >= 0) {
           interval <- interval + c(-1, 1) * 0.5 * (interval[2] -

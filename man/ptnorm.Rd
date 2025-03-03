@@ -32,8 +32,7 @@ function(q, mean = 0, sd = 1, lower = -Inf, upper = Inf, lower.tail = TRUE,
   if (lower.tail) {
     ret[q < lower] <- 0
     ret[q > upper] <- 1
-  }
-  else {
+  } else {
     ret[q < lower] <- 1
     ret[q > upper] <- 0
   }
