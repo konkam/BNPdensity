@@ -13,8 +13,7 @@ summarytext <- function(fit, kernel_comment, BNP_process_comment, number_of_clus
   if (number_of_clusters) {
     estimated_clustering <- compute_optimal_clustering(fit)
     clustering_comment <- paste("The estimated number of clusters in the data is ", length(unique(estimated_clustering)), ".", sep = "")
-  }
-  else {
+  } else {
     clustering_comment <- "To obtain information on the estimated number of clusters,\n please use summary(object, number_of_clusters = TRUE)."
   }
   writeLines(paste(BNP_process_comment, "\n\n", kernel_comment, "\n\n", data_comment, "\n\n", MCMC_comment, "\n\n", clustering_comment, sep = ""))

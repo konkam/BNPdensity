@@ -27,7 +27,7 @@
 censor_code_rl <-
   function(left, right) {
     test_ <- function(k) {
-      if (is.na(left[[k]]) & is.na(right[[k]])) {
+      if (is.na(left[[k]]) && is.na(right[[k]])) {
         NA
       } else if (is.na(left[[k]])) {
         2

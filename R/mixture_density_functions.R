@@ -114,12 +114,10 @@ qmix_one_val_with_scales <- function(p, locations, scales, weights, distr.k, max
   if (distr.k == 2 | distr.k == 5) {
     lowerbound <- 0
     upperbound <- max_loc + 100 * max_scale
-  }
-  else if (distr.k == 3) {
+  } else if (distr.k == 3) {
     lowerbound <- 0
     upperbound <- 1
-  }
-  else {
+  } else {
     lowerbound <- min_loc - 100 * max_scale
     upperbound <- max_loc + 100 * max_scale
   }

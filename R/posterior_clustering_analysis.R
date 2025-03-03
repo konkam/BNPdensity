@@ -36,8 +36,7 @@ plot_clustering_and_CDF_noncensored <- function(fit, clustering, label_vector = 
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = data)
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = data)
   }
   p <- ggplot(data.frame(data = data, cluster_id = clustering, cdf = cdf)) +
@@ -58,8 +57,7 @@ plot_clustering_and_CDF_noncensored <- function(fit, clustering, label_vector = 
       ),
       aes_string(x = "x", y = "y", colour = "factor(cluster_id)", label = "txt")
     )
-  }
-  else {
+  } else {
     return(p)
   }
 }
@@ -73,8 +71,7 @@ decide_abscissa <- function(censored_data, clustering) {
   df$loc <- unlist(mapply(FUN = function(is_cens, cluster_id, loc) {
     if (is_cens) {
       mean(df$loc[df$cluster_id == cluster_id], na.rm = TRUE)
-    }
-    else {
+    } else {
       loc
     }
   }, df$is_censored, df$cluster_id, df$loc, SIMPLIFY = FALSE))
@@ -91,8 +88,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = grid[!is.na(grid)])
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid[!is.na(grid)])
   }
   p <- ggplot2::ggplot(
@@ -123,8 +119,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
       ),
       aes_string(x = "x", y = "y", colour = "factor(cluster_id)", label = "txt")
     )
-  }
-  else {
+  } else {
     return(p)
   }
 }
@@ -151,8 +146,7 @@ plot_clustering_and_CDF_censored <- function(fit, clustering, label_vector = NUL
 plot_clustering_and_CDF <- function(fit, clustering, label_vector = NULL) {
   if (is_censored(fit$data)) {
     plot_clustering_and_CDF_censored(fit, clustering, label_vector = label_vector)
-  }
-  else {
+  } else {
     plot_clustering_and_CDF_noncensored(fit, clustering, label_vector = label_vector)
   }
 }

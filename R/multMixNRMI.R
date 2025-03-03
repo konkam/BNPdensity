@@ -173,7 +173,8 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' Convert the output of multMixNRMI into a coda mcmc object
 #'
 #' @importFrom  coda as.mcmc
-#' @param fitlist Output of multMixNRMI.
+#' @param x Output of multMixNRMI.
+#' @param ... Further arguments to be passed to specific methods
 #' @param thinning_to Final length of the chain after thinning.
 #' @param ncores Specify the number of cores to use in the conversion
 #' @return a coda::mcmc object
@@ -183,8 +184,8 @@ multMixNRMI2cens <- function(xleft, xright, probs = c(0.025, 0.5, 0.975), Alpha 
 #' data(acidity)
 #' out <- multMixNRMI1(acidity, parallel = TRUE, Nit = 10, ncores = 2)
 #' coda::as.mcmc(out, ncores = 2)
-as.mcmc.multNRMI <- function(fitlist, thinning_to = 1000, ncores = parallel::detectCores()) {
-  res <- coda::as.mcmc(lapply(Convert_to_matrix_list(fitlist, thinning_to = thinning_to, ncores = ncores), coda::mcmc))
+as.mcmc.multNRMI <- function(x, ..., thinning_to = 1000, ncores = parallel::detectCores()) {
+  res <- coda::as.mcmc(lapply(Convert_to_matrix_list(x, thinning_to = thinning_to, ncores = ncores), coda::mcmc))
   class(res) <- c("multNRMI", class(res))
   return(res)
 }
@@ -263,8 +264,7 @@ summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
     collected_allocs <- list("Allocs" = Reduce(c, lapply(object, function(x) x$Allocs)))
     estimated_clustering <- compute_optimal_clustering(collected_allocs)
     clustering_comment <- paste("The estimated number of clusters in the data is ", length(unique(estimated_clustering)), ".", sep = "")
-  }
-  else {
+  } else {
     clustering_comment <- "To obtain information on the estimated number of clusters, please use summary(object, number_of_clusters = TRUE)."
   }
   writeLines(paste(NRMI_comment, "\n", kernel_comment, "\n", data_comment, "\n", MCMC_comment, "\n", clustering_comment, sep = ""))

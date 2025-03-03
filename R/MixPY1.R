@@ -73,7 +73,7 @@ MixPY1 <- function(x, probs = c(0.025, 0.5, 0.975), Alpha = 1, Gama = 0.4, asigm
   )
 
   clust <- restmp$clust + 1 # 1-based indexing
-  Allocs <- lapply(X = 1:nrow(restmp$clust), FUN = function(irow) clust[irow, ])
+  Allocs <- lapply(X = seq_len(nrow(restmp$clust)), FUN = function(irow) clust[irow, ])
 
   probs <- sort(probs)
 

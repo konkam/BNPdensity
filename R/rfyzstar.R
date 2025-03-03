@@ -34,7 +34,7 @@ rfyzstar <-
         distr = distr.pz0, mu = mu.pz0, sigma = sigma.pz0
       )
     Prod <- 1
-    for (i in seq(length(x))) {
+    for (i in seq_along(x)) {
       fac <- dk(x[i], distr = distr.k, mu = v, sigma = z) / dk(x[i],
         distr = distr.k, mu = v2, sigma = z2
       )

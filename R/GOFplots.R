@@ -60,8 +60,7 @@ plotCDF_noncensored <- function(fit) {
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = grid)
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
@@ -94,8 +93,7 @@ plotCDF_censored <- function(fit) {
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = grid)
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, CDF = cdf), aes_string(x = "data", y = "CDF")) +
@@ -143,8 +141,7 @@ plotPDF_censored <- function(fit) {
 
   if (is_semiparametric(fit)) {
     pdf <- get_PDF_semi_BNPdensity(fit = fit, xs = grid)
-  }
-  else {
+  } else {
     pdf <- get_PDF_full_BNPdensity(fit = fit, xs = grid)
   }
   ggplot2::ggplot(data = data.frame(data = grid, PDF = pdf), aes_string(x = "data", y = "PDF")) +
@@ -173,8 +170,7 @@ pp_plot_noncensored <- function(fit) {
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = data)
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = data)
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = ecdf(data)(data)), aes_string(x = "x", y = "y")) +
@@ -213,8 +209,7 @@ qq_plot_noncensored <- function(fit, thinning_to = 500) {
 
   if (is_semiparametric(fit)) {
     theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
-  }
-  else {
+  } else {
     theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = data), aes_string(x = "x", y = "y")) +
@@ -246,8 +241,7 @@ pp_plot_censored <- function(fit) {
 
   if (is_semiparametric(fit)) {
     cdf <- get_CDF_semi_BNPdensity(fit = fit, xs = estimated_data)
-  }
-  else {
+  } else {
     cdf <- get_CDF_full_BNPdensity(fit = fit, xs = estimated_data)
   }
   ggplot2::ggplot(data = data.frame(x = cdf, y = 1 - Survival_object$surv), aes_string(x = "x", y = "y")) +
@@ -294,8 +288,7 @@ qq_plot_censored <- function(fit, thinning_to = 500) {
 
   if (is_semiparametric(fit)) {
     theoretical_quantiles <- get_quantiles_semi_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
-  }
-  else {
+  } else {
     theoretical_quantiles <- get_quantiles_full_BNPdensity(fit = fit, ps = percentiles_to_compute, thinning_to = thinning_to)
   }
   ggplot2::ggplot(data = data.frame(x = theoretical_quantiles, y = Turnbull_quantiles), aes_string(x = "x", y = "y")) +
@@ -331,8 +324,7 @@ GOFplots_noncensored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (qq_plot) {
     qqplot <- qq_plot_noncensored(fit, thinning_to = thinning_to)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
-  }
-  else {
+  } else {
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
   }
 }
@@ -362,8 +354,7 @@ GOFplots_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (qq_plot) {
     qqplot <- qq_plot_censored(fit, thinning_to = thinning_to)
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot, qqplot)
-  }
-  else {
+  } else {
     gridExtra::grid.arrange(PDFplot, CDFplot, pplot)
   }
 }
@@ -391,8 +382,7 @@ GOFplots_censored <- function(fit, qq_plot = FALSE, thinning_to = 500) {
 GOFplots <- function(fit, qq_plot = FALSE, thinning_to = 500) {
   if (is_censored(fit$data)) {
     GOFplots_censored(fit, qq_plot = qq_plot, thinning_to = 500)
-  }
-  else {
+  } else {
     GOFplots_noncensored(fit, qq_plot = qq_plot, thinning_to = 500)
   }
 }

@@ -53,8 +53,7 @@
 #'       q2 <- min(1, f.ratio * k.ratio)
 #'       if (is.na(q2)) {
 #'         flag <- 1
-#'       }
-#'       else {
+#'       } else {
 #'         flag <- 0
 #'         if (runif(1) <= q2) {
 #'           ystar[j] <- y2star
@@ -110,8 +109,7 @@ gsYZstarcens2 <-
         q2 <- min(1, f.ratio * k.ratio)
         if (is.na(q2)) {
           flag <- 1
-        }
-        else {
+        } else {
           flag <- 0
           if (runif(1) <= q2) {
             ystar[j] <- y2star

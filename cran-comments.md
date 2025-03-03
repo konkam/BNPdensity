@@ -1,5 +1,5 @@
 ## Test environments
-* local ubuntu 16.04 install, R 3.6.1
+* local ubuntu 20.04 install, R 4.2.2
 * Debian Linux, R-devel, GCC ASAN/UBSAN
 * Fedora Linux, R-devel, clang, gfortran
 * win-builder (devel and release)
@@ -8,7 +8,7 @@
 * check_rhub()
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs. 
+There were no ERRORs, or WARNINGs, or Notes.
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.

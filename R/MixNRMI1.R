@@ -97,11 +97,11 @@
 #' @author Barrios, E., Kon Kam King, G., Lijoi, A., Nieto-Barajas, L.E. and Prüenster, I.
 #' @seealso \code{\link{MixNRMI2}}, \code{\link{MixNRMI1cens}},
 #' \code{\link{MixNRMI2cens}}, \code{\link{multMixNRMI1}}
-#' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
+#' @references 1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster,
 #' I. (2013). Modeling with Normalized Random Measure Mixture Models.
 #' Statistical Science. Vol. 28, No. 3, 313-334.
 #'
-#' 2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
+#' 2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 #' normalized random measure with independent increments. Scand. J. Statist 36,
 #' 76-97.
 #' @keywords distribution models nonparametrics
@@ -116,22 +116,16 @@
 #' out <- MixNRMI1(x)
 #' # Plotting density estimate + 95% credible interval
 #' plot(out)
-#' }
 #' ### Example 2
-#' ## Do not run
-#' # set.seed(150520)
-#' # data(enzyme)
-#' # x <- enzyme
-#' # Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#' #                          distr.k = "gamma", distr.p0 = "gamma",
-#' #                          asigma = 1, bsigma = 1, Meps=0.005,
-#' #                          Nit = 5000, Pbi = 0.2)
-#' # The output of this run is already loaded in the package
-#' # To show results run the following
-#' # Data
+#' set.seed(150520)
 #' data(enzyme)
 #' x <- enzyme
-#' data(Enzyme1.out)
+#' Enzyme1.out <- MixNRMI1(x,
+#'   Alpha = 1, Kappa = 0.007, Gama = 0.5,
+#'   distr.k = "gamma", distr.p0 = "gamma",
+#'   asigma = 1, bsigma = 1, Meps = 0.005,
+#'   Nit = 5000, Pbi = 0.2
+#' )
 #' attach(Enzyme1.out)
 #' # Plotting density estimate + 95% credible interval
 #' plot(Enzyme1.out)
@@ -154,6 +148,7 @@
 #' print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
 #' print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 #' detach()
+#' }
 #'
 #' ### Example 3
 #' ## Do not run
@@ -257,8 +252,7 @@ MixNRMI1 <-
           tmp <- gs3_adaptive3(u, n = n, r = r, alpha = Alpha, kappa = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
           u <- tmp$u_prime
           delta_U <- tmp$delta
-        }
-        else {
+        } else {
           u <- gs3(u,
             n = n, r = r, alpha = Alpha, kappa = Kappa,
             gama = Gama, delta = delta_U
@@ -377,8 +371,7 @@ MixNRMI1 <-
 plot.NRMI1 <- function(x, ...) {
   if (is_censored(x$data)) {
     plotfit_censored(x)
-  }
-  else {
+  } else {
     plotfit_noncensored(x)
   }
 }

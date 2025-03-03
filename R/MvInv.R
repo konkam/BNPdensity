@@ -1,8 +1,7 @@
 #' Invert jump heights function
 #'
 #' Determines the jump heights of an increasing additive process by inverting
-#' the M(v) function.
-#'
+#' the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
 #' For internal use.
 #'
 #' @param eps Dummy argument kept for consistency with past versions of the functions
@@ -52,8 +51,7 @@ MvInv <-
     if (M < 25) {
       ## This version is faster because it has no loop, but it involves many passes over Mv which has 3001 elements
       return(fill_v1(M, Mv, W, x))
-    }
-    else {
+    } else {
       return(fill_v2(M, Mv, W, N, x)) # Faster for large values of N
     }
   }

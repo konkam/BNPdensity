@@ -157,22 +157,16 @@ x <- acidity
 out <- MixNRMI1(x)
 # Plotting density estimate + 95\% credible interval
 plot(out)
-}
 ### Example 2
-## Do not run
-# set.seed(150520)
-# data(enzyme)
-# x <- enzyme
-# Enzyme1.out <- MixNRMI1(x, Alpha = 1, Kappa = 0.007, Gama = 0.5,
-#                          distr.k = "gamma", distr.p0 = "gamma",
-#                          asigma = 1, bsigma = 1, Meps=0.005,
-#                          Nit = 5000, Pbi = 0.2)
-# The output of this run is already loaded in the package
-# To show results run the following
-# Data
+set.seed(150520)
 data(enzyme)
 x <- enzyme
-data(Enzyme1.out)
+Enzyme1.out <- MixNRMI1(x,
+  Alpha = 1, Kappa = 0.007, Gama = 0.5,
+  distr.k = "gamma", distr.p0 = "gamma",
+  asigma = 1, bsigma = 1, Meps = 0.005,
+  Nit = 5000, Pbi = 0.2
+)
 attach(Enzyme1.out)
 # Plotting density estimate + 95\% credible interval
 plot(Enzyme1.out)
@@ -195,6 +189,7 @@ boxplot(cpo, horizontal = TRUE, main = "Boxplot of CPO's")
 print(paste("Average log(CPO)=", round(mean(log(cpo)), 4)))
 print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 detach()
+}
 
 ### Example 3
 ## Do not run
@@ -236,11 +231,11 @@ print(paste("Median log(CPO)=", round(median(log(cpo)), 4)))
 detach()
 }
 \references{
-1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prüenster,
+1.- Barrios, E., Lijoi, A., Nieto-Barajas, L. E. and Prünster,
 I. (2013). Modeling with Normalized Random Measure Mixture Models.
 Statistical Science. Vol. 28, No. 3, 313-334.
 
-2.- James, L.F., Lijoi, A. and Prüenster, I. (2009). Posterior analysis for
+2.- James, L.F., Lijoi, A. and Prünster, I. (2009). Posterior analysis for
 normalized random measure with independent increments. Scand. J. Statist 36,
 76-97.
 }

@@ -36,8 +36,6 @@ function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) {
 }
 \description{
 Determines the jump heights of an increasing additive process by inverting
-the M(v) function.
-}
-\details{
+the M(v) function. Use a truncation level based on expected moments of the NGG process (\code{\link{thresholdGG}}).
 For internal use.
 }
