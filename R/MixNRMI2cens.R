@@ -222,8 +222,7 @@ MixNRMI2cens <-
           tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, kappa = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
           u <- tmp$u_prime
           delta_U <- tmp$delta
-        }
-        else {
+        } else {
           u <- gs3(u,
             n = n, r = rstar, alpha = Alpha, kappa = Kappa,
             gama = Gama, delta = delta_U

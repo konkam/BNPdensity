@@ -51,8 +51,7 @@ MvInv <-
     if (M < 25) {
       ## This version is faster because it has no loop, but it involves many passes over Mv which has 3001 elements
       return(fill_v1(M, Mv, W, x))
-    }
-    else {
+    } else {
       return(fill_v2(M, Mv, W, N, x)) # Faster for large values of N
     }
   }

@@ -122,8 +122,7 @@ gs3_log <-
     logq1 <- logacceptance_ratio_logu(logu = logut, logu_prime = logu_prime, n = n, r = r, gamma = gama, kappa = kappa, a = alpha, delta = delta)
     if (log(runif(n = 1)) < logq1) {
       return(logu_prime)
-    }
-    else {
+    } else {
       return(logut)
     }
   }
@@ -145,12 +144,10 @@ gs3_adaptive3 <- function(ut, n, r, alpha, kappa, gama, delta, U, iter, adapt = 
     # increment = min(0.5, 5 / sqrt(iter))
     if (acc_rate < 0.44) {
       delta_i <- delta * exp(-logincrement)
-    }
-    else {
+    } else {
       delta_i <- delta * exp(+logincrement)
     }
-  }
-  else {
+  } else {
     delta_i <- delta
   }
   logu_prime <- gs3_log(logut = log(ut), n = n, r = r, alpha = alpha, kappa = kappa, gama = gama, delta = delta_i)

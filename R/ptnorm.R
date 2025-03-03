@@ -17,8 +17,7 @@
 #'   if (lower.tail) {
 #'     ret[q < lower] <- 0
 #'     ret[q > upper] <- 1
-#'   }
-#'   else {
+#'   } else {
 #'     ret[q < lower] <- 1
 #'     ret[q > upper] <- 0
 #'   }
@@ -53,8 +52,7 @@ ptnorm <-
     if (lower.tail) {
       ret[q < lower] <- 0
       ret[q > upper] <- 1
-    }
-    else {
+    } else {
       ret[q < lower] <- 1
       ret[q > upper] <- 0
     }

@@ -71,8 +71,7 @@ grid_from_data_censored <- function(data, npoints = 100) {
 grid_from_data <- function(data, npoints = 100) {
   if (is_censored(data)) {
     grid_from_data_censored(data, npoints = npoints)
-  }
-  else {
+  } else {
     grid_from_data_noncensored(data, npoints = npoints)
   }
 }
@@ -114,8 +113,7 @@ is_censored <- function(dat) {
 compute_thinning_grid <- function(Nit, thinning_to = 10) {
   if (Nit <= 2 * thinning_to) { # Factor 2 to reduce the probability of having the same iterations selected twice
     it_retained <- 1:Nit
-  }
-  else {
+  } else {
     it_retained <- round(seq(1, Nit, length.out = thinning_to))
   }
   return(it_retained)

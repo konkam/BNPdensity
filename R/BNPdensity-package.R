@@ -1,5 +1,3 @@
-
-
 #' Acidity Index Dataset
 #'
 #' Concerns an acidity index measured in a sample of 155 lakes in north-central

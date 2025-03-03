@@ -11,20 +11,16 @@
 comment_on_NRMI_type <- function(NRMI_param = list("Alpha" = 1, "Kappa" = 0, "Gamma" = 0.4)) {
   if (NRMI_param$Gamma == 0) {
     return(paste("Dirichlet process,\nwith concentration parameter Alpha =", NRMI_param$Alpha))
-  }
-  else {
+  } else {
     if (NRMI_param$Alpha == 1) {
       if (NRMI_param$Kappa == 0) {
         return(paste("Normalized stable process,\nwith stability parameter Gamma =", NRMI_param$Gamma))
-      }
-      else if (NRMI_param$Gamma == 0.5) {
+      } else if (NRMI_param$Gamma == 0.5) {
         return(paste("Normalized inverse Gaussian process,\nwith parameter Kappa =", NRMI_param$Kappa))
-      }
-      else {
+      } else {
         return(paste("Normalized generalised gamma process,\nwith parameter Alpha =", NRMI_param$Alpha, "Kappa =", NRMI_param$Kappa, "Gamma =", NRMI_param$Gamma))
       }
-    }
-    else {
+    } else {
       return(paste("Normalized generalised gamma process,\nwith parameter Alpha =", NRMI_param$Alpha, "Kappa =", NRMI_param$Kappa, "Gamma =", NRMI_param$Gamma))
     }
   }

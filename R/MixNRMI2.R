@@ -258,8 +258,7 @@ MixNRMI2 <-
           tmp <- gs3_adaptive3(u, n = n, r = rstar, alpha = Alpha, kappa = Kappa, gama = Gama, delta = delta_U, U = U, iter = j, adapt = adaptive)
           u <- tmp$u_prime
           delta_U <- tmp$delta
-        }
-        else {
+        } else {
           u <- gs3(u,
             n = n, r = rstar, alpha = Alpha, kappa = Kappa,
             gama = Gama, delta = delta_U
@@ -378,8 +377,7 @@ MixNRMI2 <-
 plot.NRMI2 <- function(x, ...) {
   if (is_censored(x$data)) {
     plotfit_censored(x)
-  }
-  else {
+  } else {
     plotfit_noncensored(x)
   }
 }

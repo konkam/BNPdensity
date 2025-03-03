@@ -1,8 +1,7 @@
 log_Vnk_PY <- function(n, k, Alpha, Gama) {
   if (k == 1) {
     lognum <- 0
-  }
-  else {
+  } else {
     lognum <- sum(log(Alpha + Gama * 1:(k - 1)))
   }
   return(lognum - sum(log(Alpha + 1 + 0:(n - 2))))
@@ -196,8 +195,7 @@ asNumeric_no_warning <- function(x) {
     warning = function(w) {
       if (grepl(pattern = "inefficient", x = as.character(w))) {
         suppressWarnings(Rmpfr::asNumeric(x))
-      }
-      else {
+      } else {
         w
       }
     },

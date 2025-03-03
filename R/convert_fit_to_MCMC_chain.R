@@ -15,8 +15,7 @@ Compute_log_likelihood_given_params <- function(fit_, it_retained, parallel, nco
         distr.k = fit_$distr.k
       ))
     }
-  }
-  else {
+  } else {
     dpred <- function(iter) {
       log(dmix(fit_$data,
         locations = fit_$means[[iter]],
@@ -56,8 +55,7 @@ Convert_to_matrix_list <- function(fitlist, thinning_to = 1000, parallel = TRUE,
         log_likelihood = Compute_log_likelihood_given_params(fit_i, it_retained, parallel, ncores)
       )
     })
-  }
-  else {
+  } else {
     lapply(X = fitlist, function(fit_i) {
       cbind(
         ncomp = fit_i$R[it_retained],

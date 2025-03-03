@@ -264,8 +264,7 @@ summary.multNRMI <- function(object, number_of_clusters = FALSE, ...) {
     collected_allocs <- list("Allocs" = Reduce(c, lapply(object, function(x) x$Allocs)))
     estimated_clustering <- compute_optimal_clustering(collected_allocs)
     clustering_comment <- paste("The estimated number of clusters in the data is ", length(unique(estimated_clustering)), ".", sep = "")
-  }
-  else {
+  } else {
     clustering_comment <- "To obtain information on the estimated number of clusters, please use summary(object, number_of_clusters = TRUE)."
   }
   writeLines(paste(NRMI_comment, "\n", kernel_comment, "\n", data_comment, "\n", MCMC_comment, "\n", clustering_comment, sep = ""))
