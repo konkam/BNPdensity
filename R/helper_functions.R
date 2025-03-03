@@ -145,4 +145,10 @@ add <- function(x, y) {
 cpo <- function(object, ...) {
   UseMethod("cpo")
 }
-cpo.default <- function(object, ...) "Unknown class"
+
+#' @export cpo.default
+cpo.default <- function(object, ...) {
+  "Unknown class"
+}
+#
+# cpo.default <- function(object, ...) "Unknown class"
