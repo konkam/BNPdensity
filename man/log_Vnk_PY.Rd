@@ -23,6 +23,6 @@ This function computes the logarithm of the Vnk weights for the Pitman-Yor model
 for given values of `n`, `k`, `Alpha`, and `Gama`.
 }
 \examples{
-log_Vnk_PY(7, 6, 0.5, 0.01)
-log_Vnk_PY(6, 5, 0.5, 0.001)
+BNPdensity:::log_Vnk_PY(7, 6, 0.5, 0.01)
+BNPdensity:::log_Vnk_PY(6, 5, 0.5, 0.001)
 }

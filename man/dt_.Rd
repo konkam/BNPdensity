@@ -13,12 +13,7 @@ dt_(x, df, mean, sd)
 
 \item{mean}{Numeric constant. Location parameter.}
 
-\item{sd}{Positive numeric constant. Scale parameter.
-
-## The function is currently defined as
-function(x, df, mean, sd) {
-  dt((x - mean) / sd, df, ncp = 0) / sd
-}}
+\item{sd}{Positive numeric constant. Scale parameter.}
 }
 \description{
 Computes the density.

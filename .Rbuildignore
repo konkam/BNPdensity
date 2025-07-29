@@ -10,3 +10,4 @@ README_files
 ^doc$
 ^Meta$
 ^CRAN-SUBMISSION$
+^cran-comments\.md$
