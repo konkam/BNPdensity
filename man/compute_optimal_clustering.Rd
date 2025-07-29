@@ -4,24 +4,30 @@
 \alias{compute_optimal_clustering}
 \title{Compute the optimal clustering from an MCMC sample}
 \usage{
-compute_optimal_clustering(fit, loss_type = "VI")
+compute_optimal_clustering(fit, method = "GreedyEPL", loss_type = "VI")
 }
 \arguments{
 \item{fit}{The fitted object, obtained from one of the MixNRMIx functions}
 
+\item{method}{The method to use for optimal clustering. Can be "GreedyEPL" or "SALSO". Defaults to "GreedyEPL".}
+
 \item{loss_type}{Defines the loss function to be used in the expected
-posterior loss minimization. Can be one of "VI" (Variation of Information),
-"B" (Binder's loss), "NVI" (Normalized Variation of Information) or "NID"
-(Normalized Information Distance). Defaults to "VI".}
+posterior loss minimization. Only used if method is "GreedyEPL". Can be one of "VI", "B", "NVI", or "NID". Defaults to "VI".}
 }
 \value{
-A vector of integers with the same size as the data, indicating the
-allocation of each data point.
+A vector of integers with the same size as the data, indicating the allocation of each data point.
 }
 \description{
 Summarizes the posterior on all possible clusterings by an optimal
 clustering where optimality is defined as minimizing the posterior
-expectation of a specific loss function, the Variation of Information or
-Binder's loss function. Computation can be lengthy for large datasets,
-because of the large size of the space of all clusterings.
+expectation of a specific loss function. Supports GreedyEPL and SALSO.
+}
+\examples{
+\dontrun{
+data(acidity)
+x <- acidity
+# Fitting the model under default specifications
+out <- MixNRMI1(x)
+compute_optimal_clustering(out)
+}
 }

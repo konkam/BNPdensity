@@ -2,30 +2,55 @@
 #'
 #' Summarizes the posterior on all possible clusterings by an optimal
 #' clustering where optimality is defined as minimizing the posterior
-#' expectation of a specific loss function, the Variation of Information or
-#' Binder's loss function. Computation can be lengthy for large datasets,
-#' because of the large size of the space of all clusterings.
-#'
+#' expectation of a specific loss function. Supports GreedyEPL and SALSO.
 #'
 #' @param fit The fitted object, obtained from one of the MixNRMIx functions
+#' @param method The method to use for optimal clustering. Can be "GreedyEPL" or "SALSO". Defaults to "GreedyEPL".
 #' @param loss_type Defines the loss function to be used in the expected
-#' posterior loss minimization. Can be one of "VI" (Variation of Information),
-#' "B" (Binder's loss), "NVI" (Normalized Variation of Information) or "NID"
-#' (Normalized Information Distance). Defaults to "VI".
-#' @return A vector of integers with the same size as the data, indicating the
-#' allocation of each data point.
+#' posterior loss minimization. Only used if method is "GreedyEPL". Can be one of "VI", "B", "NVI", or "NID". Defaults to "VI".
+#' @return A vector of integers with the same size as the data, indicating the allocation of each data point.
+#' @examples
+#' \dontrun{
+#' data(acidity)
+#' x <- acidity
+#' # Fitting the model under default specifications
+#' out <- MixNRMI1(x)
+#' compute_optimal_clustering(out)
+#' }
 #' @export compute_optimal_clustering
-compute_optimal_clustering <- function(fit, loss_type = "VI") {
-  if (!requireNamespace("GreedyEPL", quietly = TRUE)) {
-    stop("Package GreedyEPL is needed for this function to work. Please install it. You may do so using install.packages('https://cran.r-project.org/src/contrib/Archive/GreedyEPL/GreedyEPL_1.0.tar.gz', repos = NULL)",
-      call. = FALSE
-    )
+compute_optimal_clustering <- function(fit, method = "GreedyEPL", loss_type = "VI") {
+  if (!("Allocs" %in% names(fit))) {
+    stop("The 'fit' object must contain an 'Allocs' element.")
   }
 
-  fit.draw <- Reduce(rbind, fit$Allocs)
-  fit_VI <- GreedyEPL::MinimiseEPL(sample_of_partitions = fit.draw, pars = list("loss_type" = loss_type))
-  return(fit_VI$decision)
+  if (method == "GreedyEPL") {
+    if (!requireNamespace("GreedyEPL", quietly = TRUE)) {
+      stop("Package GreedyEPL is needed for this method. Please install it using install.packages('https://cran.r-project.org/src/contrib/Archive/GreedyEPL/GreedyEPL_1.0.tar.gz', repos = NULL)",
+           call. = FALSE
+      )
+    }
+    fit.draw <- Reduce(rbind, fit$Allocs)
+    fit_VI <- GreedyEPL::MinimiseEPL(sample_of_partitions = fit.draw, pars = list("loss_type" = loss_type))
+    return(fit_VI$decision)
+
+  } else if (method == "SALSO") {
+    if (!requireNamespace("salso", quietly = TRUE)) {
+      stop("Package SALSO is needed for this method. Please install it using install.packages('salso')",
+           call. = FALSE
+      )
+    }
+    alloc_list <- fit$Allocs
+    n <- length(alloc_list[[1]])
+    N_it <- length(alloc_list)
+    mat_clust <- matrix(unlist(alloc_list), nrow = n, ncol = N_it)
+    clust_opt <- salso::salso(x = t(mat_clust), loss = VI())
+    return(clust_opt)
+
+  } else {
+    stop("Invalid method. Choose either 'GreedyEPL' or 'SALSO'.")
+  }
 }
+
 
 # clustering = compute_optimal_clustering(out)
 
