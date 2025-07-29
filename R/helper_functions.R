@@ -136,7 +136,7 @@ add <- function(x, y) {
 #' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
 #'
 #' @param object A fit obtained through one of the NRMI functions
-#' @param ...
+#' @param ... Additional arguments (not used)
 #'
 #' @return A vector of Conditional Predictive Ordinates (CPOs)
 #' @export
@@ -147,10 +147,10 @@ cpo <- function(object, ...) {
 #' Extract the Conditional Predictive Ordinates (CPOs) from a fitted object
 #'
 #' @param object A fit obtained through one of the NRMI functions
-#' @param ...
+#' @param ... Additional arguments (not used)
 #'
 #' @return A vector of Conditional Predictive Ordinates (CPOs)
-#' @export cpo.default
+#' @export
 cpo.default <- function(object, ...) {
   stop("No 'cpo' method available for objects of class: ", class(object))
 }

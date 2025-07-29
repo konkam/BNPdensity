@@ -11,7 +11,7 @@ cpo(object, ...)
 \arguments{
 \item{object}{A fit obtained through one of the NRMI functions}
 
-\item{...}{}
+\item{...}{Additional arguments (not used)}
 }
 \value{
 A vector of Conditional Predictive Ordinates (CPOs)
