@@ -1,36 +1,80 @@
 ---
-title: "Bayesian nonparametric density estimation using BNPdensity"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Bayesian nonparametric density estimation using BNPdensity}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: 
+  github_document:
+    toc: yes
 ---
 
-```{r, include = FALSE}
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  cache = TRUE
+  # fig.path = "man/figures/README-",
+  cache = T
 )
 options(mc.cores = parallel::detectCores())
 ```
 
-
+# BNPdensity
 
 Bayesian nonparametric density estimation modeling mixtures by a Ferguson-Klass type algorithm for posterior normalized random measures.
 
+## Installation
 
-# Problem setting
+You can install BNPdensity from github with:
 
-We consider a one-dimensional density estimation problem.
-
-
-
-```{r setup}
-library(BNPdensity)
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("konkam/BNPdensity", dependencies = TRUE, upgrade = TRUE)
 ```
 
+You will need to have the CRAN package `devtools` installed.
+
+
+## Problem setting
+
+We consider a one-dimensional density estimation problem. As an example, we pick the `acidity` dataset, which contains an acidity index measured in a sample of 155 lakes in north-central Wisconsin (Crawford et al. (1992)).
+
+We illustrate the package by estimating the distribution of the `acidity` dataset.
+
+Let's have a quick overview of the acidity dataset:
+
+```{r}
+library(BNPdensity)
+data(acidity)
+str(acidity)
+```
+
+```{r}
+hist(acidity)
+```
+
+This dataset shows clear signs of multimodality, and it might be tempting to fit a bimodal normal distribution. However, some asymmetry in the two apparent clusters, or the extreme point on the left suggest that a mixture with more components might be more appropriate.
+
+A Bayesian Nonparametric approach avoids the need to specify an arbitrary number of clusters in advance, it rather aims at estimating an optimal number of clusters from the dataset by means of an infinite mixture model.
+
+The most famous Bayesian Nonparametric model for infinite mixtures is the [Dirichlet process](https://en.wikipedia.org/wiki/Dirichlet_process). However, it implies a fairly informative a priori distribution on the number of components in the mixture: the mode of the prior distribution is proportional to the logarithm of the number of data points, and the distribution is fairly peaked.
+This might not accurately reflect the prior information available on the number of components, or might induce an unwanted bias in the case of prior mis-specification.
+Models more general than the Dirichlet process, such as Normalized Random Measure models (Barrios et al. (2013)) allow overcoming this limitation by specifying a **less informative** prior. In what follows, we present how to use Normalized Random Measure models for density estimation.
+
+## Obtaining a Bayesian Nonparametric density estimate in a few seconds
+
+```{r}
+library(BNPdensity)
+data(acidity)
+fit = MixNRMI1(acidity, Nit = 3000)
+```
+
+`MixNRMI1()` creates an object of class `MixNRMI1`, for which we provide common S3 methods.
+
+```{r}
+print(fit)
+```
+
+```{r}
+plot(fit)
+```
 
 
 
@@ -45,6 +89,7 @@ More guidelines on how to choose the parameters may be found in Lijoi et al. (20
 We provide a function to compute the expected number of components for a normalized stable process:
 
 ```{r}
+library(BNPdensity)
 expected_number_of_components_stable(100, 0.8)
 ```
 
@@ -59,7 +104,6 @@ We also provide a way to visualise the prior distribution on the number of compo
 ```{r}
 plot_prior_number_of_components(50, 0.4) 
 ```
-
 ## How to fit a dataset
 
 We illustrate the package by estimating the distribution of the `acidity` dataset.
@@ -167,5 +211,25 @@ The clustering structure may be visualized as follows:
 data(acidity)
 out <- MixNRMI2(acidity,  extras = TRUE)
 clustering = compute_optimal_clustering(out)
+plot_clustering_and_CDF(out, clustering)
+```
+
+We now also offer the option of using the implementation described in:
+
+> D. B. Dahl, D. J. Johnson, and P. Müller (2022),  
+> *Search Algorithms and Loss Functions for Bayesian Clustering*,  
+> *Journal of Computational and Graphical Statistics*, 31(4), 1189–1201.  
+> https://doi.org/10.1080/10618600.2022.2069779
+
+This approach is implemented in the R package `salso`, and can be used as an alternative to `GreedyEPL` for computing the optimal clustering under the same loss functions (e.g., Variation of Information). SALSO by default performs multiple runs with different initialisations, which improves the robustness of the optimisation results.
+
+To use this alternative, simply specify the method in the `compute_optimal_clustering` function:
+
+```{r}
+install.packages("salso")  # if not already installed
+
+data(acidity)
+out <- MixNRMI2(acidity, extras = TRUE)
+clustering <- compute_optimal_clustering(out, method = "SALSO")
 plot_clustering_and_CDF(out, clustering)
 ```

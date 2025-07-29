@@ -43,7 +43,7 @@ compute_optimal_clustering <- function(fit, method = "GreedyEPL", loss_type = "V
     n <- length(alloc_list[[1]])
     N_it <- length(alloc_list)
     mat_clust <- matrix(unlist(alloc_list), nrow = n, ncol = N_it)
-    clust_opt <- salso::salso(x = t(mat_clust), loss = VI())
+    clust_opt <- salso::salso(x = t(mat_clust), loss = salso::VI())
     return(clust_opt)
 
   } else {
