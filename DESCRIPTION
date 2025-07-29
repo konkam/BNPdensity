@@ -33,4 +33,5 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    BNPmix
+    BNPmix,
+    salso
