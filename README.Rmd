@@ -213,3 +213,23 @@ out <- MixNRMI2(acidity,  extras = TRUE)
 clustering = compute_optimal_clustering(out)
 plot_clustering_and_CDF(out, clustering)
 ```
+
+We now also offer the option of using the implementation described in:
+
+> D. B. Dahl, D. J. Johnson, and P. Müller (2022),  
+> *Search Algorithms and Loss Functions for Bayesian Clustering*,  
+> *Journal of Computational and Graphical Statistics*, 31(4), 1189–1201.  
+> https://doi.org/10.1080/10618600.2022.2069779
+
+This approach is implemented in the R package `salso`, and can be used as an alternative to `GreedyEPL` for computing the optimal clustering under the same loss functions (e.g., Variation of Information). SALSO by default performs multiple runs with different initialisations, which improves the robustness of the optimisation results.
+
+To use this alternative, simply specify the method in the `compute_optimal_clustering` function:
+
+```{r}
+#install.packages("salso")  # if not already installed
+
+data(acidity)
+out <- MixNRMI2(acidity, extras = TRUE)
+clustering <- compute_optimal_clustering(out, method = "SALSO")
+plot_clustering_and_CDF(out, clustering)
+```
