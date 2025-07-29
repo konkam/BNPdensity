@@ -11,3 +11,4 @@ README_files
 ^Meta$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^\.github$
