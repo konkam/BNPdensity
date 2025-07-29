@@ -1,5 +1,5 @@
 ## Test environments
-* local ubuntu 20.04 install, R 4.2.2
+* local ubuntu 20.04 install, R 4.5.1
 * Debian Linux, R-devel, GCC ASAN/UBSAN
 * Fedora Linux, R-devel, clang, gfortran
 * win-builder (devel and release)
