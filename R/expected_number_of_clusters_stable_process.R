@@ -11,8 +11,8 @@
 #' @return A numeric value representing the logarithm of the NRMI for the specified parameters.
 #'
 #' @examples
-#' log_Vnk_PY(7, 6, 0.5, 0.01)
-#' log_Vnk_PY(6, 5, 0.5, 0.001)
+#' BNPdensity:::log_Vnk_PY(7, 6, 0.5, 0.01)
+#' BNPdensity:::log_Vnk_PY(6, 5, 0.5, 0.001)
 log_Vnk_PY <- function(n, k, Alpha, Gama) {
   if (k == 1) {
     lognum <- 0
