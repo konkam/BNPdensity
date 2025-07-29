@@ -8,11 +8,6 @@
 #' @param df Numeric constant. Degrees of freedom (> 0, maybe non-integer)
 #' @param mean Numeric constant. Location parameter.
 #' @param sd Positive numeric constant. Scale parameter.
-#'
-#' ## The function is currently defined as
-#' function(x, df, mean, sd) {
-#'   dt((x - mean) / sd, df, ncp = 0) / sd
-#' }
 dt_ <-
   function(x, df, mean, sd) {
     dt((x - mean) / sd, df, ncp = 0) / sd

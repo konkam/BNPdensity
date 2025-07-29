@@ -11,20 +11,7 @@
 #' @param gama Numeric constant. Discount parameter of the NRMI process.
 #' @param N Number of steps in the discretization scheme for the grid inversion.
 #'
-#' ## The function has been optimised but it is morally defined as:
-#' function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) {
-#'   n <- length(w)
-#'   v <- rep(NA, n)
-#'   x <- -log(seq(from = exp(-1e-05), to = exp(-10), length = N))
-#'   f <- alpha / gamma(1 - gama) * x^(-(1 + gama)) * exp(-(u +
-#'     kappa) * x)
-#'   dx <- diff(x)
-#'   h <- (f[-1] + f[-N]) / 2
-#'   Mv <- rep(0, N)
-#'   for (i in seq(N - 1, 1)) Mv[i] <- Mv[i + 1] + dx[i] * h[i]
-#'   for (j in seq(n)) v[j] <- x[which.min(Mv > w[j])]
-#'   return(v)
-#' }
+#' ## The function has been optimised but it is morally defined as MvInv_old.R
 MvInv <-
   function(eps, u = 0.5, alpha = 1, kappa = 1, gama = 1 / 2, N = 3001) # eps no longer required
   {
@@ -43,11 +30,6 @@ MvInv <-
     M <- max(10, M) # We wish to make sure we at least use a few jumps
     W <- rexp(n = M)
     W <- cumsum(W)
-    # x_which_min = function(w){ # I guess that this function could be defined outside of MvInV
-    #   x[which.min(Mv > w)]
-    # }
-    # x_which_min = Vectorize(x_which_min, vectorize.args = "w")
-    # v <- x_which_min(W)
     if (M < 25) {
       ## This version is faster because it has no loop, but it involves many passes over Mv which has 3001 elements
       return(fill_v1(M, Mv, W, x))
@@ -72,7 +54,6 @@ fill_v2 <- function(M, Mv, W, N, x) {
     }
     v[i] <- x[iMv + 1] # This index shift is to keep consistency  with previous version of the function, not necessary.
   }
-  # for (j in seq(M)) v[j] <- x[which.min(Mv > W[j])]
   return(v)
 }
 
